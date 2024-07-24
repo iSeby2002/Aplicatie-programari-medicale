@@ -12,7 +12,6 @@ export const centerBoxSx: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-
 };
 
 export const typographyCreazaContSx: React.CSSProperties = {

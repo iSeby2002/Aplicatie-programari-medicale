@@ -30,27 +30,29 @@ const LoginPage = () => {
             const data = new FormData(event.currentTarget);
             const loginDTO = {
                 email: data.get('emailField'),
-                parola: data.get('parolaField'),
+                password: data.get('parolaField'),
             }
             console.log(loginDTO)
 
-            // axios.post("http://localhost:8081/Login", loginDTO, {
-            //     headers: {
-            //         "content-type": "application/json"
-            //     }
-            // }).then((response: any) => {
-            //     console.log(response)
-            //     if(response.data.tip === "MedicDiabet"){
-            //         console.log(response.data.tip)
-            //         navigate("/MedicDiabetPage", { state: response.data.id })
-            //     }else if(response.data.tip === "MedicOftalmologic"){
-            //         console.log(response.data.tip)
-            //         navigate("/MedicOftalmologicPage", { state: response.data.id })
-            //     }
-            // }).catch((error: any) => {
-            //     console.error(error)
-            //     setGresit(true)
-            // })
+            axios.post("http://localhost:8080/medici/login", loginDTO, {
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then((response: any) => {
+                console.log(response)
+                if(response.data.role === "diabetolog"){
+                    console.log(response.data)
+                    navigate("/DiabetologPage");
+                    // navigate("/MedicDiabetPage", { state: response.data.id })
+                }else if(response.data.role === "oftalmolog"){
+                    console.log(response.data)
+                    navigate("/OftalmologPage");
+                    // navigate("/MedicOftalmologicPage", { state: response.data.id })
+                }
+            }).catch((error: any) => {
+                console.error(error)
+                setGresit(true)
+            })
         }
     }
 
