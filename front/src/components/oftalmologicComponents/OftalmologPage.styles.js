@@ -23,11 +23,12 @@ export const typographyTitluSx: React.CSSProperties = {
     fontWeight: "600",
 };
 
-export const unuBoxSx: React.CSSProperties = {
+export const boxSx: React.CSSProperties = {
     width: "90%",
     background: "white",
     borderRadius: "5px",
     border: "4px solid #adadad",
+    margin: "10px 0px",
     display: "flex",
     flexDirection: 'column',
 };
@@ -35,33 +36,36 @@ export const unuBoxSx: React.CSSProperties = {
 export const typographyNumeSiPrenumeSx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",
-    width: "300px",
+    width: "350px",
+    textAlign: "left",
     fontSize: "18px",
     fontWeight: "600",
 };
 
 export const numeSiPrenumeSx: React.CSSProperties = {
-    padding: "10px 0px",
+    padding: "10px 10px",
     width: "100%",
 };
 
 export const typographyNrCrtSx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",
-    width: "200px",
+    width: "130px",
+    textAlign: "left",
     fontSize: "18px",
     fontWeight: "600",
 };
 
 export const nrCrtSx: React.CSSProperties = {
     padding: "10px 10px",
-    width: "200px",
+    width: "250px",
 };
 
 export const typographyCNPSx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",
-    width: "200px",
+    width: "70px",
+    textAlign: "left",
     fontSize: "18px",
     fontWeight: "600",
 };
@@ -71,42 +75,277 @@ export const CNPSx: React.CSSProperties = {
     width: "200px",
 };
 
-export const doiBoxSx: React.CSSProperties = {
-    width: "90%",
-    background: "white",
-    borderRadius: "5px",
-    border: "4px solid #adadad",
-    margin: "15px 0px",
-}
+export const typographyDiabetZaharatSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "190px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
 
-export const treiBoxSx: React.CSSProperties = {
-    width: "90%",
-    background: "white",
-    borderRadius: "5px",
-    border: "4px solid #adadad",
-    margin: "15px 0px",
-}
+export const diabetZaharatSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "400px",
+};
 
-export const patruBoxSx: React.CSSProperties = {
-    width: "90%",
-    background: "white",
-    borderRadius: "5px",
-    border: "4px solid #adadad",
-    margin: "15px 0px",
-}
+export const typographyDataDiagnosticuluiSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "200px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
 
-export const cinciBoxSx: React.CSSProperties = {
-    width: "90%",
-    background: "white",
-    borderRadius: "5px",
-    border: "4px solid #adadad",
-    margin: "15px 0px",
-}
+export const dataDiagnosticuluiSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "200px",
+};
 
-export const saseBoxSx: React.CSSProperties = {
-    width: "90%",
-    background: "white",
-    borderRadius: "5px",
-    border: "4px solid #adadad",
-    margin: "15px 0px",
-}
+export const typographyHbA1CSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "100px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const HbA1CSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyGlicemieSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "100px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const glicemieSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyUreeSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "100px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const ureeSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyCreatininaSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "120px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const creatininaSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyeRFGSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "100px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const eRFGSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyHTASx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "60px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const HTASx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyNeuropatieSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "150px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const neuropatieSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyNefropatieSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "150px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const nefropatieSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyCISx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "50px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const CISx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyeAVCSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "60px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const AVCSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyeIMASx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "60px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const IMASx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyeHipercolesterolemieSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "200px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const hipercolesterolemieSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyHipertrigliceridemieSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "200px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const hipertrigliceridemieSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyTratamentDiabetInPrezentSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "280px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const insulinaSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyInsulinaSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "100px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const ADOSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyADOSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "60px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const dietaSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyeDietaSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "60px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const nimicSx: React.CSSProperties = {
+    padding: "10px 10px",
+    width: "100px",
+};
+
+export const typographyeNimicSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "50px",
+    textAlign: "left",
+    fontSize: "18px",
+    fontWeight: "600",
+};
