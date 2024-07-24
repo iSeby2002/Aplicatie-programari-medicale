@@ -33,8 +33,8 @@ function RadioButtonsGroup({ tipMedic, setTipMedic }) {
                 sx={{ display: "flex", flexDirection: 'row' }}
                 onChange={(e) => setTipMedic(e.target.value)}
             >
-                <FormControlLabel value="Diabetolog" control={<Radio />} label="Diabetolog" />
-                <FormControlLabel value="Oftalmolog" control={<Radio />} label="Oftalmolog" />
+                <FormControlLabel value="diabetolog" control={<Radio />} label="Diabetolog" />
+                <FormControlLabel value="oftalmolog" control={<Radio />} label="Oftalmolog" />
             </RadioGroup>
         </FormControl>
     );
@@ -47,7 +47,7 @@ const RegisterPage = () => {
     const [telefon, setTelefon] = React.useState("");
     const [parola, setParola] = React.useState("");
     const [confirmareParola, setConfirmareParola] = React.useState("");
-    const [tipMedic, setTipMedic] = React.useState("Diabetolog");
+    const [tipMedic, setTipMedic] = React.useState("diabetolog");
     const [gresit, setGresit] = React.useState({ prenume: false, nume: false, email: false, telefon: false, parola: false, confirmareParola: false });
     const navigate = useNavigate();
 
@@ -67,30 +67,31 @@ const RegisterPage = () => {
                 prenume: data.get('prenumeField'),
                 nume: data.get('numeField'),
                 email: data.get('emailField'),
-                telefon: data.get('telefonField'),
-                parola: data.get('parolaField'),
-                confirmareParola: data.get('confirmareParolaField'),
-                tipMedic: tipMedic,
+                phoneNumber: data.get('telefonField'),
+                password: data.get('parolaField'),
+                role: tipMedic,
             }
             console.log(registerDTO)
 
-            // axios.post("http://localhost:8081/Login", loginDTO, {
-            //     headers: {
-            //         "content-type": "application/json"
-            //     }
-            // }).then((response: any) => {
-            //     console.log(response)
-            //     if(response.data.tip === "MedicDiabet"){
-            //         console.log(response.data.tip)
-            //         navigate("/MedicDiabetPage", { state: response.data.id })
-            //     }else if(response.data.tip === "MedicOftalmologic"){
-            //         console.log(response.data.tip)
-            //         navigate("/MedicOftalmologicPage", { state: response.data.id })
-            //     }
-            // }).catch((error: any) => {
-            //     console.error(error)
-            //     setGresit(true)
-            // })
+            axios.post("http://localhost:8080/medici/register", registerDTO, {
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then((response: any) => {
+                console.log(response)
+                if(response.data.role === "diabetolog"){
+                    console.log(response.data)
+                    navigate("/DiabetologPage");
+                    // navigate("/MedicDiabetPage", { state: response.data.id })
+                }else if(response.data.role === "oftalmolog"){
+                    console.log(response.data)
+                    navigate("/OftalmologPage");
+                    // navigate("/MedicOftalmologicPage", { state: response.data.id })
+                }
+            }).catch((error: any) => {
+                console.error(error)
+                setGresit(true)
+            })
         }
     }
 
