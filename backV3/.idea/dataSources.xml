@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+<<<<<<< HEAD
+    <data-source source="LOCAL" name="@localhost" uuid="3c90c3c6-3e6b-4ee9-b76b-559399a08c85">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="programari_medicale" uuid="112d33da-e616-4ca9-a144-d551783f29dd">
+=======
     <data-source source="LOCAL" name="programari_medicale@localhost" uuid="813a175b-a33c-490e-8b03-263962371cc7">
+>>>>>>> 85e9cb4291e7616d94089374f8c6cc544af37180
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/programari_medicale</jdbc-url>
+<<<<<<< HEAD
+=======
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
       </jdbc-additional-properties>
+>>>>>>> 85e9cb4291e7616d94089374f8c6cc544af37180
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
