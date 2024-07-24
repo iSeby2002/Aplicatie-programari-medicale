@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class Pacient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long nrCrt;
 
     private String numePrenume;

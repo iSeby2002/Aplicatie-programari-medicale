@@ -19,7 +19,7 @@ public class Medic {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Pattern(regexp = "^\\d{10}$", message = "Phone number must contain exactly 10 digits")
