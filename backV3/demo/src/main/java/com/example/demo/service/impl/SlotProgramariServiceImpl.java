@@ -7,16 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 
 public class SlotProgramariServiceImpl implements SlotProgramariService {
     private final SlotProgramariRepository slotProgramariRepository;
-    private  final int saptamani= 52;
+    private final int saptamani= 52;
     private final int oraStart=10;
     private final int oraFinal=12;
     private final int durataSlot=15;
@@ -54,21 +57,35 @@ public class SlotProgramariServiceImpl implements SlotProgramariService {
         }
         slotProgramariRepository.saveAll(slots);
     }
+
     @Override
     public Iterable<SlotProgramari> findAll() {
         return slotProgramariRepository.findAll();
     }
+
     @Override
     public Optional<SlotProgramari> findById(Long id) {
         return slotProgramariRepository.findById(id);
     }
+
     @Override
-    public Optional<SlotProgramari> findByStartTime(LocalDateTime startTime) {
-        return slotProgramariRepository.findByStartTime(startTime);
+    public SlotProgramari findSlotProgramariByStartTime(LocalDateTime startTime) {
+        return slotProgramariRepository.findSlotProgramariByStartTime(startTime);
     }
 
     @Override
     public SlotProgramari save(SlotProgramari slotProgramari) {
         return slotProgramariRepository.save(slotProgramari);
+    }
+
+    @Override
+    public List<SlotProgramari> findAvailableSlotsByDataProgramarii(LocalDate dataProgramarii) {
+        Iterable<SlotProgramari> allSlots = slotProgramariRepository.findAll();
+
+        List<SlotProgramari> availableSlots = StreamSupport.stream(allSlots.spliterator(), false)
+                .filter(slot -> slot.isAvailable() && slot.getStartTime().toLocalDate().equals(dataProgramarii))
+                .collect(Collectors.toList());
+
+        return availableSlots;
     }
 }

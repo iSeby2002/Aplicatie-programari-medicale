@@ -11,4 +11,5 @@ public interface PacientService {
     Pacient registerPacient(PacientDto pacientDto);
     void deletePacient(Long nrCrt);
     Pacient updatePacient(Long nrCrt,PacientDto pacientDto);
+    Long getNextPacientId();
 }

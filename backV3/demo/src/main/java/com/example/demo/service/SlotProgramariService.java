@@ -1,10 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.dtos.PacientDto;
-import com.example.demo.model.Pacient;
 import com.example.demo.model.SlotProgramari;
-import org.springframework.data.repository.CrudRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +13,8 @@ public interface SlotProgramariService  {
 
     Optional<SlotProgramari> findById(Long id);
 
-    Optional<SlotProgramari> findByStartTime(LocalDateTime startTime);
+    SlotProgramari findSlotProgramariByStartTime(LocalDateTime startTime);
     SlotProgramari save(SlotProgramari slotProgramari);
+
+    List<SlotProgramari> findAvailableSlotsByDataProgramarii(LocalDate dataProgramarii);
 }

@@ -16,7 +16,7 @@ public class Programari {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String description;
+    //private String description;
     @ManyToOne
     @JoinColumn(name = "pacient_id")
     private Pacient pacient;

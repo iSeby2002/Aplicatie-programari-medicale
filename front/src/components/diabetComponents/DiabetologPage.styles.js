@@ -98,11 +98,6 @@ export const typographyDataDiagnosticuluiSx: React.CSSProperties = {
     fontWeight: "600",
 };
 
-export const dataDiagnosticuluiSx: React.CSSProperties = {
-    padding: "10px 10px",
-    width: "150px",
-};
-
 export const typographyProgramaerSx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",

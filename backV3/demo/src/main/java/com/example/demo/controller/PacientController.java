@@ -44,4 +44,10 @@ public class PacientController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/getUrmatorulNrCrt")
+    public ResponseEntity<Long> getUrmatorulNrCrt(){
+        Long nextNrCrt = pacientService.getNextPacientId();
+        return new ResponseEntity<>(nextNrCrt,HttpStatus.OK);
+    }
 }

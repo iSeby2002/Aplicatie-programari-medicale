@@ -2,22 +2,21 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {
     boxSx, buttonDeconectareSx, buttonProgrameazaSx,
-    centerBoxSx, CNPSx, dataDiagnosticuluiSx, diabetZaharatSx, nrCrtSx,
+    centerBoxSx, CNPSx, diabetZaharatSx, nrCrtSx,
     numeSiPrenumeSx, typographyCNPSx, typographyDataDiagnosticuluiSx, typographyDiabetZaharatSx, typographyNrCrtSx,
     typographyNumeSiPrenumeSx, typographyProgramaerSx,
     typographyTitluSx
 } from "./DiabetologPage.styles";
 import {
-    Autocomplete, Button,
+    Button,
     CssBaseline,
-    FormControlLabel,
+    FormControlLabel, InputLabel, FormControl, MenuItem, Select,
     Radio,
     RadioGroup,
     TextField,
     Typography
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import {FormControl} from "@mui/base";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {DatePicker} from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -42,112 +41,102 @@ function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat }) {
     );
 }
 
-function ComboBox({ options, value, onChange }: { options: { label: string }[], value: any, onChange: (event: any, newValue: any) => void }) {
-    return (
-        <Autocomplete
-            disablePortal
-            id="oreDisponibile"
-            options={options}
-            sx={{ width: 200 }}
-            renderInput={(params) => <TextField {...params} />}
-            value={value}
-            onChange={onChange}
-        />
-    );
-}
-
 const DiabetologPage = () => {
     const navigate = useNavigate();
 
     // BOX 1
-    const [gresit, setGresit] = React.useState({ numeSiPrenume: false, cnp: false, diabetZaharat: false});
+    const [gresit, setGresit] = React.useState({
+        numeSiPrenume: false,
+        cnp: false,
+        diabetZaharat: false,
+        dataDiagnosticului: false,
+        dataProgramarii: false
+    });
     const validateNumeSiPrenume = (value: string) => /^[a-zA-Z\s-]+$/.test(value);
     const validateCNP = (value: string) => /^[0-9]{13}$/.test(value);
-    const validateDiabetZaharat = (value: string) => /^[a-zA-Z\s-]+$/.test(value);
-    // const validateData = (value: string) => /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/.test(value);
-    // const validateOra = (value: string) => /^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/.test(value);
 
     const [numeSiPrenume, setNumeSiPrenume] = React.useState("");
     const [nrCrt, setNrCrt] = React.useState(0);
     const [cnp, setCnp] = React.useState("");
     const [diabetZaharat, setDiabetZaharat] = React.useState("");
     const [tipDiabetZaharat, setTipDiabetZaharat] = React.useState("tip 1");
-    const [dataDiagnosticului, setDataDiagnosticului] = React.useState("");
-    const [dataProgramarii, setDataProgramarii] = React.useState("");
 
-    const [selectedDate, setSelectedDate] = React.useState(null);
-    const handleDateChange = (newValue) => {
-        setSelectedDate(newValue);
-        setDataDiagnosticului(dayjs(newValue).format('DD/MM/YYYY'));
-    };
-
-    const [selectedDateProgramare, setSelectedDateProgramare] = React.useState(null);
-    const handleDateChangeProgramare = (newValue) => {
-        setSelectedDateProgramare(newValue);
-        setDataProgramarii(dayjs(newValue).format('DD/MM/YYYY'));
+    const [selectedDataDiagnoticului, setSelectedDataDiagnoticului] = React.useState(null);
+    const handleDataDiagnoticuluiChange = (newValue) => {
+        setSelectedDataDiagnoticului(newValue);
+        setGresit({...gresit, dataDiagnosticului: !newValue});
     };
 
     const [listOreDisponibile, setListOreDisponibile] = useState([]);
     const [oraProgramarii, setOraProgramarii] = useState("");
 
+    const [selectedDataProgramare, setSelectedDataProgramare] = React.useState(null);
+    const handleDateProgramareChange = (newValue) => {
+        setSelectedDataProgramare(newValue);
+        setGresit({...gresit, dataProgramarii: !newValue});
+
+    };
+
     useEffect(() => {
-        // const newTime = { label: '09:00' };
-        // setListOreDisponibile([...listOreDisponibile, newTime]);
+        axios.get("http://localhost:8080/pacienti/getUrmatorulNrCrt", {
+            headers: {
+                "content-type": "application/json"
+            }
+        }).then((response: any) => {
+            setNrCrt(response.data);
+            });
 
-        // axios.post("http://localhost:8080/medici/GetOreDisponibile", dataProgramarii, {
-        //     headers: {
-        //         "content-type": "application/json"
-        //     }
-        // }).then((response: any) => {
-        //     const oreDisponibile = response.data.map((oraDisponibila: any) => ({ label: oraDisponibila }));
-        //     setListOreDisponibile([...oreDisponibile]);
-        // });
-    }, [dataProgramarii]);
+        if (selectedDataProgramare) {
+            axios.post("http://localhost:8080/programari/getAvailableSlots", {
+                dataProgramare: dayjs(selectedDataProgramare).format('YYYY-MM-DD')
+            }, {
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then((response) => {
+                const oreDisponibile = response.data.map(slot => dayjs(slot.startTime).format('HH:mm'));
+                setListOreDisponibile(oreDisponibile);
+            });
+        }
+    }, [selectedDataProgramare]);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
-        const allFieldsValid = Object.values(gresit).every(value => value === false);
+        const allFieldsValid = Object.values(gresit).every(value => value === false) && selectedDataDiagnoticului && selectedDataProgramare && oraProgramarii;
 
-        if(allFieldsValid) {
-            const data = new FormData(event.currentTarget);
+        if (allFieldsValid) {
+            const dataOraProgramarii = dayjs(selectedDataProgramare).format('YYYY-MM-DD') + 'T' + oraProgramarii + ':00';
+
             const programareDTO = {
-                numeSiPrenume: data.get('numeSiPrenumeField'),
-                nrCrt: data.get('nrCrtField'),
-                cnp: data.get('CNPField'),
+                numeSiPrenume: numeSiPrenume,
+                cnp: cnp,
                 tipDiabetZaharat: tipDiabetZaharat,
-                diabetZaharat: data.get('diabetZaharatField'),
-                dataDiagnosticului: dataDiagnosticului,
-                dataProgramarii: dataProgramarii,
-                oraProgramarii: oraProgramarii,
+                diabetZaharat: diabetZaharat,
+                dataDiagnosticului: dayjs(selectedDataDiagnoticului).format('YYYY-MM-DD'),
+                dataProgramarii: dayjs(selectedDataProgramare).format('YYYY-MM-DD'),
+                oraProgramarii: dataOraProgramarii,
+            };
 
-            }
-            console.log(programareDTO)
+            // console.log(programareDTO);
 
-            if(oraProgramarii === ""){
-                console.log("Indisponibil in data selectata")
-            }else{
-                console.log("Disponibil in data selectata")
-            }
+            axios.post("http://localhost:8080/programari/programare", programareDTO, {
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then(() => {
+                setNumeSiPrenume("");
+                setCnp("")
+                setTipDiabetZaharat("tip 1");
+                setDiabetZaharat("");
+                setSelectedDataDiagnoticului(null);
+                setSelectedDataProgramare(null);
+                setOraProgramarii("");
+                navigate("/DiabetologPage");
+            });
 
-            // axios.post("http://localhost:8080/medici/login", loginDTO, {
-            //     headers: {
-            //         "content-type": "application/json"
-            //     }
-            // }).then((response: any) => {
-            //     console.log(response)
-            //     if (response.data.role === "diabetolog") {
-            //         console.log(response.data)
-            //         navigate("/DiabetologPage");
-            //         // navigate("/MedicDiabetPage", { state: response.data.id })
-            //     } else if (response.data.role === "oftalmolog") {
-            //         console.log(response.data)
-            //         navigate("/OftalmologPage");
-            //         // navigate("/MedicOftalmologicPage", { state: response.data.id })
-            //     }
-            // }).catch((error: any) => {
-            //     console.error(error)
-            //     setGresit(true)
-            // })
+        } else {
+            if (!selectedDataDiagnoticului) setGresit({ ...gresit, dataDiagnosticului: true });
+            if (!selectedDataProgramare) setGresit({ ...gresit, dataProgramarii: true });
         }
     }
 
@@ -172,6 +161,7 @@ const DiabetologPage = () => {
                             name="numeSiPrenumeField"
                             value={numeSiPrenume}
                             variant="standard"
+                            required
                             onChange={(e) => {
                                 const value = e.target.value;
                                 setNumeSiPrenume(value);
@@ -204,6 +194,7 @@ const DiabetologPage = () => {
                             name="CNPField"
                             value={cnp}
                             variant="standard"
+                            required
                             onChange={(e) => {
                                 const value = e.target.value;
                                 setCnp(value);
@@ -227,36 +218,25 @@ const DiabetologPage = () => {
                             onChange={(e) => {
                                 const value = e.target.value;
                                 setDiabetZaharat(value);
-                                setGresit({ ...gresit, diabetZaharat: !validateDiabetZaharat(value) });
                             }}
-                            error={gresit.diabetZaharat}
-                            helperText={gresit.diabetZaharat ? "Diabet zaharat incorect." : ""}
                             sx={diabetZaharatSx}
                         />
                         <Typography sx={typographyDataDiagnosticuluiSx}>
                             Data diagnosticului:
                         </Typography>
-                        {/*<TextField*/}
-                        {/*    id="dataDiagnosticuluiField"*/}
-                        {/*    name="dataDiagnosticuluiField"*/}
-                        {/*    value={dataDiagnosticului}*/}
-                        {/*    variant="standard"*/}
-                        {/*    InputProps={{*/}
-                        {/*        readOnly: true,*/}
-                        {/*    }}*/}
-                        {/*    sx={dataDiagnosticuluiSx}*/}
-                        {/*/>*/}
-                        <LocalizationProvider dateAdapter={AdapterDayjs} >
-                            <DatePicker
-                                sx={{marginBottom: "10px"}}
-                                label="Selectează data"
-                                value={selectedDate}
-                                onChange={handleDateChange}
-                                inputFormat="DD/MM/YYYY"
-                                renderInput={(params) => <TextField {...params} />}
-                                format="DD/MM/YYYY"
-                            />
-                        </LocalizationProvider>
+                        <Box sx={{marginTop: "-10px"}}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                <DatePicker
+                                    //sx={{ marginBottom: "10px" }}
+                                    label="Selectează data"
+                                    value={selectedDataDiagnoticului}
+                                    onChange={handleDataDiagnoticuluiChange}
+                                    inputFormat="DD/MM/YYYY"
+                                    slotProps={{ textField: { variant: 'standard' } }}
+                                    format="DD/MM/YYYY"
+                                />
+                            </LocalizationProvider>
+                        </Box>
                     </Box>
                 </Box>
                 <Box sx={boxSx}>
@@ -265,29 +245,34 @@ const DiabetologPage = () => {
                             Alege data și ora programării:
                         </Typography>
                         <Box sx={{padding: "10px 0px"}}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs} >
-                            <DatePicker
-                                label="Selectează data"
-                                value={selectedDateProgramare}
-                                onChange={handleDateChangeProgramare}
-                                inputFormat="DD/MM/YYYY"
-                                renderInput={(params) => <TextField {...params} />}
-                                format="DD/MM/YYYY"
-                            />
-                        </LocalizationProvider>
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                <DatePicker
+                                    label="Selectează data"
+                                    value={selectedDataProgramare}
+                                    onChange={handleDateProgramareChange}
+                                    inputFormat="DD/MM/YYYY"
+                                    slotProps={{ textField: { variant: 'standard' } }}
+                                    format="DD/MM/YYYY"
+                                />
+                            </LocalizationProvider>
                         </Box>
-                        <Box
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                padding: "10px 10px",
-                            }}
-                        >
-                            <ComboBox options={listOreDisponibile} value={oraProgramarii}
-                                       onChange={(event, newValue) => setOraProgramarii(newValue?.label || "")}/>
-                        </Box>
+                        <FormControl variant="standard" sx={{ ml: "10px", padding: "10px 10px", width: "200px" }}>
+                            <InputLabel id="select-ora-label" sx={{padding: "10px 10px"}}>Ora Programării</InputLabel>
+                            <Select
+                                labelid="select-ora-label"
+                                id="select-ora"
+                                value={oraProgramarii}
+                                onChange={(e) => setOraProgramarii(e.target.value)}
+                                label="Ora Programării"
+                                required
+                            >
+                                {listOreDisponibile.map((ora, index) => (
+                                    <MenuItem key={index} value={ora}>
+                                        {ora}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                         <Button sx={buttonProgrameazaSx} type="submit">
                             Programează
                         </Button>

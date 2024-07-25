@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dtos.LoginDto;
+import com.example.demo.dtos.LoginReponseDTO;
 import com.example.demo.dtos.RegisterDto;
 import com.example.demo.model.Medic;
 import com.example.demo.service.MedicService;
@@ -25,12 +26,12 @@ public class MedicController {
         return new ResponseEntity<>(medic, HttpStatus.CREATED);
     }
     @PostMapping("/login")
-    public ResponseEntity<Medic> login(@RequestBody LoginDto loginDto)
+    public ResponseEntity<LoginReponseDTO> login(@RequestBody LoginDto loginDto)
     {
-        Medic medic=medicService.logIn(loginDto);
-        if(medic!=null)
+        LoginReponseDTO loginReponseDTO = medicService.logIn(loginDto);
+        if(loginReponseDTO != null)
         {
-            return new ResponseEntity<>(medic,HttpStatus.OK);
+            return new ResponseEntity<>(loginReponseDTO, HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
