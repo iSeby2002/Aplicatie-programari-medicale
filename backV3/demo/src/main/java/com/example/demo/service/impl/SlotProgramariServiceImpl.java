@@ -51,6 +51,7 @@ public class SlotProgramariServiceImpl implements SlotProgramariService {
                     }
                 }
             }
+            
         }
         slotProgramariRepository.saveAll(slots);
     }

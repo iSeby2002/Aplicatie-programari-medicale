@@ -23,6 +23,8 @@ public class PacientServiceImpl implements PacientService {
                 .dataDiagnosticului(pacientDto.getDataDiagnosticului())
                 .build();
         return pacientRepository.save(pacient);
+
+
     }
 
     @Override
