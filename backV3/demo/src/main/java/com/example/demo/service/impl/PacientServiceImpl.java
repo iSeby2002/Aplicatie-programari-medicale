@@ -68,7 +68,7 @@ public class PacientServiceImpl implements PacientService {
         List<Pacient> pacients = pacientRepository.findLastPacient(topOne);
 
         if (!pacients.isEmpty()) {
-            Pacient lastPacient = pacients.getFirst();
+            Pacient lastPacient = pacients.get(0);
             return lastPacient.getNrCrt() + 1;
         } else {
             return -1L;

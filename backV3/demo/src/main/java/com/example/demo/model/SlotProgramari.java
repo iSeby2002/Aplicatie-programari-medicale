@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,7 @@ public class SlotProgramari {
     private LocalDateTime endTime;
     private boolean available;
 
-    @OneToOne(mappedBy = "slot")
-    private Programari programari;
+    //@OneToOne(mappedBy = "slot")
+    //@JsonManagedReference
+    //private Programari programari;
 }

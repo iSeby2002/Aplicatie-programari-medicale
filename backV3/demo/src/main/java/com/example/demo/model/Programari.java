@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,7 @@ public class Programari {
     private Pacient pacient;
     @OneToOne
     @JoinColumn(name = "slot_id")
+
     private SlotProgramari slot;
 
     private LocalDateTime startTime;
