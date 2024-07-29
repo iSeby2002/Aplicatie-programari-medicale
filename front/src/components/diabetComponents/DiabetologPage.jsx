@@ -145,7 +145,7 @@ const DiabetologPage = () => {
     };
 
     return (
-        <div className="oftalmologPage">
+        <div className="oftalmologPage" style={{ height: '100vh', overflowY: 'auto' }}>
             <CssBaseline />
             <Box sx={centerBoxSx} component="form" onSubmit={handleSubmit}>
                 <Typography sx={typographyTitluSx}>
@@ -227,7 +227,6 @@ const DiabetologPage = () => {
                         <Box sx={{marginTop: "-10px"}}>
                             <LocalizationProvider dateAdapter={AdapterDayjs} >
                                 <DatePicker
-                                    //sx={{ marginBottom: "10px" }}
                                     label="Selectează data"
                                     value={selectedDataDiagnoticului}
                                     onChange={handleDataDiagnoticuluiChange}

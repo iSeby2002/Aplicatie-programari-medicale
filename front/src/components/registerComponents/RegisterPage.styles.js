@@ -1,10 +1,10 @@
 import React from 'react'
 
 export const centerBoxSx: React.CSSProperties = {
-    position: "absolute",
-    top: "50%",
+    position: "relative",
+    margin: "50px 0",
     left: "50%",
-    transform: "translate(-50%, -50%)",
+    transform: "translateX(-50%)",
     width: "450px",
     background: "white",
     borderRadius: "10px",
@@ -12,6 +12,7 @@ export const centerBoxSx: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    overflow: 'auto',
 };
 
 export const typographyCreazaContSx: React.CSSProperties = {

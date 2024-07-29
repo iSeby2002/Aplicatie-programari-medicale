@@ -67,55 +67,57 @@ const LoginPage = () => {
     }
 
     return (
-      <div className="loginPage">
+      <div className="loginPage" style={{ height: '100vh', overflowY: 'auto' }}>
           <CssBaseline />
-          <Box sx={centerBoxSx} component="form" onSubmit={handleSubmit}>
-              <Typography sx={typographyAutentificareSx}>
-                  Autentificare
-              </Typography>
-              <TextField
-                  id="emailField"
-                  label="Email"
-                  name="emailField"
-                  required
-                  value={email}
-                  variant="standard"
-                  onChange={(e) => {
-                      const value = e.target.value;
-                      setEmail(value);
-                      setGresit({ ...gresit, email: !validateEmail(value) });
-                  }}
-                  error={gresit.email}
-                  helperText={gresit.email ? "Email incorect." : ""}
-                  sx={textFieldSx}
-              />
-              <TextField
-                  id="parolaField"
-                  type="password"
-                  label="Parolă"
-                  name="parolaField"
-                  required
-                  value={parola}
-                  variant="standard"
-                  onChange={(e) => {
-                      const value = e.target.value;
-                      setParola(value);
-                      setGresit({ ...gresit, parola: !validateParola(value) });
-                  }}
-                  error={gresit.parola}
-                  helperText={gresit.parola ? "Parolă incorectă." : ""}
-                  sx={textFieldSx}
-              />
+          <Box sx={centerBoxSx}>
+              <Box component="form" onSubmit={handleSubmit}>
+                  <Typography sx={typographyAutentificareSx}>
+                      Autentificare
+                  </Typography>
+                  <TextField
+                      id="emailField"
+                      label="Email"
+                      name="emailField"
+                      required
+                      value={email}
+                      variant="standard"
+                      onChange={(e) => {
+                          const value = e.target.value;
+                          setEmail(value);
+                          setGresit({ ...gresit, email: !validateEmail(value) });
+                      }}
+                      error={gresit.email}
+                      helperText={gresit.email ? "Email incorect." : ""}
+                      sx={textFieldSx}
+                  />
+                  <TextField
+                      id="parolaField"
+                      type="password"
+                      label="Parolă"
+                      name="parolaField"
+                      required
+                      value={parola}
+                      variant="standard"
+                      onChange={(e) => {
+                          const value = e.target.value;
+                          setParola(value);
+                          setGresit({ ...gresit, parola: !validateParola(value) });
+                      }}
+                      error={gresit.parola}
+                      helperText={gresit.parola ? "Parolă incorectă." : ""}
+                      sx={textFieldSx}
+                  />
 
-              {/*<Typography sx={typographyForgotSx} onClick={handleForgot}>*/}
-              {/*    Ai uitat parola?*/}
-              {/*</Typography>*/}
-              <Button sx={buttonSx} type="submit">
-                  Autentificare
-              </Button>
-              <Typography sx={typographyCreateSx} onClick={handleCreateAccount}>
-                  Nu ai cont? Creează cont
-              </Typography>
+                  {/*<Typography sx={typographyForgotSx} onClick={handleForgot}>*/}
+                  {/*    Ai uitat parola?*/}
+                  {/*</Typography>*/}
+                  <Button sx={buttonSx} type="submit">
+                      Autentificare
+                  </Button>
+                  <Typography sx={typographyCreateSx} onClick={handleCreateAccount}>
+                      Nu ai cont? Creează cont
+                  </Typography>
+              </Box>
           </Box>
       </div>
     );

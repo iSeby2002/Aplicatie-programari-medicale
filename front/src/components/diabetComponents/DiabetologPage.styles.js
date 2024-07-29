@@ -1,17 +1,18 @@
 import React from 'react'
 
 export const centerBoxSx: React.CSSProperties = {
-    position: "absolute",
-    top: "50%",
+    position: "relative",
+    margin: "12% 0",
     left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "80%",
+    transform: "translateX(-50%)",
+    width: "1300px",
     background: "white",
     borderRadius: "10px",
     boxShadow: "0px 0px 100px rgba(0, 0, 0, 0.8)",
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    overflow: 'auto',
 
 };
 

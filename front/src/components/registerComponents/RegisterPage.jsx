@@ -101,7 +101,7 @@ const RegisterPage = () => {
     }
 
     return (
-        <div className="registerPage">
+        <div className="registerPage" style={{ height: '100vh', overflowY: 'auto' }}>
             <CssBaseline />
             <Box sx={centerBoxSx} component="form" onSubmit={handleSubmit}>
                 <Typography sx={typographyCreazaContSx}>
