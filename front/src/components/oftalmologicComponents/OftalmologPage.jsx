@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useEffect,useState} from 'react';
 import axios from 'axios';
-import {Button, Checkbox, CssBaseline, FormControlLabel, Radio, RadioGroup, TextField, Typography} from "@mui/material";
+import {Button, Checkbox, CssBaseline, FormControlLabel, Radio, RadioGroup, TextField, Typography, Select,InputLabel,MenuItem,FormControl} from "@mui/material";
 import Box from "@mui/material/Box";
 import {
     centerBoxSx,
@@ -127,17 +127,19 @@ import {
     typographyMaiBineSx,
     typographyLaFelOSSx,
     typographyLaFelODSx, typographyLaFelSx, typographyComparativSx, typographyDetaliiSx, typographyAlteModificariSx,
+    medicExaminatorFieldSx, buttonDeconectareSx,
+    
 } from "./OftalmologPage.styles";
-import {FormControl} from "@mui/base";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DatePicker} from "@mui/x-date-pickers";
 import {useNavigate} from "react-router-dom";
+import dayjs from "dayjs";
 
 
 function RadioButtonsGroupTipDiabetZaharat({ tipDiabetZaharat, setTipDiabetZaharat }) {
     return (
-        <FormControl>
+        <FormControl >
             <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
                 value={tipDiabetZaharat}
@@ -149,7 +151,7 @@ function RadioButtonsGroupTipDiabetZaharat({ tipDiabetZaharat, setTipDiabetZahar
                     height: "100%",
                     width: "100%"
                 }}
-                onChange={(e) => setTipDiabetZaharat(e.target.value)}
+              //  onChange={(e) => setTipDiabetZaharat(e.target.value)}
             >
                 <FormControlLabel value="tip 1" control={<Radio />} label="tip 1" />
                 <FormControlLabel value="tip 2" control={<Radio />} label="tip 2" />
@@ -211,16 +213,42 @@ function handleAlteModificariOculare() {
     console.log(text);
 }
 
+function RadioButtonsGroupTratamentDiabet({ tratamentDiabet, setTratamentDiabet }) {
+    return (
+        <FormControl >
+            <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                value={tratamentDiabet}
+                name="radio-buttons-group"
+                sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    padding: "5px 10px",
+                    height: "100%",
+                    width: "100%"
+                }}
+                onChange={(e) => setTratamentDiabet(e.target.value)}
+            >
+                <FormControlLabel value="insulina" control={<Radio />} label="Insulină;" />
+                <FormControlLabel value="ado" control={<Radio />} label="ADO;" />
+                <FormControlLabel value="dieta" control={<Radio />} label="Dietă;" />
+                <FormControlLabel value="nimic" control={<Radio />} label="Nimic." />
+            </RadioGroup>
+        </FormControl>
+    );
+}
+
 const OftalmologPage = () => {
     const navigate = useNavigate();
 
     // BOX 1
-    const [numeSiPrenume, setNumeSiPrenume] = React.useState("asaASDADAaa asdaA a daJDA");
+    const [numeSiPrenume, setNumeSiPrenume] = React.useState("");
     const [nrCrt, setNrCrt] = React.useState(0);
-    const [cnp, setCnp] = React.useState("5020204125790");
-    const [diabetZaharat, setDiabetZaharat] = React.useState("asasasa");
+    const [cnp, setCnp] = React.useState("");
+    const [diabetZaharat, setDiabetZaharat] = React.useState("");
     const [tipDiabetZaharat, setTipDiabetZaharat] = React.useState("tip 1");
-    const [dataDiagnosticului, setDataDiagnosticului] = React.useState("05/02/2002");
+    const [dataDiagnosticului, setDataDiagnosticului] = React.useState("");
+
 
     // BOX 2
     const [HbA1C, setHbA1C] = React.useState("sasa");
@@ -237,10 +265,25 @@ const OftalmologPage = () => {
     const [IMA, setIMA] = React.useState("sasa");
     const [hipercolesterolemie, setHipercolesterolemie] = React.useState("sasa");
     const [hipertrigliceridemie, setHipertrigliceridemie] = React.useState("sasa");
-    const [insulina, setInsulina] = React.useState("sasa");
-    const [ADO, setADO] = React.useState("sasa");
-    const [dieta, setDieta] = React.useState("sasa");
-    const [nimic, setNimic] = React.useState("sasa");
+    const [insulina, setInsulina] = React.useState(false);
+    const handleChangeInsulina = (event) => {
+        setInsulina(event.target.checked);
+    };
+    const [ADO, setADO] = React.useState(false);
+    const handleChangeAdo = (event) => {
+        setADO(event.target.checked);
+    };
+    const [dieta, setDieta] = React.useState(false);
+    const handleChangeDieta = (event) => {
+        setDieta(event.target.checked);
+    };
+    const [nimic, setNimic] = React.useState(false);
+    const handleChangeNimic = (event) => {
+        setNimic(event.target.checked);
+    };
+   // const [tratamentDiabet, setTratamentDiabet]=useState("nimic");
+
+    
 
     // Box 3
     const [acuitateOD, setAcuitateOD] = React.useState("");
@@ -382,11 +425,77 @@ const OftalmologPage = () => {
     const handleDeconectare = () => {
         navigate("/");
     };
+    const [listOreDisponibile, setListOreDisponibile] = React.useState([]);
+    const [oraProgramarii, setOraProgramarii] = React.useState("");
+
+    const [selectedProgramare, setSelectedProgramare] = React.useState(null);
+    
+    useEffect(() => {
+        axios.get("http://localhost:8080/medici/fisaMedicala/getProgramariCurente", {
+            headers: {
+                "content-type": "application/json"
+            }
+        }).then((response) => {
+            const oreDisponibile = response.data.map(programare => ({
+                time: dayjs(programare.startTime).format('HH:mm'),
+                details: programare
+            }));
+            setListOreDisponibile(oreDisponibile);
+        }).catch((err) => {
+            console.error(err);
+        });
+    }, []);
+
+    const handleProgramareChange = (event) => {
+        const selectedTime = event.target.value;
+        setOraProgramarii(selectedTime);
+
+        const programareDetails = listOreDisponibile.find(programare => programare.time === selectedTime);
+        setSelectedProgramare(programareDetails?.details);
+
+        
+        if (programareDetails?.details) {
+            const { pacient } = programareDetails.details;
+    
+            setNumeSiPrenume(pacient.numePrenume || "");
+            setNrCrt(pacient.nrCrt || 0);
+            setCnp(pacient.cnp || "");
+            setTipDiabetZaharat(pacient.diabetZaharat || "tip 1");
+            setDataDiagnosticului(dayjs(pacient.dataDiagnosticului).format("DD/MM/YYYY") || "");
+        }
+    };
+
+
+    useEffect(() => {
+        if (selectedProgramare) {
+            console.log("Programare selectată:", selectedProgramare);
+            
+        }
+    }, [selectedProgramare]);
 
     return (
         <div className="oftalmologPage" style={{ height: '100vh', overflowY: 'auto' }}>
             <CssBaseline />
             <Box sx={centerBoxSx}>
+            <Box sx={{ width: "90%", display:  "flex",justifyContent:"flex-end", alignItems: "center"}}>
+            <FormControl variant="standard" sx={{ ml: "10px", padding: "10px 10px", width: "200px" }}>
+                            <InputLabel id="select-ora-label" sx={{padding: "10px 10px"}}>Ora Programării</InputLabel>
+                            <Select
+                            labelId="ora-programarii-label"
+                            id="ora-programarii"
+                            value={oraProgramarii}
+                            label="Ora programării"
+                            onChange={handleProgramareChange}
+                        >
+                            {listOreDisponibile.map((programare, index) => (
+                                <MenuItem key={index} value={programare.time}>
+                                    {programare.time}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        </FormControl>
+                        </Box>
+                        
                 <Typography sx={typographyTitluSx}>
                     SCREENING RETINOPATIE DIABETICĂ
                 </Typography>
@@ -658,62 +767,44 @@ const OftalmologPage = () => {
                         <Typography sx={typographyTratamentDiabetInPrezentSx}>
                             Tratament diabet în prezent:
                         </Typography>
-                        <TextField
-                            id="insulinaField"
-                            name="insulinaField"
-                            value={insulina}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setInsulina(value);
-                            }}
-                            sx={insulinaSx}
+                        {/* <RadioButtonsGroupTratamentDiabet tratamentDiabet={tratamentDiabet} setTratamentDiabet={setTratamentDiabet}/> */}
+                         <Checkbox
+                            checked={insulina}
+                            onChange={handleChangeInsulina}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            sx={{padding: "10px 10px"}}
                         />
                         <Typography sx={typographyInsulinaSx}>
                             Insulină;
                         </Typography>
-                        <TextField
-                            id="ADOField"
-                            name="ADOField"
-                            value={ADO}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setADO(value);
-                            }}
-                            sx={ADOSx}
+                        <Checkbox
+                            checked={ADO}
+                            onChange={handleChangeAdo}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            sx={{padding: "10px 10px"}}
                         />
                         <Typography sx={typographyADOSx}>
                             ADO;
                         </Typography>
-                        <TextField
-                            id="dietaField"
-                            name="dietaField"
-                            value={dieta}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setDieta(value);
-                            }}
-                            sx={dietaSx}
+                        <Checkbox
+                            checked={dieta}
+                            onChange={handleChangeDieta}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            sx={{padding: "10px 10px"}}
                         />
                         <Typography sx={typographyeDietaSx}>
                             Dietă;
                         </Typography>
-                        <TextField
-                            id="nimicField"
-                            name="nimicField"
-                            value={nimic}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setNimic(value);
-                            }}
-                            sx={nimicSx}
+                        <Checkbox
+                            checked={nimic}
+                            onChange={handleChangeNimic}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            sx={{padding: "10px 10px"}}
                         />
                         <Typography sx={typographyeNimicSx}>
                             Nimic.
-                        </Typography>
+
+                        </Typography> 
                     </Box>
                 </Box>
                 {/* Box 3 */}
