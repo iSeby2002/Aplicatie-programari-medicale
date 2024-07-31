@@ -85,7 +85,48 @@ import {
     typographyDataSx,
     lastBoxSx,
     typographyMedicExaminatorSx,
-    medicExaminatorFieldSx, buttonDeconectareSx,
+    medicExaminatorFieldSx,
+    buttonDeconectareSx,
+    acuitateOSSx,
+    typographyAcuitateOSSx,
+    acuitateODSx,
+    typographyAcuitateODSx,
+    typographyAcuitateSx,
+    typographySegmentAnteriorSx,
+    typographyRubeozaIrianaSx,
+    typographyRubeozaIrianaODSx,
+    typographyRubeozaIrianaOSSx,
+    typographyStadiulSx,
+    typographyFaraRetinopatieDiabeticaSx,
+    typographyFaraRetinopatieDiabeticaODSx,
+    typographyFaraRetinopatieDiabeticaOSSx,
+    typographyRetinopatieDiabeticaNeproliferativaSx,
+    typographyUsoaraSx,
+    typographyUsoaraODSx,
+    typographyUsoaraOSSx,
+    typographyModerataSx,
+    typographyModerataODSx,
+    typographyModerataOSSx,
+    typographySeveraSx,
+    typographySeveraODSx,
+    typographySeveraOSSx,
+    typographyRetinopatieDiabeticaProliferativaSx,
+    typographyRetinopatieDiabeticaProliferativaODSx,
+    typographyRetinopatieDiabeticaProliferativaOSSx,
+    typographyEdemMacularSx,
+    typographyEdemMacularODSx,
+    typographyEdemMacularOSSx,
+    typographyNuSeCunoasteOSSx,
+    typographyNuSeCunoasteODSx,
+    typographyNuSeCunoasteSx,
+    typographyMaiRauOSSx,
+    typographyMaiRauODSx,
+    typographyMaiRauSx,
+    typographyMaiBineOSSx,
+    typographyMaiBineODSx,
+    typographyMaiBineSx,
+    typographyLaFelOSSx,
+    typographyLaFelODSx, typographyLaFelSx, typographyComparativSx, typographyDetaliiSx, typographyAlteModificariSx,
 } from "./OftalmologPage.styles";
 import {FormControl} from "@mui/base";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
@@ -158,6 +199,18 @@ function RadioButtonsGroupRecomandari({ recomandare, serRecomandare }) {
     );
 }
 
+function handleDetaliiFundDeOchi() {
+    const text = document.getElementById("detaliiFundDeOchi").value;
+    // setDetaliiFundDeOchiText(text);
+    console.log(text);
+}
+
+function handleAlteModificariOculare() {
+    const text = document.getElementById("alteModificareOculare").value;
+    // setAlteModificariOculareText(text);
+    console.log(text);
+}
+
 const OftalmologPage = () => {
     const navigate = useNavigate();
 
@@ -188,6 +241,100 @@ const OftalmologPage = () => {
     const [ADO, setADO] = React.useState("sasa");
     const [dieta, setDieta] = React.useState("sasa");
     const [nimic, setNimic] = React.useState("sasa");
+
+    // Box 3
+    const [acuitateOD, setAcuitateOD] = React.useState("");
+    const [acuitateOS, setAcuitateOS] = React.useState("");
+    const [rubeozaIrianaOD, setRubeozaIrianaOD] = React.useState(false);
+    const handleChangeRubeozaIrianaOD = (event) => {
+        setRubeozaIrianaOD(event.target.checked);
+    };
+    const [rubeozaIrianaOS, setRubeozaIrianaOS] = React.useState(false);
+    const handleChangeRubeozaIrianaOS = (event) => {
+        setRubeozaIrianaOS(event.target.checked);
+    };
+    const [faraRetinopatieDiabeticaOD, setFaraRetinopatieDiabeticaOD] = React.useState(false);
+    const handleChangeFaraRetinopatieDiabeticaOD = (event) => {
+        setFaraRetinopatieDiabeticaOD(event.target.checked);
+    };
+    const [faraRetinopatieDiabeticaOS, setFaraRetinopatieDiabeticaOS] = React.useState(false);
+    const handleChangeFaraRetinopatieDiabeticaOS = (event) => {
+        setFaraRetinopatieDiabeticaOS(event.target.checked);
+    };
+    const [usoaraOD, setUsoaraOD] = React.useState(false);
+    const handleChangeUsoaraOD = (event) => {
+        setUsoaraOD(event.target.checked);
+    };
+    const [usoaraOS, setUsoaraOS] = React.useState(false);
+    const handleChangeUsoaraOS = (event) => {
+        setUsoaraOS(event.target.checked);
+    };
+    const [moderataOD, setModerataOD] = React.useState(false);
+    const handleChangeModerataOD = (event) => {
+        setModerataOD(event.target.checked);
+    };
+    const [moderataOS, setModerataOS] = React.useState(false);
+    const handleChangeModerataOS = (event) => {
+        setModerataOS(event.target.checked);
+    };
+    const [severaOD, setSeveraOD] = React.useState(false);
+    const handleChangeSeveraOD = (event) => {
+        setSeveraOD(event.target.checked);
+    };
+    const [severaOS, setSeveraOS] = React.useState(false);
+    const handleChangeSeveraOS = (event) => {
+        setSeveraOS(event.target.checked);
+    };
+    const [retinopatieDiabeticaProliferativaOD, setRetinopatieDiabeticaProliferativaOD] = React.useState(false);
+    const handleChangeRetinopatieDiabeticaProliferativaOD = (event) => {
+        setRetinopatieDiabeticaProliferativaOD(event.target.checked);
+    };
+    const [retinopatieDiabeticaProliferativaOS, setRetinopatieDiabeticaProliferativaOS] = React.useState(false);
+    const handleChangeRetinopatieDiabeticaProliferativaOS = (event) => {
+        setRetinopatieDiabeticaProliferativaOS(event.target.checked);
+    };
+    const [edemMacularOD, setEdemMacularOD] = React.useState(false);
+    const handleChangeEdemMacularOD = (event) => {
+        setEdemMacularOD(event.target.checked);
+    };
+    const [edemMacularOS, setEdemMacularOS] = React.useState(false);
+    const handleChangeEdemMacularOS = (event) => {
+        setEdemMacularOS(event.target.checked);
+    };
+    const [laFelOD, setLaFelOD] = React.useState(false);
+    const handleChangeLaFelOD = (event) => {
+        setLaFelOD(event.target.checked);
+    };
+    const [laFelOS, setLaFelOS] = React.useState(false);
+    const handleChangeLaFelOS = (event) => {
+        setLaFelOS(event.target.checked);
+    };
+    const [maiBineOD, setMaiBineOD] = React.useState(false);
+    const handleChangeMaiBineOD = (event) => {
+        setMaiBineOD(event.target.checked);
+    };
+    const [maiBineOS, setMaiBineOS] = React.useState(false);
+    const handleChangeMaiBineOS = (event) => {
+        setMaiBineOS(event.target.checked);
+    };
+    const [maiRauOD, setMaiRauOD] = React.useState(false);
+    const handleChangeMaiRauOD = (event) => {
+        setMaiRauOD(event.target.checked);
+    };
+    const [maiRauOS, setMaiRauOS] = React.useState(false);
+    const handleChangeMaiRauOS = (event) => {
+        setMaiRauOS(event.target.checked);
+    };
+    const [nuSeCunoasteOD, setNuSeCunoasteOD] = React.useState(false);
+    const handleChangeNuSeCunoasteOD = (event) => {
+        setNuSeCunoasteOD(event.target.checked);
+    };
+    const [nuSeCunoasteOS, setNuSeCunoasteOS] = React.useState(false);
+    const handleChangeNuSeCunoasteOS = (event) => {
+        setNuSeCunoasteOS(event.target.checked);
+    };
+    const [detaliiFundDeOchiText, setDetaliiFundDeOchiText] = React.useState("");
+    const [alteModificareOculareText, setAlteModificariOculareText] = React.useState("");
 
     // Box 4
     const [injectieOD, setInjectieOD] = React.useState("");
@@ -571,7 +718,354 @@ const OftalmologPage = () => {
                 </Box>
                 {/* Box 3 */}
                 <Box sx={boxSx}>
-
+                    <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                        <Box sx={{display: "flex", flexDirection: 'column', width: "50%"}}>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographyAcuitateSx}>
+                                    Acuitate vizuală:
+                                </Typography>
+                                <Typography sx={typographyAcuitateODSx}>
+                                    OD
+                                </Typography>
+                                <TextField
+                                    id="acuitateODField"
+                                    name="acuitateODField"
+                                    value={acuitateOD}
+                                    variant="standard"
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        setAcuitateOD(value);
+                                    }}
+                                    sx={acuitateODSx}
+                                />
+                                <Typography sx={typographyAcuitateOSSx}>
+                                    OS
+                                </Typography>
+                                <TextField
+                                    id="acuitateOSField"
+                                    name="acuitateOSField"
+                                    value={acuitateOS}
+                                    variant="standard"
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        setAcuitateOS(value);
+                                    }}
+                                    sx={acuitateOSSx}
+                                />
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographySegmentAnteriorSx}>
+                                    Segment anterior:
+                                </Typography>
+                                <Typography sx={typographyRubeozaIrianaSx}>
+                                    Rubeoză iriană
+                                </Typography>
+                                <Checkbox
+                                    checked={rubeozaIrianaOD}
+                                    onChange={handleChangeRubeozaIrianaOD}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyRubeozaIrianaODSx}>
+                                    OD
+                                </Typography>
+                                <Checkbox
+                                    checked={rubeozaIrianaOS}
+                                    onChange={handleChangeRubeozaIrianaOS}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyRubeozaIrianaOSSx}>
+                                    OS
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographyStadiulSx}>
+                                    Stadiul retinopatiei diabetice:
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographyFaraRetinopatieDiabeticaSx}>
+                                    Fără retinopatie diabetică
+                                </Typography>
+                                <Checkbox
+                                    checked={faraRetinopatieDiabeticaOD}
+                                    onChange={handleChangeFaraRetinopatieDiabeticaOD}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyFaraRetinopatieDiabeticaODSx}>
+                                    OD
+                                </Typography>
+                                <Checkbox
+                                    checked={faraRetinopatieDiabeticaOS}
+                                    onChange={handleChangeFaraRetinopatieDiabeticaOS}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyFaraRetinopatieDiabeticaOSSx}>
+                                    OS
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographyRetinopatieDiabeticaNeproliferativaSx}>
+                                    Retinopatie diabetică neproliferativă
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographyUsoaraSx}>
+                                    Ușoară
+                                </Typography>
+                                <Checkbox
+                                    checked={usoaraOD}
+                                    onChange={handleChangeUsoaraOD}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyUsoaraODSx}>
+                                    OD
+                                </Typography>
+                                <Checkbox
+                                    checked={usoaraOS}
+                                    onChange={handleChangeUsoaraOS}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyUsoaraOSSx}>
+                                    OS
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographyModerataSx}>
+                                    Moderată
+                                </Typography>
+                                <Checkbox
+                                    checked={moderataOD}
+                                    onChange={handleChangeModerataOD}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyModerataODSx}>
+                                    OD
+                                </Typography>
+                                <Checkbox
+                                    checked={moderataOS}
+                                    onChange={handleChangeModerataOS}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyModerataOSSx}>
+                                    OS
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographySeveraSx}>
+                                    Severă
+                                </Typography>
+                                <Checkbox
+                                    checked={severaOD}
+                                    onChange={handleChangeSeveraOD}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographySeveraODSx}>
+                                    OD
+                                </Typography>
+                                <Checkbox
+                                    checked={severaOS}
+                                    onChange={handleChangeSeveraOS}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographySeveraOSSx}>
+                                    OS
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographyRetinopatieDiabeticaProliferativaSx}>
+                                    Retinopatie diabetică proliferativă
+                                </Typography>
+                                <Checkbox
+                                    checked={retinopatieDiabeticaProliferativaOD}
+                                    onChange={handleChangeRetinopatieDiabeticaProliferativaOD}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyRetinopatieDiabeticaProliferativaODSx}>
+                                    OD
+                                </Typography>
+                                <Checkbox
+                                    checked={retinopatieDiabeticaProliferativaOS}
+                                    onChange={handleChangeRetinopatieDiabeticaProliferativaOS}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyRetinopatieDiabeticaProliferativaOSSx}>
+                                    OS
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographyEdemMacularSx}>
+                                    Edem macular clinic semnificativ
+                                </Typography>
+                                <Checkbox
+                                    checked={edemMacularOD}
+                                    onChange={handleChangeEdemMacularOD}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyEdemMacularODSx}>
+                                    OD
+                                </Typography>
+                                <Checkbox
+                                    checked={edemMacularOS}
+                                    onChange={handleChangeEdemMacularOS}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyEdemMacularOSSx}>
+                                    OS
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographyComparativSx}>
+                                    Comparativ cu ultima examinare a Fundului de ochi:
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographyLaFelSx}>
+                                    La fel
+                                </Typography>
+                                <Checkbox
+                                    checked={laFelOD}
+                                    onChange={handleChangeLaFelOD}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyLaFelODSx}>
+                                    OD
+                                </Typography>
+                                <Checkbox
+                                    checked={laFelOS}
+                                    onChange={handleChangeLaFelOS}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyLaFelOSSx}>
+                                    OS
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographyMaiBineSx}>
+                                    Mai bine
+                                </Typography>
+                                <Checkbox
+                                    checked={maiBineOD}
+                                    onChange={handleChangeMaiBineOD}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyMaiBineODSx}>
+                                    OD
+                                </Typography>
+                                <Checkbox
+                                    checked={maiBineOS}
+                                    onChange={handleChangeMaiBineOS}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyMaiBineOSSx}>
+                                    OS
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographyMaiRauSx}>
+                                    Mai rău
+                                </Typography>
+                                <Checkbox
+                                    checked={maiRauOD}
+                                    onChange={handleChangeMaiRauOD}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyMaiRauODSx}>
+                                    OD
+                                </Typography>
+                                <Checkbox
+                                    checked={maiRauOS}
+                                    onChange={handleChangeMaiRauOS}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyMaiRauOSSx}>
+                                    OS
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                                <Typography sx={typographyNuSeCunoasteSx}>
+                                    Nu se cunoaște aspectul precedent
+                                </Typography>
+                                <Checkbox
+                                    checked={nuSeCunoasteOD}
+                                    onChange={handleChangeNuSeCunoasteOD}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyNuSeCunoasteODSx}>
+                                    OD
+                                </Typography>
+                                <Checkbox
+                                    checked={nuSeCunoasteOS}
+                                    onChange={handleChangeNuSeCunoasteOS}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographyNuSeCunoasteOSSx}>
+                                    OS
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Box sx={{
+                            display: "flex",
+                            flexDirection: 'column',
+                            alignItems: "center",
+                            justifyItems: "center",
+                            width: "50%",
+                        }}>
+                            <Box sx={{
+                                display: "flex",
+                                flexDirection: 'column',
+                                alignItems: "center",
+                                justifyItems: "center",
+                                width: "98%",
+                                height: "48%",
+                                borderRadius: "2px",
+                                border: "2px solid #adadad",
+                                margin: "5px 0px",
+                            }}>
+                                <Typography sx={typographyDetaliiSx}>
+                                    Detalii Fund de ochi (opțional):
+                                </Typography>
+                                <textarea id="detaliiFundDeOchi" style={{width: "98%", height: "85%"}} onInput={handleDetaliiFundDeOchi}></textarea>
+                            </Box>
+                            <Box sx={{
+                                display: "flex",
+                                flexDirection: 'column',
+                                width: "98%",
+                                height: "48%",
+                                borderRadius: "2px",
+                                border: "2px solid #adadad",
+                                margin: "5px 0px",
+                                alignItems: "center",
+                                justifyItems: "center",
+                            }}>
+                                <Typography sx={typographyAlteModificariSx}>
+                                    Alte modificări oculare:
+                                </Typography>
+                                <textarea id="alteModificareOculare" style={{width: "98%", height: "85%"}} onInput={handleAlteModificariOculare}></textarea>
+                            </Box>
+                        </Box>
+                    </Box>
                 </Box>
                 {/* Box 4 */}
                 <Box sx={boxSx}>

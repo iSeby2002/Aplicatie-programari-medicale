@@ -354,7 +354,333 @@ export const typographyeNimicSx: React.CSSProperties = {
 
 // Box 3
 
+export const typographyAcuitateSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "600",
+    width: "26%",
+};
 
+export const typographyAcuitateODSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+    width: "6%",
+};
+
+export const acuitateODSx: React.CSSProperties = {
+    padding: "5px 5px",
+    width: "31%",
+};
+
+export const typographyAcuitateOSSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+    width: "6%",
+};
+
+export const acuitateOSSx: React.CSSProperties = {
+    padding: "5px 5px",
+    width: "31%",
+};
+
+export const typographySegmentAnteriorSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+    width: "26%",
+};
+
+export const typographyRubeozaIrianaSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "600",
+    width: "26%",
+};
+
+export const typographyRubeozaIrianaODSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyRubeozaIrianaOSSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyStadiulSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "600",
+    width: "100%",
+    textAlign: "left"
+};
+
+export const typographyFaraRetinopatieDiabeticaSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+    width: "60%",
+    textAlign: "left",
+};
+
+export const typographyFaraRetinopatieDiabeticaODSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyFaraRetinopatieDiabeticaOSSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyRetinopatieDiabeticaNeproliferativaSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+    width: "60%",
+    textAlign: "left",
+};
+
+export const typographyUsoaraSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+    width: "60%"
+};
+
+export const typographyUsoaraODSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyUsoaraOSSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyModerataSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+    width: "60%"
+};
+
+export const typographyModerataODSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyModerataOSSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographySeveraSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+    width: "60%"
+};
+
+export const typographySeveraODSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographySeveraOSSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyRetinopatieDiabeticaProliferativaSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+    width: "60%",
+    textAlign: "left",
+};
+
+export const typographyRetinopatieDiabeticaProliferativaODSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyRetinopatieDiabeticaProliferativaOSSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyEdemMacularSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+    width: "60%",
+    textAlign: "left",
+};
+
+export const typographyEdemMacularODSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyEdemMacularOSSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyComparativSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "100%",
+    fontSize: "18px",
+    fontWeight: "300",
+    textAlign: "left",
+};
+
+export const typographyLaFelSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "60%",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyLaFelODSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyLaFelOSSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyMaiBineSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "60%",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyMaiBineODSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyMaiBineOSSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyMaiRauSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "60%",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyMaiRauODSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyMaiRauOSSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyNuSeCunoasteSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    width: "60%",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyNuSeCunoasteODSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyNuSeCunoasteOSSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
+export const typographyDetaliiSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "600",
+};
+
+export const typographyAlteModificariSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "600",
+};
 
 // Box 4
 
@@ -558,6 +884,7 @@ export const ambulatorInFieldSx: React.CSSProperties = {
     width: "38%",
 };
 
+// Last box
 
 export const lastBoxSx: React.CSSProperties = {
     width: "90%",
