@@ -125,7 +125,7 @@ import {
     typographyMaiBineSx,
     typographyLaFelOSSx,
     typographyLaFelODSx, typographyLaFelSx, typographyComparativSx, typographyDetaliiSx, typographyAlteModificariSx,
-    medicExaminatorFieldSx, buttonDeconectareSx, buttonSalvareSx,
+    medicExaminatorFieldSx, buttonDeconectareSx, buttonSalvareSx, typographyPesteLuniSx, typographyPesteSaptamaniSx,
 } from "./OftalmologPage.styles";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
@@ -180,7 +180,7 @@ function RadioButtonsGroupTipHbA1C({ tipHbA1C, setTipHbA1C }) {
     );
 }
 
-function RadioButtonsGroupRecomandari({ recomandare, serRecomandare }) {
+function RadioButtonsGroupRecomandari({ recomandare, setRecomandare, setRecomandareField }) {
     return (
         <FormControl style={{width: "40%"}}>
             <RadioGroup
@@ -194,7 +194,13 @@ function RadioButtonsGroupRecomandari({ recomandare, serRecomandare }) {
                     height: "100%",
                     width: "100%"
                 }}
-                onChange={(e) => serRecomandare(e.target.value)}
+                onChange={(e) => {
+                    const value = e.target.value;
+                    setRecomandare(value);
+                    if (value === "Doar monitorizare") {
+                        setRecomandareField("");
+                    }
+                }}
             >
                 <FormControlLabel value="Doar monitorizare" control={<Radio />} label="Doar monitorizare" />
                 <Typography sx={typographySauSx}> sau </Typography>
@@ -216,30 +222,81 @@ function handleAlteModificariOculare() {
     console.log(text);
 }
 
-// function RadioButtonsGroupTratamentDiabet({ tratamentDiabet, setTratamentDiabet }) {
-//     return (
-//         <FormControl >
-//             <RadioGroup
-//                 aria-labelledby="demo-radio-buttons-group-label"
-//                 value={tratamentDiabet}
-//                 name="radio-buttons-group"
-//                 sx={{
-//                     display: "flex",
-//                     flexDirection: "row",
-//                     padding: "5px 10px",
-//                     height: "100%",
-//                     width: "100%"
-//                 }}
-//                 onChange={(e) => setTratamentDiabet(e.target.value)}
-//             >
-//                 <FormControlLabel value="insulina" control={<Radio />} label="Insulină;" />
-//                 <FormControlLabel value="ado" control={<Radio />} label="ADO;" />
-//                 <FormControlLabel value="dieta" control={<Radio />} label="Dietă;" />
-//                 <FormControlLabel value="nimic" control={<Radio />} label="Nimic." />
-//             </RadioGroup>
-//         </FormControl>
-//     );
-// }
+function RadioButtonsGroupUrmatorulControl({ urmatorulControl, setUrmatorulControl, pesteLuni, setPesteLuni, pesteSaptamani, setPesteSaptamani }) {
+    return (
+        <FormControl style={{width: "40%"}}>
+            <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                value={urmatorulControl}
+                name="radio-buttons-group"
+                sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    padding: "0px 10px",
+                    height: "100%",
+                    width: "100%"
+                }}
+                onChange={(e) => {
+                    const value = e.target.value;
+                    setUrmatorulControl(value);
+                    if (value === "an") {
+                        setPesteLuni("");
+                        setPesteSaptamani("");
+                    }else if (value === "luni") {
+                        setPesteSaptamani("");
+                    }else if (value === "saptamani") {
+                        setPesteLuni("");
+                    }
+                }}
+            >
+                <FormControlLabel value="an" control={<Radio />} label={""}/>
+                <Typography sx={typographyAnSx}>
+                    peste 1 an;
+                </Typography>
+                <FormControlLabel value="luni" control={<Radio />} label={""}/>
+                <Typography sx={typographyPesteLuniSx}>
+                    peste
+                </Typography>
+                <TextField
+                    id="pesteLuniField"
+                    name="pesteLuniField"
+                    value={pesteLuni}
+                    variant="standard"
+                    type="number"
+                    onChange={(e) => {
+                        setPesteLuni(e.target.value);
+                    }}
+                    inputProps={{ step: "1" }}
+                    sx={pesteLuniSx}
+                    disabled={ urmatorulControl === "an" || urmatorulControl === "saptamani" }
+                />
+                <Typography sx={typographyLuniSx}>
+                    luni;
+                </Typography>
+                <FormControlLabel value="saptamani" control={<Radio />}  label={""}/>
+                <Typography sx={typographyPesteSaptamaniSx}>
+                    peste
+                </Typography>
+                <TextField
+                    id="pesteSaptamaniField"
+                    name="pesteSaptamaniField"
+                    value={pesteSaptamani}
+                    variant="standard"
+                    type="number"
+                    onChange={(e) => {
+                        setPesteSaptamani(e.target.value);
+                    }}
+                    inputProps={{ step: "1" }}
+                    sx={pesteSaptamaniSx}
+                    disabled={ urmatorulControl === "an" || urmatorulControl === "luni" }
+                />
+                <Typography sx={typographySaptamaniSx}>
+                    săptămâni;
+                </Typography>
+            </RadioGroup>
+        </FormControl>
+    );
+}
 
 const OftalmologPage = () => {
     const navigate = useNavigate();
@@ -247,165 +304,305 @@ const OftalmologPage = () => {
 
     // BOX 1
     const [numeSiPrenume, setNumeSiPrenume] = React.useState("");
-    const [nrCrt, setNrCrt] = React.useState(0);
+    const [nrCrt, setNrCrt] = React.useState();
     const [cnp, setCnp] = React.useState("");
     const [diabetZaharat, setDiabetZaharat] = React.useState("");
-    const [tipDiabetZaharat, setTipDiabetZaharat] = React.useState("tip 1");
+    const [tipDiabetZaharat, setTipDiabetZaharat] = React.useState("");
     const [dataDiagnosticului, setDataDiagnosticului] = React.useState("");
 
 
     // BOX 2
-    const [HbA1C, setHbA1C] = React.useState("sasa");
-    const [tipHbA1C, setTipHbA1C] = React.useState("<6luni");
-    const [glicemie, setGlicemie] = React.useState("sasa");
-    const [uree, setUree] = React.useState("sasa");
-    const [creatinina, setCreatinina] = React.useState("sasa");
-    const [eRFG, setERFG] = React.useState("sasa");
-    const [HTA, setHTA] = React.useState("sasa");
-    const [neuropatie, setNeuropatie] = React.useState("sasa");
-    const [nefropatie, setNefropatie] = React.useState("sasa");
-    const [CI, setCI] = React.useState("sasa");
-    const [AVC, setAVC] = React.useState("sasa");
-    const [IMA, setIMA] = React.useState("sasa");
-    const [hipercolesterolemie, setHipercolesterolemie] = React.useState("sasa");
-    const [hipertrigliceridemie, setHipertrigliceridemie] = React.useState("sasa");
-    const [insulina, setInsulina] = React.useState(false);
+    const [HbA1C, setHbA1C] = React.useState(0); // double
+    const [tipHbA1C, setTipHbA1C] = React.useState("< 6 luni"); // string
+    const [glicemie, setGlicemie] = React.useState(0); // double
+    const [uree, setUree] = React.useState(0); // double
+    const [creatinina, setCreatinina] = React.useState(0); // double
+    const [eRFG, setERFG] = React.useState(0); // double
+    const [HTA, setHTA] = React.useState(false); // boolean
+    const handleChangeHTA = (event) => {
+        setHTA(event.target.checked);
+    };
+    const [neuropatie, setNeuropatie] = React.useState(false); // boolean
+    const handleChangeNeuropatie = (event) => {
+        setNeuropatie(event.target.checked);
+    };
+    const [nefropatie, setNefropatie] = React.useState(false); // boolean
+    const handleChangeNefropatie= (event) => {
+        setNefropatie(event.target.checked);
+    };
+    const [CI, setCI] = React.useState(false); // boolean
+    const handleChangeCI = (event) => {
+        setCI(event.target.checked);
+    };
+    const [AVC, setAVC] = React.useState(false); // boolean
+    const handleChangeAVC = (event) => {
+        setAVC(event.target.checked);
+    };
+    const [IMA, setIMA] = React.useState(false); // boolean
+    const handleChangeIMA = (event) => {
+        setIMA(event.target.checked);
+    };
+    const [hipercolesterolemie, setHipercolesterolemie] = React.useState(false); // boolean
+    const handleChangeHipercolesterolemie = (event) => {
+        setHipercolesterolemie(event.target.checked);
+    };
+    const [hipertrigliceridemie, setHipertrigliceridemie] = React.useState(false); // boolean
+    // const [HTA, setHTA] = React.useState("sasa");
+    // const [neuropatie, setNeuropatie] = React.useState("sasa");
+    // const [nefropatie, setNefropatie] = React.useState("sasa");
+    // const [CI, setCI] = React.useState("sasa");
+    // const [AVC, setAVC] = React.useState("sasa");
+    // const [IMA, setIMA] = React.useState("sasa");
+    // const [hipercolesterolemie, setHipercolesterolemie] = React.useState("sasa");
+    // const [hipertrigliceridemie, setHipertrigliceridemie] = React.useState("sasa");
+    const handleChangeHipertrigliceridemie = (event) => {
+        setHipertrigliceridemie(event.target.checked);
+    };
+    const [insulina, setInsulina] = React.useState(false); // boolean
     const handleChangeInsulina = (event) => {
         setInsulina(event.target.checked);
     };
-    const [ADO, setADO] = React.useState(false);
+    const [ADO, setADO] = React.useState(false); // boolean
     const handleChangeAdo = (event) => {
         setADO(event.target.checked);
     };
-    const [dieta, setDieta] = React.useState(false);
+    const [dieta, setDieta] = React.useState(false); // boolean
     const handleChangeDieta = (event) => {
         setDieta(event.target.checked);
     };
-    const [nimic, setNimic] = React.useState(false);
+    const [nimic, setNimic] = React.useState(false); // boolean, daca ii selectat cele din stanga nu pot fi selectate
     const handleChangeNimic = (event) => {
         setNimic(event.target.checked);
+        if (event.target.checked) {
+            setInsulina(false);
+            setADO(false);
+            setDieta(false);
+        }
     };
-   // const [tratamentDiabet, setTratamentDiabet]=useState("nimic");
 
     // Box 3
-    const [acuitateOD, setAcuitateOD] = React.useState("");
-    const [acuitateOS, setAcuitateOS] = React.useState("");
-    const [rubeozaIrianaOD, setRubeozaIrianaOD] = React.useState(false);
+    const [acuitateOD, setAcuitateOD] = React.useState(0); // double
+    const [acuitateOS, setAcuitateOS] = React.useState(0); // double
+    const [rubeozaIrianaOD, setRubeozaIrianaOD] = React.useState(false); // boolean
     const handleChangeRubeozaIrianaOD = (event) => {
         setRubeozaIrianaOD(event.target.checked);
     };
-    const [rubeozaIrianaOS, setRubeozaIrianaOS] = React.useState(false);
+    const [rubeozaIrianaOS, setRubeozaIrianaOS] = React.useState(false); // boolean
     const handleChangeRubeozaIrianaOS = (event) => {
         setRubeozaIrianaOS(event.target.checked);
     };
-    const [faraRetinopatieDiabeticaOD, setFaraRetinopatieDiabeticaOD] = React.useState(false);
+    const [faraRetinopatieDiabeticaOD, setFaraRetinopatieDiabeticaOD] = React.useState(false); // boolean
     const handleChangeFaraRetinopatieDiabeticaOD = (event) => {
         setFaraRetinopatieDiabeticaOD(event.target.checked);
+        if (event.target.checked) {
+            setUsoaraOD(false);
+            setModerataOD(false);
+            setSeveraOD(false);
+            setRetinopatieDiabeticaProliferativaOD(false);
+            setEdemMacularOD(false)
+        }
     };
-    const [faraRetinopatieDiabeticaOS, setFaraRetinopatieDiabeticaOS] = React.useState(false);
+    const [faraRetinopatieDiabeticaOS, setFaraRetinopatieDiabeticaOS] = React.useState(false); // boolean
     const handleChangeFaraRetinopatieDiabeticaOS = (event) => {
         setFaraRetinopatieDiabeticaOS(event.target.checked);
+        if (event.target.checked) {
+            setUsoaraOS(false);
+            setModerataOS(false);
+            setSeveraOS(false);
+            setRetinopatieDiabeticaProliferativaOS(false);
+            setEdemMacularOS(false)
+        }
     };
-    const [usoaraOD, setUsoaraOD] = React.useState(false);
+    const [usoaraOD, setUsoaraOD] = React.useState(false); // boolean
     const handleChangeUsoaraOD = (event) => {
         setUsoaraOD(event.target.checked);
+        if (event.target.checked) {
+            setFaraRetinopatieDiabeticaOD(false);
+            setModerataOD(false);
+            setSeveraOD(false);
+            setRetinopatieDiabeticaProliferativaOD(false);
+        }
     };
-    const [usoaraOS, setUsoaraOS] = React.useState(false);
+    const [usoaraOS, setUsoaraOS] = React.useState(false); // boolean
     const handleChangeUsoaraOS = (event) => {
         setUsoaraOS(event.target.checked);
+        if (event.target.checked) {
+            setFaraRetinopatieDiabeticaOS(false);
+            setModerataOS(false);
+            setSeveraOS(false);
+            setRetinopatieDiabeticaProliferativaOS(false);
+        }
     };
-    const [moderataOD, setModerataOD] = React.useState(false);
+    const [moderataOD, setModerataOD] = React.useState(false); // boolean
     const handleChangeModerataOD = (event) => {
         setModerataOD(event.target.checked);
+        if (event.target.checked) {
+            setFaraRetinopatieDiabeticaOD(false);
+            setUsoaraOD(false);
+            setSeveraOD(false);
+            setRetinopatieDiabeticaProliferativaOD(false);
+        }
     };
-    const [moderataOS, setModerataOS] = React.useState(false);
+    const [moderataOS, setModerataOS] = React.useState(false); // boolean
     const handleChangeModerataOS = (event) => {
         setModerataOS(event.target.checked);
+        if (event.target.checked) {
+            setFaraRetinopatieDiabeticaOS(false);
+            setUsoaraOS(false);
+            setSeveraOS(false);
+            setRetinopatieDiabeticaProliferativaOS(false);
+        }
     };
-    const [severaOD, setSeveraOD] = React.useState(false);
+    const [severaOD, setSeveraOD] = React.useState(false); // boolean
     const handleChangeSeveraOD = (event) => {
         setSeveraOD(event.target.checked);
+        if (event.target.checked) {
+            setFaraRetinopatieDiabeticaOD(false);
+            setUsoaraOD(false);
+            setModerataOD(false);
+            setRetinopatieDiabeticaProliferativaOD(false);
+        }
     };
-    const [severaOS, setSeveraOS] = React.useState(false);
+    const [severaOS, setSeveraOS] = React.useState(false); // boolean
     const handleChangeSeveraOS = (event) => {
         setSeveraOS(event.target.checked);
+        if (event.target.checked) {
+            setFaraRetinopatieDiabeticaOS(false);
+            setUsoaraOS(false);
+            setModerataOS(false);
+            setRetinopatieDiabeticaProliferativaOS(false);
+        }
     };
-    const [retinopatieDiabeticaProliferativaOD, setRetinopatieDiabeticaProliferativaOD] = React.useState(false);
+    const [retinopatieDiabeticaProliferativaOD, setRetinopatieDiabeticaProliferativaOD] = React.useState(false); // boolean
     const handleChangeRetinopatieDiabeticaProliferativaOD = (event) => {
         setRetinopatieDiabeticaProliferativaOD(event.target.checked);
+        if (event.target.checked) {
+            setFaraRetinopatieDiabeticaOD(false);
+            setUsoaraOD(false);
+            setModerataOD(false);
+            setSeveraOD(false);
+        }
     };
-    const [retinopatieDiabeticaProliferativaOS, setRetinopatieDiabeticaProliferativaOS] = React.useState(false);
+    const [retinopatieDiabeticaProliferativaOS, setRetinopatieDiabeticaProliferativaOS] = React.useState(false); // boolean
     const handleChangeRetinopatieDiabeticaProliferativaOS = (event) => {
         setRetinopatieDiabeticaProliferativaOS(event.target.checked);
+        if (event.target.checked) {
+            setFaraRetinopatieDiabeticaOS(false);
+            setUsoaraOS(false);
+            setModerataOS(false);
+            setSeveraOS(false);
+        }
     };
-    const [edemMacularOD, setEdemMacularOD] = React.useState(false);
+    const [edemMacularOD, setEdemMacularOD] = React.useState(false); // boolean
     const handleChangeEdemMacularOD = (event) => {
         setEdemMacularOD(event.target.checked);
     };
-    const [edemMacularOS, setEdemMacularOS] = React.useState(false);
+    const [edemMacularOS, setEdemMacularOS] = React.useState(false); // boolean
     const handleChangeEdemMacularOS = (event) => {
         setEdemMacularOS(event.target.checked);
     };
-    const [laFelOD, setLaFelOD] = React.useState(false);
+    const [laFelOD, setLaFelOD] = React.useState(false); // boolean
     const handleChangeLaFelOD = (event) => {
         setLaFelOD(event.target.checked);
+        if (event.target.checked) {
+            setMaiBineOD(false);
+            setMaiRauOD(false);
+            setNuSeCunoasteOD(false);
+        }
     };
-    const [laFelOS, setLaFelOS] = React.useState(false);
+    const [laFelOS, setLaFelOS] = React.useState(false); // boolean
     const handleChangeLaFelOS = (event) => {
         setLaFelOS(event.target.checked);
+        if (event.target.checked) {
+            setMaiBineOS(false);
+            setMaiRauOS(false);
+            setNuSeCunoasteOS(false);
+        }
     };
-    const [maiBineOD, setMaiBineOD] = React.useState(false);
+    const [maiBineOD, setMaiBineOD] = React.useState(false); // boolean
     const handleChangeMaiBineOD = (event) => {
         setMaiBineOD(event.target.checked);
+        if (event.target.checked) {
+            setLaFelOD(false);
+            setMaiRauOD(false);
+            setNuSeCunoasteOD(false);
+        }
     };
-    const [maiBineOS, setMaiBineOS] = React.useState(false);
+    const [maiBineOS, setMaiBineOS] = React.useState(false); // boolean
     const handleChangeMaiBineOS = (event) => {
         setMaiBineOS(event.target.checked);
+        if (event.target.checked) {
+            setLaFelOS(false);
+            setMaiRauOS(false);
+            setNuSeCunoasteOS(false);
+        }
     };
-    const [maiRauOD, setMaiRauOD] = React.useState(false);
+    const [maiRauOD, setMaiRauOD] = React.useState(false); // boolean
     const handleChangeMaiRauOD = (event) => {
         setMaiRauOD(event.target.checked);
+        if (event.target.checked) {
+            setLaFelOD(false);
+            setMaiBineOD(false);
+            setNuSeCunoasteOD(false);
+        }
     };
-    const [maiRauOS, setMaiRauOS] = React.useState(false);
+    const [maiRauOS, setMaiRauOS] = React.useState(false); // boolean
     const handleChangeMaiRauOS = (event) => {
         setMaiRauOS(event.target.checked);
+        if (event.target.checked) {
+            setLaFelOS(false);
+            setMaiBineOS(false);
+            setNuSeCunoasteOS(false);
+        }
     };
-    const [nuSeCunoasteOD, setNuSeCunoasteOD] = React.useState(false);
+    const [nuSeCunoasteOD, setNuSeCunoasteOD] = React.useState(false); // boolean
     const handleChangeNuSeCunoasteOD = (event) => {
         setNuSeCunoasteOD(event.target.checked);
+        if (event.target.checked) {
+            setLaFelOD(false);
+            setMaiBineOD(false);
+            setMaiRauOD(false);
+        }
     };
-    const [nuSeCunoasteOS, setNuSeCunoasteOS] = React.useState(false);
+    const [nuSeCunoasteOS, setNuSeCunoasteOS] = React.useState(false); // boolean
     const handleChangeNuSeCunoasteOS = (event) => {
         setNuSeCunoasteOS(event.target.checked);
+        if (event.target.checked) {
+            setLaFelOS(false);
+            setMaiBineOS(false);
+            setMaiRauOS(false);
+        }
     };
     // const [detaliiFundDeOchiText, setDetaliiFundDeOchiText] = React.useState("");
     // const [alteModificareOculareText, setAlteModificariOculareText] = React.useState("");
 
     // Box 4
-    const [injectieOD, setInjectieOD] = React.useState("");
-    const [injectieOS, setInjectieOS] = React.useState("");
-    const [panfotocoagulareOD, setPanfotocoagulareOD] = React.useState("");
-    const [panfotocoagulareOS, setPanfotocoagulareOS] = React.useState("");
+    const [injectieNumarOD, setInjectieNumarOD] = React.useState(); // double
+    const [injectieDozaOD, setInjectieDozaOD] = React.useState(); // double
+    const [injectieNumarOS, setInjectieNumarOS] = React.useState(); // double
+    const [injectieDozaOS, setInjectieDozaOS] = React.useState(); // double
+    const [panfotocoagulareOD, setPanfotocoagulareOD] = React.useState(""); // string nu stie
+    const [panfotocoagulareOS, setPanfotocoagulareOS] = React.useState(""); // string nu stie
 
     // BOX 5
-    const [diagnosticOD, setDiagnosticOD] = React.useState("");
-    const [diagnosticOS, setDiagnosticOS] = React.useState("");
+    const [diagnosticOD, setDiagnosticOD] = React.useState(""); // string
+    const [diagnosticOS, setDiagnosticOS] = React.useState(""); // string
 
     // BOX 6
-    const [recomandare, setRecomandare] = React.useState("");
-    const [recomandareField, setRecomandareField] = React.useState("");
-    const [tratament, setTratament] = React.useState(false);
+    const [recomandare, setRecomandare] = React.useState("Doar monitorizare"); // string
+    const [recomandareField, setRecomandareField] = React.useState(""); // string doar daca ii selectat "Examinare suplimentara"
+    const [tratament, setTratament] = React.useState(false); // boolean
     const handleChangeTratament = (event) => {
         setTratament(event.target.checked);
+        if(!event.target.checked){
+            setTratamentField("");
+        }
     };
-    const [tratamentField, setTratamentField] = React.useState("");
-    const [peste1An, setPeste1An] = React.useState(false);
-    const handleChangePeste1An = (event) => {
-        setPeste1An(event.target.checked);
-    };
-    const [pesteLuni, setPesteLuni] = React.useState("");
-    const [pesteSaptamani, setPesteSaptamani] = React.useState("");
-    const [ambulator, setAmbulator] = React.useState(false);
+    const [tratamentField, setTratamentField] = React.useState(""); // doar daca ii selectat
+    const [urmatorulControl, setUrmatorulControl] = React.useState("an")
+    const [pesteLuni, setPesteLuni] = React.useState(); // double - trebe sa il fac comobox
+    const [pesteSaptamani, setPesteSaptamani] = React.useState(); // double - trebe sa il fac comobox
+    const [ambulator, setAmbulator] = React.useState(false); // boolean
     const handleChangeAmbulator = (event) => {
         setAmbulator(event.target.checked);
         if (!event.target.checked) {
@@ -413,14 +610,13 @@ const OftalmologPage = () => {
             setAmbulatorInField("");
         }
     };
-    const [ambulatorLaField, setAmbulatorLaField] = React.useState("");
-    const [ambulatorInField, setAmbulatorInField] = React.useState("");
+    const [ambulatorLaField, setAmbulatorLaField] = React.useState(""); // string, numa daca ii selectat
+    const [ambulatorInField, setAmbulatorInField] = React.useState(""); // string, numa daca ii selectat
 
     // LAST BOX
-    const [selectedData, setSelectedData] = React.useState(null);
+    const [selectedData, setSelectedData] = React.useState(dayjs()); // initial sa fie ziua de azi
     const handleDataChange = (newValue) => {
         setSelectedData(newValue);
-        // setGresit({...gresit, dataDiagnosticului: !newValue});
     };
     const [medicExaminatorField, setMedicExaminatorField] = React.useState(location.state.nume + " " + location.state.prenume);
     const handleSalvare = () => {
@@ -459,12 +655,16 @@ const OftalmologPage = () => {
         navigate("/");
     };
 
+    const [selectedDataProgramarii, setSelectedDataProgramarii] = React.useState(dayjs()); // initial sa fie ziua de azi
+    const handleDataProgramariiChange = (newValue) => {
+        setSelectedDataProgramarii(newValue);
+    };
     const [listOreDisponibile, setListOreDisponibile] = React.useState([]);
     const [oraProgramarii, setOraProgramarii] = React.useState("");
     const [selectedProgramare, setSelectedProgramare] = React.useState(null);
     
     useEffect(() => {
-        axios.get("http://localhost:8080/medici/fisaMedicala/getProgramariCurente", {
+        axios.post("http://localhost:8080/medici/fisaMedicala/getProgramariCurente", selectedDataProgramarii,{
             headers: {
                 "content-type": "application/json"
             }
@@ -477,7 +677,7 @@ const OftalmologPage = () => {
         }).catch((err) => {
             console.error(err);
         });
-    }, []);
+    }, [selectedDataProgramarii]);
 
     const handleProgramareChange = (event) => {
         const selectedTime = event.target.value;
@@ -508,6 +708,18 @@ const OftalmologPage = () => {
             <CssBaseline />
             <Box sx={centerBoxSx}>
                 <Box sx={{ width: "90%", display:  "flex",justifyContent:"flex-end", alignItems: "center"}}>
+                    <Box>
+                        <LocalizationProvider dateAdapter={AdapterDayjs} >
+                            <DatePicker
+                                label="Data"
+                                value={selectedDataProgramarii}
+                                onChange={handleDataProgramariiChange}
+                                inputFormat="DD/MM/YYYY"
+                                slotProps={{ textField: { variant: 'standard' } }}
+                                format="DD/MM/YYYY"
+                            />
+                        </LocalizationProvider>
+                    </Box>
                     <FormControl variant="standard" sx={{ ml: "10px", padding: "10px 10px", width: "200px" }}>
                         <InputLabel id="select-ora-label" sx={{padding: "10px 10px"}}>Ora Programării</InputLabel>
                         <Select
@@ -614,10 +826,11 @@ const OftalmologPage = () => {
                             name="HbA1CField"
                             value={HbA1C}
                             variant="standard"
+                            type="number"
                             onChange={(e) => {
-                                const value = e.target.value;
-                                setHbA1C(value);
+                                setHbA1C(e.target.value);
                             }}
+                            inputProps={{ step: "0.01" }}
                             sx={HbA1CSx}
                         />
                         <RadioButtonsGroupTipHbA1C tipHbA1C={tipHbA1C} setTipHbA1C={setTipHbA1C}/>
@@ -629,10 +842,11 @@ const OftalmologPage = () => {
                             name="glicemieField"
                             value={glicemie}
                             variant="standard"
+                            type="number"
                             onChange={(e) => {
-                                const value = e.target.value;
-                                setGlicemie(value);
+                                setGlicemie(e.target.value);
                             }}
+                            inputProps={{ step: "0.01" }}
                             sx={glicemieSx}
                         />
                         <Typography sx={typographyUreeSx}>
@@ -643,10 +857,11 @@ const OftalmologPage = () => {
                             name="ureeField"
                             value={uree}
                             variant="standard"
+                            type="number"
                             onChange={(e) => {
-                                const value = e.target.value;
-                                setUree(value);
+                                setUree(e.target.value);
                             }}
+                            inputProps={{ step: "0.01" }}
                             sx={ureeSx}
                         />
                         <Typography sx={typographyCreatininaSx}>
@@ -657,10 +872,11 @@ const OftalmologPage = () => {
                             name="creatininaField"
                             value={creatinina}
                             variant="standard"
+                            type="number"
                             onChange={(e) => {
-                                const value = e.target.value;
-                                setCreatinina(value);
+                                setCreatinina(e.target.value);
                             }}
+                            inputProps={{ step: "0.01" }}
                             sx={creatininaSx}
                         />
                         <Typography sx={typographyeRFGSx}>
@@ -671,137 +887,210 @@ const OftalmologPage = () => {
                             name="eRFGField"
                             value={eRFG}
                             variant="standard"
+                            type="number"
                             onChange={(e) => {
-                                const value = e.target.value;
-                                setERFG(value);
+                                setERFG(e.target.value);
                             }}
+                            inputProps={{ step: "0.01" }}
                             sx={eRFGSx}
                         />
                     </Box>
                     <Box sx={{display: "flex", flexDirection: "row", width: "100%"}}>
+                        <Checkbox
+                            checked={HTA}
+                            onChange={handleChangeHTA}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            sx={{padding: "10px 10px"}}
+                        />
                         <Typography sx={typographyHTASx}>
-                            HTA:
+                            HTA;
                         </Typography>
-                        <TextField
-                            id="HTAField"
-                            name="HTAField"
-                            value={HTA}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setHTA(value);
-                            }}
-                            sx={HTASx}
+                        {/*<Typography sx={typographyHTASx}>*/}
+                        {/*    HTA:*/}
+                        {/*</Typography>*/}
+                        {/*<TextField*/}
+                        {/*    id="HTAField"*/}
+                        {/*    name="HTAField"*/}
+                        {/*    value={HTA}*/}
+                        {/*    variant="standard"*/}
+                        {/*    onChange={(e) => {*/}
+                        {/*        const value = e.target.value;*/}
+                        {/*        setHTA(value);*/}
+                        {/*    }}*/}
+                        {/*    sx={HTASx}*/}
+                        {/*/>*/}
+                        <Checkbox
+                            checked={neuropatie}
+                            onChange={handleChangeNeuropatie}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            sx={{padding: "10px 10px"}}
                         />
                         <Typography sx={typographyNeuropatieSx}>
-                            Neuropatie:
+                            Neuropatie;
                         </Typography>
-                        <TextField
-                            id="neuropatieField"
-                            name="neuropatieField"
-                            value={neuropatie}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setNeuropatie(value);
-                            }}
-                            sx={neuropatieSx}
+                        {/*<Typography sx={typographyNeuropatieSx}>*/}
+                        {/*    Neuropatie:*/}
+                        {/*</Typography>*/}
+                        {/*<TextField*/}
+                        {/*    id="neuropatieField"*/}
+                        {/*    name="neuropatieField"*/}
+                        {/*    value={neuropatie}*/}
+                        {/*    variant="standard"*/}
+                        {/*    onChange={(e) => {*/}
+                        {/*        const value = e.target.value;*/}
+                        {/*        setNeuropatie(value);*/}
+                        {/*    }}*/}
+                        {/*    sx={neuropatieSx}*/}
+                        {/*/>*/}
+                        <Checkbox
+                            checked={nefropatie}
+                            onChange={handleChangeNefropatie}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            sx={{padding: "10px 10px"}}
                         />
                         <Typography sx={typographyNefropatieSx}>
-                            Nefropatie:
+                            Nefropatie;
                         </Typography>
-                        <TextField
-                            id="nefropatieField"
-                            name="nefropatieField"
-                            value={nefropatie}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setNefropatie(value);
-                            }}
-                            sx={nefropatieSx}
+                        {/*<Typography sx={typographyNefropatieSx}>*/}
+                        {/*    Nefropatie:*/}
+                        {/*</Typography>*/}
+                        {/*<TextField*/}
+                        {/*    id="nefropatieField"*/}
+                        {/*    name="nefropatieField"*/}
+                        {/*    value={nefropatie}*/}
+                        {/*    variant="standard"*/}
+                        {/*    onChange={(e) => {*/}
+                        {/*        const value = e.target.value;*/}
+                        {/*        setNefropatie(value);*/}
+                        {/*    }}*/}
+                        {/*    sx={nefropatieSx}*/}
+                        {/*/>*/}
+                        <Checkbox
+                            checked={CI}
+                            onChange={handleChangeCI}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            sx={{padding: "10px 10px"}}
                         />
                         <Typography sx={typographyCISx}>
-                            CI:
+                            CI;
                         </Typography>
-                        <TextField
-                            id="CIField"
-                            name="CIField"
-                            value={CI}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setCI(value);
-                            }}
-                            sx={CISx}
+                        {/*<Typography sx={typographyCISx}>*/}
+                        {/*    CI:*/}
+                        {/*</Typography>*/}
+                        {/*<TextField*/}
+                        {/*    id="CIField"*/}
+                        {/*    name="CIField"*/}
+                        {/*    value={CI}*/}
+                        {/*    variant="standard"*/}
+                        {/*    onChange={(e) => {*/}
+                        {/*        const value = e.target.value;*/}
+                        {/*        setCI(value);*/}
+                        {/*    }}*/}
+                        {/*    sx={CISx}*/}
+                        {/*/>*/}
+                        <Checkbox
+                            checked={AVC}
+                            onChange={handleChangeAVC}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            sx={{padding: "10px 10px"}}
                         />
                         <Typography sx={typographyeAVCSx}>
-                            AVC:
+                            AVC;
                         </Typography>
-                        <TextField
-                            id="AVCField"
-                            name="AVCField"
-                            value={AVC}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setAVC(value);
-                            }}
-                            sx={AVCSx}
+                        {/*<Typography sx={typographyeAVCSx}>*/}
+                        {/*    AVC:*/}
+                        {/*</Typography>*/}
+                        {/*<TextField*/}
+                        {/*    id="AVCField"*/}
+                        {/*    name="AVCField"*/}
+                        {/*    value={AVC}*/}
+                        {/*    variant="standard"*/}
+                        {/*    onChange={(e) => {*/}
+                        {/*        const value = e.target.value;*/}
+                        {/*        setAVC(value);*/}
+                        {/*    }}*/}
+                        {/*    sx={AVCSx}*/}
+                        {/*/>*/}
+                        <Checkbox
+                            checked={IMA}
+                            onChange={handleChangeIMA}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            sx={{padding: "10px 10px"}}
                         />
                         <Typography sx={typographyeIMASx}>
-                            IMA:
+                            IMA;
                         </Typography>
-                        <TextField
-                            id="IMAField"
-                            name="IMAField"
-                            value={IMA}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setIMA(value);
-                            }}
-                            sx={IMASx}
+                        {/*<Typography sx={typographyeIMASx}>*/}
+                        {/*    IMA:*/}
+                        {/*</Typography>*/}
+                        {/*<TextField*/}
+                        {/*    id="IMAField"*/}
+                        {/*    name="IMAField"*/}
+                        {/*    value={IMA}*/}
+                        {/*    variant="standard"*/}
+                        {/*    onChange={(e) => {*/}
+                        {/*        const value = e.target.value;*/}
+                        {/*        setIMA(value);*/}
+                        {/*    }}*/}
+                        {/*    sx={IMASx}*/}
+                        {/*/>*/}
+                        <Checkbox
+                            checked={hipercolesterolemie}
+                            onChange={handleChangeHipercolesterolemie}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            sx={{padding: "10px 10px"}}
                         />
                         <Typography sx={typographyeHipercolesterolemieSx}>
-                            Hipercolesterolemie:
+                            Hipercolesterolemie;
                         </Typography>
-                        <TextField
-                            id="HipercolesterolemieField"
-                            name="HipercolesterolemieField"
-                            value={hipercolesterolemie}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setHipercolesterolemie(value);
-                            }}
-                            sx={hipercolesterolemieSx}
-                        />
+                        {/*<Typography sx={typographyeHipercolesterolemieSx}>*/}
+                        {/*    Hipercolesterolemie:*/}
+                        {/*</Typography>*/}
+                        {/*<TextField*/}
+                        {/*    id="HipercolesterolemieField"*/}
+                        {/*    name="HipercolesterolemieField"*/}
+                        {/*    value={hipercolesterolemie}*/}
+                        {/*    variant="standard"*/}
+                        {/*    onChange={(e) => {*/}
+                        {/*        const value = e.target.value;*/}
+                        {/*        setHipercolesterolemie(value);*/}
+                        {/*    }}*/}
+                        {/*    sx={hipercolesterolemieSx}*/}
+                        {/*/>*/}
                     </Box>
                     <Box sx={{display: "flex", flexDirection: "row", width: "100%"}}>
-                        <Typography sx={typographyHipertrigliceridemieSx}>
-                            Hipertrigliceridemie:
-                        </Typography>
-                        <TextField
-                            id="HipertrigliceridemieField"
-                            name="HipertrigliceridemieField"
-                            value={hipertrigliceridemie}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setHipertrigliceridemie(value);
-                            }}
-                            sx={hipertrigliceridemieSx}
+                        <Checkbox
+                            checked={hipertrigliceridemie}
+                            onChange={handleChangeHipertrigliceridemie}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                            sx={{padding: "10px 10px"}}
                         />
+                        <Typography sx={typographyHipertrigliceridemieSx}>
+                            Hipertrigliceridemie;
+                        </Typography>
+                        {/*<Typography sx={typographyHipertrigliceridemieSx}>*/}
+                        {/*    Hipertrigliceridemie:*/}
+                        {/*</Typography>*/}
+                        {/*<TextField*/}
+                        {/*    id="HipertrigliceridemieField"*/}
+                        {/*    name="HipertrigliceridemieField"*/}
+                        {/*    value={hipertrigliceridemie}*/}
+                        {/*    variant="standard"*/}
+                        {/*    onChange={(e) => {*/}
+                        {/*        const value = e.target.value;*/}
+                        {/*        setHipertrigliceridemie(value);*/}
+                        {/*    }}*/}
+                        {/*    sx={hipertrigliceridemieSx}*/}
+                        {/*/>*/}
                         <Typography sx={typographyTratamentDiabetInPrezentSx}>
                             Tratament diabet în prezent:
                         </Typography>
-                        {/* <RadioButtonsGroupTratamentDiabet tratamentDiabet={tratamentDiabet} setTratamentDiabet={setTratamentDiabet}/> */}
                          <Checkbox
                             checked={insulina}
                             onChange={handleChangeInsulina}
                             inputProps={{ 'aria-label': 'controlled' }}
                             sx={{padding: "10px 10px"}}
+                            disabled={nimic}
                         />
                         <Typography sx={typographyInsulinaSx}>
                             Insulină;
@@ -811,6 +1100,7 @@ const OftalmologPage = () => {
                             onChange={handleChangeAdo}
                             inputProps={{ 'aria-label': 'controlled' }}
                             sx={{padding: "10px 10px"}}
+                            disabled={nimic}
                         />
                         <Typography sx={typographyADOSx}>
                             ADO;
@@ -820,6 +1110,7 @@ const OftalmologPage = () => {
                             onChange={handleChangeDieta}
                             inputProps={{ 'aria-label': 'controlled' }}
                             sx={{padding: "10px 10px"}}
+                            disabled={nimic}
                         />
                         <Typography sx={typographyeDietaSx}>
                             Dietă;
@@ -832,7 +1123,6 @@ const OftalmologPage = () => {
                         />
                         <Typography sx={typographyeNimicSx}>
                             Nimic.
-
                         </Typography> 
                     </Box>
                 </Box>
@@ -852,10 +1142,11 @@ const OftalmologPage = () => {
                                     name="acuitateODField"
                                     value={acuitateOD}
                                     variant="standard"
+                                    type="number"
                                     onChange={(e) => {
-                                        const value = e.target.value;
-                                        setAcuitateOD(value);
+                                        setAcuitateOD(e.target.value);
                                     }}
+                                    inputProps={{ step: "0.01" }}
                                     sx={acuitateODSx}
                                 />
                                 <Typography sx={typographyAcuitateOSSx}>
@@ -866,10 +1157,11 @@ const OftalmologPage = () => {
                                     name="acuitateOSField"
                                     value={acuitateOS}
                                     variant="standard"
+                                    type="number"
                                     onChange={(e) => {
-                                        const value = e.target.value;
-                                        setAcuitateOS(value);
+                                        setAcuitateOS(e.target.value);
                                     }}
+                                    inputProps={{ step: "0.01" }}
                                     sx={acuitateOSSx}
                                 />
                             </Box>
@@ -1145,13 +1437,7 @@ const OftalmologPage = () => {
                                 </Typography>
                             </Box>
                         </Box>
-                        <Box sx={{
-                            display: "flex",
-                            flexDirection: 'column',
-                            alignItems: "center",
-                            justifyItems: "center",
-                            width: "50%",
-                        }}>
+                        <Box sx={{display: "flex", flexDirection: 'column', alignItems: "center", justifyItems: "center", width: "50%",}}>
                             <Box sx={{
                                 display: "flex",
                                 flexDirection: 'column',
@@ -1197,28 +1483,58 @@ const OftalmologPage = () => {
                             Injectie intravitreeană anti-VEGF număr și ultima doză
                         </Typography>
                         <TextField
-                            id="injectieODField"
-                            name="injectieODField"
-                            value={injectieOD}
+                            id="injectieNumarODField"
+                            name="injectieNumarODField"
+                            label="Număr"
+                            value={injectieNumarOD}
                             variant="standard"
+                            type="number"
                             onChange={(e) => {
-                                const value = e.target.value;
-                                setInjectieOD(value);
+                                setInjectieNumarOD(e.target.value);
                             }}
+                            inputProps={{ step: "0.01" }}
+                            sx={injectieODSx}
+                        />
+                        <TextField
+                            id="injectieDozaODField"
+                            name="injectieDozaODField"
+                            label="Doză"
+                            value={injectieDozaOD}
+                            variant="standard"
+                            type="number"
+                            onChange={(e) => {
+                                setInjectieDozaOD(e.target.value);
+                            }}
+                            inputProps={{ step: "0.01" }}
                             sx={injectieODSx}
                         />
                         <Typography sx={typographyInjectieODSx}>
                             OD;
                         </Typography>
                         <TextField
-                            id="injectieOSField"
-                            name="injectieOSField"
-                            value={injectieOS}
+                            id="injectieNumarOSField"
+                            name="injectieNumarOSField"
+                            label="              Număr"
+                            value={injectieNumarOS}
                             variant="standard"
+                            type="number"
                             onChange={(e) => {
-                                const value = e.target.value;
-                                setInjectieOS(value);
+                                setInjectieNumarOS(e.target.value);
                             }}
+                            inputProps={{ step: "0.01" }}
+                            sx={injectieOSSx}
+                        />
+                        <TextField
+                            id="injectieDozaOSField"
+                            name="injectieDozaOSField"
+                            label=" Doză"
+                            value={injectieDozaOS}
+                            variant="standard"
+                            type="number"
+                            onChange={(e) => {
+                                setInjectieDozaOS(e.target.value);
+                            }}
+                            inputProps={{ step: "0.01" }}
                             sx={injectieOSSx}
                         />
                         <Typography sx={typographyInjectieOSSx}>
@@ -1307,7 +1623,7 @@ const OftalmologPage = () => {
                         Recomandări:
                     </Typography>
                     <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
-                        <RadioButtonsGroupRecomandari recomandare={recomandare} setRecomandare={setRecomandare}/>
+                        <RadioButtonsGroupRecomandari recomandare={recomandare} setRecomandare={setRecomandare} setRecomandareField={setRecomandareField}/>
                         <TextField
                             id="recomandareField"
                             name="recomandareField"
@@ -1318,6 +1634,7 @@ const OftalmologPage = () => {
                                 setRecomandareField(value);
                             }}
                             sx={recomandareFieldSx}
+                            disabled={recomandare !== 'Examinare suplimentara'}
                         />
                     </Box>
                     <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
@@ -1340,49 +1657,20 @@ const OftalmologPage = () => {
                                 setTratamentField(value);
                             }}
                             sx={tratamentFieldSx}
+                            disabled={!tratament}
                         />
                     </Box>
                     <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
                         <Typography sx={typographyControlOftalmologicSx}>
                             Următorul control oftalmologic:
                         </Typography>
-                        <Checkbox
-                            checked={peste1An}
-                            onChange={handleChangePeste1An}
-                            inputProps={{ 'aria-label': 'controlled' }}
-                            sx={{padding: "10px 10px"}}
-                        />
-                        <Typography sx={typographyAnSx}>
-                            peste 1 an; peste
-                        </Typography>
-                        <TextField
-                            id="pesteLuniField"
-                            name="pesteLuniField"
-                            value={pesteLuni}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setPesteLuni(value);
-                            }}
-                            sx={pesteLuniSx}
-                        />
-                        <Typography sx={typographyLuniSx}>
-                            luni; peste
-                        </Typography>
-                        <TextField
-                            id="pesteSaptamaniField"
-                            name="pesteSaptamaniField"
-                            value={pesteSaptamani}
-                            variant="standard"
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setPesteSaptamani(value);
-                            }}
-                            sx={pesteSaptamaniSx}
-                        />
-                        <Typography sx={typographySaptamaniSx}>
-                            săptămâni;
-                        </Typography>
+                        <RadioButtonsGroupUrmatorulControl
+                            urmatorulControl={urmatorulControl}
+                            setUrmatorulControl={setUrmatorulControl}
+                            pesteLuni={pesteLuni}
+                            setPesteLuni={setPesteLuni}
+                            pesteSaptamani={pesteSaptamani}
+                            setPesteSaptamani={setPesteSaptamani}/>
                     </Box>
                     <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
                         <Checkbox
@@ -1400,13 +1688,13 @@ const OftalmologPage = () => {
                             value={ambulatorLaField}
                             variant="standard"
                             onChange={(e) => {
-                                const value = e.target.value;
-                                setAmbulatorLaField(value);
-                            }}
-                            InputProps={{
-                                readOnly: !ambulator,
+                                setAmbulatorLaField(e.target.value);
+                                if(!ambulator) {
+                                    setAmbulatorLaField("");
+                                }
                             }}
                             sx={ambulatorLaFieldSx}
+                            disabled={ !ambulator }
                         />
                         <Typography sx={typographyInSx}>
                             în
@@ -1417,13 +1705,13 @@ const OftalmologPage = () => {
                             value={ambulatorInField}
                             variant="standard"
                             onChange={(e) => {
-                                const value = e.target.value;
-                                setAmbulatorInField(value);
-                            }}
-                            InputProps={{
-                                readOnly: !ambulator,
+                                setAmbulatorInField(e.target.value);
+                                if(!ambulator) {
+                                    setAmbulatorInField("");
+                                }
                             }}
                             sx={ambulatorInFieldSx}
+                            disabled={ !ambulator }
                         />
                     </Box>
                 </Box>
