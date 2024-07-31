@@ -41,9 +41,11 @@ public class ProgramariServiceImpl implements ProgramariService{
                 .numePrenume(programareDTO.getNumeSiPrenume())
                 .cnp(programareDTO.getCnp())
                 .diabetZaharat(programareDTO.getTipDiabetZaharat())
+                .diabetZaharatField(programareDTO.getDiabetZaharat())
                 .dataDiagnosticului(programareDTO.getDataDiagnosticului())
                 .build();
         Pacient savedPacient = pacientService.registerPacient(pacientDto);
+
 
         SlotProgramari slot = slotProgramariService.findSlotProgramariByStartTime(programareDTO.getOraProgramarii());
         //System.out.println(slot.getId() + " " + slot.getStartTime() + " " + slot.getEndTime() + " " + slot.isAvailable());

@@ -11,5 +11,6 @@ import java.util.List;
 public interface ProgramariRepository extends CrudRepository<Programari, Long> {
     @Query("SELECT p FROM Programari p WHERE p.startTime >= :startOfDay AND p.endTime < :endOfDay")
     List<Programari> findAllByDate(@Param("startOfDay") LocalDateTime startOfDay, @Param("endOfDay") LocalDateTime endOfDay);
+    Programari findProgramariById(long id);
 
 }

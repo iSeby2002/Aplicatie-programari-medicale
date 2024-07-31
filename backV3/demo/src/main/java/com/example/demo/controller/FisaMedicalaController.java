@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dtos.FisaMedicalaDto;
 import com.example.demo.model.FisaMedicala;
 import com.example.demo.model.Programari;
 import com.example.demo.service.FisaMedicalaService;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -26,13 +28,14 @@ public class FisaMedicalaController {
         this.fisaMedicalaService = fisaMedicalaService;
     }
     @GetMapping("/getProgramariCurente")
-    public ResponseEntity<List<Programari>> getProgramariCurente() {
-        List<Programari> programari = fisaMedicalaService.findProgramariCurente();
+    public ResponseEntity<List<Programari>> getProgramariCurente(@RequestBody LocalDate data) {
+        List<Programari> programari = fisaMedicalaService.findProgramariCurente(data);
         return new ResponseEntity<>(programari, HttpStatus.OK);
     }
+
     @PostMapping("/saveFisaMedicala")
-    public ResponseEntity<String> saveFisaMedicala(@RequestBody FisaMedicala fisaMedicala){
-        String msg = fisaMedicalaService.saveFisaMedicala(fisaMedicala);
+    public ResponseEntity<String> saveFisaMedicala(@RequestBody FisaMedicalaDto fisaMedicalaDto){
+        String msg = fisaMedicalaService.saveFisaMedicala(fisaMedicalaDto);
         return new ResponseEntity<>(msg,HttpStatus.OK);
     }
 }

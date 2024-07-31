@@ -25,6 +25,7 @@ public class PacientServiceImpl implements PacientService {
                 .numePrenume(pacientDto.getNumePrenume())
                 .cnp(pacientDto.getCnp())
                 .diabetZaharat(pacientDto.getDiabetZaharat())
+                .diabetZaharatField(pacientDto.getDiabetZaharatField())
                 .dataDiagnosticului(pacientDto.getDataDiagnosticului())
                 .build();
         return pacientRepository.save(pacient);

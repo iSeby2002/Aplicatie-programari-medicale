@@ -18,6 +18,7 @@ public class PacientDto {
 
     private long cnp;
     private String diabetZaharat;
+    private String diabetZaharatField;
     private LocalDate dataDiagnosticului;
 
 }
