@@ -176,6 +176,7 @@ export const typographyHTASx: React.CSSProperties = {
     fontSize: "18px",
     fontWeight: "600",
     width: "4%",
+    mr: "5%",
 };
 
 export const HTASx: React.CSSProperties = {
@@ -189,6 +190,7 @@ export const typographyNeuropatieSx: React.CSSProperties = {
     fontSize: "18px",
     fontWeight: "600",
     width: "8.5%",
+    mr: "5%",
 };
 
 export const neuropatieSx: React.CSSProperties = {
@@ -202,6 +204,7 @@ export const typographyNefropatieSx: React.CSSProperties = {
     fontSize: "18px",
     fontWeight: "600",
     width: "8%",
+    mr: "5%",
 };
 
 export const nefropatieSx: React.CSSProperties = {
@@ -215,6 +218,7 @@ export const typographyCISx: React.CSSProperties = {
     fontSize: "18px",
     fontWeight: "600",
     width: "2.5%",
+    mr: "5%",
 };
 
 export const CISx: React.CSSProperties = {
@@ -228,6 +232,7 @@ export const typographyeAVCSx: React.CSSProperties = {
     fontSize: "18px",
     fontWeight: "600",
     width: "4%",
+    mr: "5%",
 };
 
 export const AVCSx: React.CSSProperties = {
@@ -241,6 +246,7 @@ export const typographyeIMASx: React.CSSProperties = {
     fontSize: "18px",
     fontWeight: "600",
     width: "4%",
+    mr: "5%",
 };
 
 export const IMASx: React.CSSProperties = {
@@ -259,6 +265,7 @@ export const typographyeHipercolesterolemieSx: React.CSSProperties = {
 export const hipercolesterolemieSx: React.CSSProperties = {
     padding: "5px 10px",
     width: "10%",
+
 };
 
 export const typographyHipertrigliceridemieSx: React.CSSProperties = {
@@ -267,6 +274,7 @@ export const typographyHipertrigliceridemieSx: React.CSSProperties = {
     fontSize: "18px",
     fontWeight: "600",
     width: "15%",
+    mr: "5%",
 };
 
 export const hipertrigliceridemieSx: React.CSSProperties = {
@@ -682,24 +690,26 @@ export const typographyInjectieSx: React.CSSProperties = {
 };
 
 export const injectieODSx: React.CSSProperties = {
+    mt: "-15px",
     padding: "5px 5px",
-    width: "30%",
+    width: "14%",
 };
 
 export const typographyInjectieODSx: React.CSSProperties = {
-    padding: "10px 0px",
+    padding: "10px 10px",
     color: "black",
     fontSize: "18px",
     fontWeight: "300",
 };
 
 export const injectieOSSx: React.CSSProperties = {
+    mt: "-15px",
     padding: "5px 5px",
-    width: "30%",
+    width: "14%",
 };
 
 export const typographyInjectieOSSx: React.CSSProperties = {
-    padding: "10px 0px",
+    padding: "10px 10px",
     color: "black",
     fontSize: "18px",
     fontWeight: "300",
@@ -788,7 +798,7 @@ export const typographySauSx: React.CSSProperties = {
 
 export const recomandareFieldSx: React.CSSProperties = {
     padding: "5px 10px",
-    width: "60%",
+    width: "73%",
 };
 
 export const typographyTratamentRecomandatSx: React.CSSProperties = {
@@ -809,35 +819,61 @@ export const typographyControlOftalmologicSx: React.CSSProperties = {
     color: "black",
     fontSize: "18px",
     fontWeight: "600",
+    width: "22%"
 };
 
 export const typographyAnSx: React.CSSProperties = {
-    padding: "10px 10px",
+    padding: "10px 5px",
     color: "black",
     fontSize: "18px",
     fontWeight: "300",
+    width: "20%",
+    ml: "-25px"
+};
+
+export const typographyPesteLuniSx: React.CSSProperties = {
+    padding: "10px 5px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+    width: "9%",
+    ml: "-25px"
 };
 
 export const pesteLuniSx: React.CSSProperties = {
     padding: "5px 10px",
+    width: "15%"
 };
 
 export const typographyLuniSx: React.CSSProperties = {
-    padding: "10px 10px",
+    padding: "10px 5px",
     color: "black",
     fontSize: "18px",
     fontWeight: "300",
+    width: "9%",
+};
+
+export const typographyPesteSaptamaniSx: React.CSSProperties = {
+    padding: "10px 5px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+    width: "9%",
+    ml: "-25px"
 };
 
 export const pesteSaptamaniSx: React.CSSProperties = {
     padding: "5px 10px",
+    width: "15%"
 };
 
 export const typographySaptamaniSx: React.CSSProperties = {
-    padding: "10px 10px",
+    padding: "10px 5px",
     color: "black",
     fontSize: "18px",
     fontWeight: "300",
+    width: "9%",
+    // ml: "-25px"
 };
 
 export const typographyAmbulatorSx: React.CSSProperties = {
