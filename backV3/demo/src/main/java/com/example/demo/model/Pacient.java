@@ -23,8 +23,10 @@ public class Pacient {
 
     private String numePrenume;
 
+
     private long cnp;
     private String diabetZaharat;
+    private String diabetZaharatField;
     private LocalDate dataDiagnosticului;
 
 }
