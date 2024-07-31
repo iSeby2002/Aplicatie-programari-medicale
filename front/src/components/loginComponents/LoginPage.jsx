@@ -42,12 +42,10 @@ const LoginPage = () => {
                 console.log(response.data)
                 if(response.data.medic.role === "diabetolog"){
                     console.log(response.data)
-                    navigate("/DiabetologPage");
-                    // navigate("/MedicDiabetPage", { state: response.data.id })
+                    navigate("/DiabetologPage", { state: response.data.medic });
                 }else if(response.data.medic.role === "oftalmolog"){
                     console.log(response.data.medic.role)
-                    navigate("/OftalmologPage");
-                    // navigate("/MedicOftalmologicPage", { state: response.data.id })
+                    navigate("/OftalmologPage", { state: response.data.medic });
                 }
             }).catch((error: any) => {
                 console.error(error)
