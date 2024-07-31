@@ -1,12 +1,10 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,32 +18,41 @@ public class FisaMedicala {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long nrCrt;
+    @ManyToOne
+    @JoinColumn(name = "programare_id")
+    private Programari programari;
+    //box2
+    private double HbA1C;
+    private String tipHbA1C;//luni
 
-    private String hba1C;
-    private String durata;
+    private double glicemie;
+    private double uree;
+    private double creatinina;
+    private double eRFG;
+    private boolean hta;
+    private boolean neuropatie;
+    private boolean nefropatie;
+    private boolean ci;
+    private boolean avc;
+    private boolean ima;
+    private boolean hipercolesterolomie;
 
-    private long glicemie;
-    private long uree;
-    private long creatinina;
-    private long erfg;
-    private long hta;
-    private long neuropatie;
-    private long nefropatie;
-    private long ci;
-    private long avc;
-    private long ima;
-    private long hipercolesterolomie;
+    private boolean hipertrigliceridemie;
+    private boolean insulina;
+    private boolean ado;
+    private boolean dieta;
+    private boolean nimic;
 
-    private long hipertrigliceridemie;
-    private String tratamentDiabetInPrezent;
-
-
+    //box3
     private String detaliiFundDeOchi;
     private String alteModalitatiOculare;
-    private boolean acuitateVizualaOD;
-    private boolean acuitateVizualaOS;
+    private double acuitateVizualaOD;
+    private double acuitateVizualaOS;
     private boolean rubeozaIrianaOD;
     private boolean rubeozaIrianaOS;
+
+    private boolean faraRetinopatieDiabeticaOD;
+    private boolean faraRetinopatieDiabeticaOS;
 
     private boolean retinopatieDiabeticaNeproliferativaUsoaraOD;
     private boolean retinopatieDiabeticaNeproliferativaUsoaraOS;
@@ -70,15 +77,30 @@ public class FisaMedicala {
     private boolean comparativCuUltimaExaminareNuSeCunoasteOD;
     private boolean comparativCuUltimaExaminareNuSeCunoasteOS;
 
-    private boolean injectieOS;
-    private boolean injectieOD;
-    private boolean laserOD;
-    private boolean laserOS;
+    //box4
+    private double injectieNumarOS;
+    private double injectieDozaOS;
+    private double injectieNumarOD;
+    private double injectieDozaOD;
+    private String laserOD;
+    private String laserOS;
+    //box5
     private String diagnosticOD;
     private String diagnosticOS;
+    //box6
+    private String recomandare;
+    private String recomandareField;
+    private boolean tratament;
+    private String tratamentField;
 
-    private String recomandari;
-    private String urmatorulControl;
+    private boolean peste1An;
+    private double pesteLuni;
+    private double pesteSaptamani;
+
+    private boolean ambulator;
+    private String ambulatorLaField;
+    private String ambulatorInField;
+
     private LocalDate data;
     private String MedicExaminator;
 

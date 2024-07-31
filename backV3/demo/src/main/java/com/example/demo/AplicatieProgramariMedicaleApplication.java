@@ -63,12 +63,14 @@ public class AplicatieProgramariMedicaleApplication {
 					.numePrenume("Ion Popescu")
 					.cnp(1234567890123L)
 					.diabetZaharat("tip 2")
+					.diabetZaharatField("alabala")
 					.dataDiagnosticului(LocalDate.of(2023, 7, 20))
 					.build();
 			PacientDto pacientDto2 = PacientDto.builder()
 					.numePrenume("Delia Costea")
 					.cnp(2134567890123L)
 					.diabetZaharat("tip 1")
+					.diabetZaharatField("alabala")
 					.dataDiagnosticului(LocalDate.of(2023, 6, 22))
 					.build();
 			Pacient savedPacientDto1 = pacientService.registerPacient(pacientDto1);

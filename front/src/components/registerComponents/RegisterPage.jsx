@@ -79,15 +79,7 @@ const RegisterPage = () => {
                 }
             }).then((response: any) => {
                 console.log(response)
-                if(response.data.role === "diabetolog"){
-                    console.log(response.data)
-                    navigate("/DiabetologPage");
-                    // navigate("/MedicDiabetPage", { state: response.data.id })
-                }else if(response.data.role === "oftalmolog"){
-                    console.log(response.data)
-                    navigate("/OftalmologPage");
-                    // navigate("/MedicOftalmologicPage", { state: response.data.id })
-                }
+                navigate("/LoginPage");
             }).catch((error: any) => {
                 console.error(error)
                 setGresit(true)

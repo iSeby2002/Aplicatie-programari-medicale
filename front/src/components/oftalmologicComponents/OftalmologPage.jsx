@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect} from 'react';
 import axios from 'axios';
 import {Button, Checkbox, CssBaseline, FormControlLabel, Radio, RadioGroup, TextField, Typography, Select,InputLabel,MenuItem,FormControl} from "@mui/material";
 import Box from "@mui/material/Box";
@@ -85,8 +85,6 @@ import {
     typographyDataSx,
     lastBoxSx,
     typographyMedicExaminatorSx,
-    medicExaminatorFieldSx,
-    buttonDeconectareSx,
     acuitateOSSx,
     typographyAcuitateOSSx,
     acuitateODSx,
@@ -127,12 +125,12 @@ import {
     typographyMaiBineSx,
     typographyLaFelOSSx,
     typographyLaFelODSx, typographyLaFelSx, typographyComparativSx, typographyDetaliiSx, typographyAlteModificariSx,
-    
+    medicExaminatorFieldSx, buttonDeconectareSx, buttonSalvareSx,
 } from "./OftalmologPage.styles";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DatePicker} from "@mui/x-date-pickers";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
 
 
@@ -166,7 +164,13 @@ function RadioButtonsGroupTipHbA1C({ tipHbA1C, setTipHbA1C }) {
                 aria-labelledby="demo-radio-buttons-group-label"
                 value={tipHbA1C}
                 name="radio-buttons-group"
-                sx={{ display: "flex", flexDirection: 'row',  }}
+                sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    padding: "5px 10px",
+                    height: "100%",
+                    width: "100%"
+                }}
                 onChange={(e) => setTipHbA1C(e.target.value)}
             >
                 <FormControlLabel value="< 6 luni" control={<Radio />} label="< 6 luni" />
@@ -212,33 +216,34 @@ function handleAlteModificariOculare() {
     console.log(text);
 }
 
-function RadioButtonsGroupTratamentDiabet({ tratamentDiabet, setTratamentDiabet }) {
-    return (
-        <FormControl >
-            <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
-                value={tratamentDiabet}
-                name="radio-buttons-group"
-                sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    padding: "5px 10px",
-                    height: "100%",
-                    width: "100%"
-                }}
-                onChange={(e) => setTratamentDiabet(e.target.value)}
-            >
-                <FormControlLabel value="insulina" control={<Radio />} label="Insulină;" />
-                <FormControlLabel value="ado" control={<Radio />} label="ADO;" />
-                <FormControlLabel value="dieta" control={<Radio />} label="Dietă;" />
-                <FormControlLabel value="nimic" control={<Radio />} label="Nimic." />
-            </RadioGroup>
-        </FormControl>
-    );
-}
+// function RadioButtonsGroupTratamentDiabet({ tratamentDiabet, setTratamentDiabet }) {
+//     return (
+//         <FormControl >
+//             <RadioGroup
+//                 aria-labelledby="demo-radio-buttons-group-label"
+//                 value={tratamentDiabet}
+//                 name="radio-buttons-group"
+//                 sx={{
+//                     display: "flex",
+//                     flexDirection: "row",
+//                     padding: "5px 10px",
+//                     height: "100%",
+//                     width: "100%"
+//                 }}
+//                 onChange={(e) => setTratamentDiabet(e.target.value)}
+//             >
+//                 <FormControlLabel value="insulina" control={<Radio />} label="Insulină;" />
+//                 <FormControlLabel value="ado" control={<Radio />} label="ADO;" />
+//                 <FormControlLabel value="dieta" control={<Radio />} label="Dietă;" />
+//                 <FormControlLabel value="nimic" control={<Radio />} label="Nimic." />
+//             </RadioGroup>
+//         </FormControl>
+//     );
+// }
 
 const OftalmologPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     // BOX 1
     const [numeSiPrenume, setNumeSiPrenume] = React.useState("");
@@ -281,8 +286,6 @@ const OftalmologPage = () => {
         setNimic(event.target.checked);
     };
    // const [tratamentDiabet, setTratamentDiabet]=useState("nimic");
-
-    
 
     // Box 3
     const [acuitateOD, setAcuitateOD] = React.useState("");
@@ -375,8 +378,8 @@ const OftalmologPage = () => {
     const handleChangeNuSeCunoasteOS = (event) => {
         setNuSeCunoasteOS(event.target.checked);
     };
-    const [detaliiFundDeOchiText, setDetaliiFundDeOchiText] = React.useState("");
-    const [alteModificareOculareText, setAlteModificariOculareText] = React.useState("");
+    // const [detaliiFundDeOchiText, setDetaliiFundDeOchiText] = React.useState("");
+    // const [alteModificareOculareText, setAlteModificariOculareText] = React.useState("");
 
     // Box 4
     const [injectieOD, setInjectieOD] = React.useState("");
@@ -419,14 +422,45 @@ const OftalmologPage = () => {
         setSelectedData(newValue);
         // setGresit({...gresit, dataDiagnosticului: !newValue});
     };
-    const [medicExaminatorField, setMedicExaminatorField] = React.useState("");
-
+    const [medicExaminatorField, setMedicExaminatorField] = React.useState(location.state.nume + " " + location.state.prenume);
+    const handleSalvare = () => {
+        // if (selectedData) {
+        //     const dataProgramarii = dayjs(selectedData).format('YYYY-MM-DD') + 'T' + oraProgramarii + ':00';
+        //
+        //     const fisaMedicala = {
+        //         numeSiPrenume: numeSiPrenume,
+        //         cnp: cnp,
+        //         tipDiabetZaharat: tipDiabetZaharat,
+        //         diabetZaharat: diabetZaharat,
+        //         dataDiagnosticului: dayjs(selectedDataDiagnoticului).format('YYYY-MM-DD'),
+        //         dataProgramarii: dayjs(selectedDataProgramare).format('YYYY-MM-DD'),
+        //         oraProgramarii: dataOraProgramarii,
+        //     };
+        //
+        //     // console.log(programareDTO);
+        //
+        //     axios.post("http://localhost:8080/medici/fisaMedicala/saveFisaMedicala", fisaMedicala, {
+        //         headers: {
+        //             "content-type": "application/json"
+        //         }
+        //     }).then(() => {
+        //         // setNumeSiPrenume("");
+        //         // setCnp("")
+        //         // setTipDiabetZaharat("tip 1");
+        //         // setDiabetZaharat("");
+        //         // setSelectedDataDiagnoticului(null);
+        //         // setSelectedDataProgramare(null);
+        //         // setOraProgramarii("");
+        //         navigate("/OftalmologPage");
+        //     });
+        // }
+    };
     const handleDeconectare = () => {
         navigate("/");
     };
+
     const [listOreDisponibile, setListOreDisponibile] = React.useState([]);
     const [oraProgramarii, setOraProgramarii] = React.useState("");
-
     const [selectedProgramare, setSelectedProgramare] = React.useState(null);
     
     useEffect(() => {
@@ -452,7 +486,6 @@ const OftalmologPage = () => {
         const programareDetails = listOreDisponibile.find(programare => programare.time === selectedTime);
         setSelectedProgramare(programareDetails?.details);
 
-        
         if (programareDetails?.details) {
             const { pacient } = programareDetails.details;
     
@@ -464,11 +497,9 @@ const OftalmologPage = () => {
         }
     };
 
-
     useEffect(() => {
         if (selectedProgramare) {
             console.log("Programare selectată:", selectedProgramare);
-            
         }
     }, [selectedProgramare]);
 
@@ -476,10 +507,10 @@ const OftalmologPage = () => {
         <div className="oftalmologPage" style={{ height: '100vh', overflowY: 'auto' }}>
             <CssBaseline />
             <Box sx={centerBoxSx}>
-            <Box sx={{ width: "90%", display:  "flex",justifyContent:"flex-end", alignItems: "center"}}>
-            <FormControl variant="standard" sx={{ ml: "10px", padding: "10px 10px", width: "200px" }}>
-                            <InputLabel id="select-ora-label" sx={{padding: "10px 10px"}}>Ora Programării</InputLabel>
-                            <Select
+                <Box sx={{ width: "90%", display:  "flex",justifyContent:"flex-end", alignItems: "center"}}>
+                    <FormControl variant="standard" sx={{ ml: "10px", padding: "10px 10px", width: "200px" }}>
+                        <InputLabel id="select-ora-label" sx={{padding: "10px 10px"}}>Ora Programării</InputLabel>
+                        <Select
                             labelId="ora-programarii-label"
                             id="ora-programarii"
                             value={oraProgramarii}
@@ -492,9 +523,8 @@ const OftalmologPage = () => {
                                 </MenuItem>
                             ))}
                         </Select>
-                        </FormControl>
-                        </Box>
-                        
+                    </FormControl>
+                </Box>
                 <Typography sx={typographyTitluSx}>
                     SCREENING RETINOPATIE DIABETICĂ
                 </Typography>
@@ -575,7 +605,7 @@ const OftalmologPage = () => {
                 </Box>
                 {/* Box 2 */}
                 <Box sx={boxSx}>
-                    <Box sx={{display: "flex", flexDirection: 'row'}}>
+                    <Box sx={{display: "flex", flexDirection: "row", width: "100%"}}>
                         <Typography sx={typographyHbA1CSx}>
                             HbA1C:
                         </Typography>
@@ -648,7 +678,7 @@ const OftalmologPage = () => {
                             sx={eRFGSx}
                         />
                     </Box>
-                    <Box sx={{display: "flex", flexDirection: 'row'}}>
+                    <Box sx={{display: "flex", flexDirection: "row", width: "100%"}}>
                         <Typography sx={typographyHTASx}>
                             HTA:
                         </Typography>
@@ -748,7 +778,7 @@ const OftalmologPage = () => {
                             sx={hipercolesterolemieSx}
                         />
                     </Box>
-                    <Box sx={{display: "flex", flexDirection: 'row'}}>
+                    <Box sx={{display: "flex", flexDirection: "row", width: "100%"}}>
                         <Typography sx={typographyHipertrigliceridemieSx}>
                             Hipertrigliceridemie:
                         </Typography>
@@ -1426,15 +1456,17 @@ const OftalmologPage = () => {
                                 name="medicExaminatorField"
                                 value={medicExaminatorField}
                                 variant="standard"
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    setMedicExaminatorField(value);
+                                InputProps={{
+                                    readOnly: true,
                                 }}
                                 sx={medicExaminatorFieldSx}
                             />
                         </Box>
                     </Box>
-                    <Box sx={{display: "flex", flexDirection: 'row', alignItems: "center", justifyContent: "center", width: "100%"}}>
+                    <Box sx={{display: "flex", flexDirection: 'row', alignItems: "center", justifyContent: "center", width: "100%", gap: "5%"}}>
+                        <Button sx={buttonSalvareSx} onClick={handleSalvare}>
+                            Salvare
+                        </Button>
                         <Button sx={buttonDeconectareSx} onClick={handleDeconectare}>
                             Deconectare
                         </Button>

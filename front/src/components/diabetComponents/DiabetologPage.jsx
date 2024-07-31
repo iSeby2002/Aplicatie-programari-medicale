@@ -21,7 +21,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {DatePicker} from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 
 function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat }) {
@@ -43,6 +43,8 @@ function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat }) {
 
 const DiabetologPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [medic, setMedic] = React.useState(location.state)
 
     // BOX 1
     const [gresit, setGresit] = React.useState({
