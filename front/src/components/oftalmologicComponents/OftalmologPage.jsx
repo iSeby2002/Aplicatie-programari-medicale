@@ -127,7 +127,6 @@ import {
     typographyMaiBineSx,
     typographyLaFelOSSx,
     typographyLaFelODSx, typographyLaFelSx, typographyComparativSx, typographyDetaliiSx, typographyAlteModificariSx,
-    medicExaminatorFieldSx, buttonDeconectareSx,
     
 } from "./OftalmologPage.styles";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
