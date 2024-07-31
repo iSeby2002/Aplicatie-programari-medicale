@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,12 +17,13 @@ public class Programari {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String description;
+    //private String description;
     @ManyToOne
     @JoinColumn(name = "pacient_id")
     private Pacient pacient;
     @OneToOne
     @JoinColumn(name = "slot_id")
+
     private SlotProgramari slot;
 
     private LocalDateTime startTime;

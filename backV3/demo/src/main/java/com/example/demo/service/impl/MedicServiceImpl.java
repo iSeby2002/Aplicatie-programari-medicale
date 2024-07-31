@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 
 import com.example.demo.dtos.LoginDto;
+import com.example.demo.dtos.LoginReponseDTO;
 import com.example.demo.dtos.RegisterDto;
 import com.example.demo.model.Medic;
 import com.example.demo.repository.MedicRepository;
@@ -17,18 +18,27 @@ public class MedicServiceImpl implements MedicService {
 
     private final MedicRepository medicRepository;
 
-
     public MedicServiceImpl(MedicRepository medicRepository){
         this.medicRepository = medicRepository;
     }
 
     @Override
-    public Medic logIn(LoginDto loginDto) {
+    public LoginReponseDTO logIn(LoginDto loginDto) {
         Medic a = medicRepository.findFirstByEmail(loginDto.getEmail());
-        if(hashPassword(loginDto.getPassword()).equals(a.getPassword()))
-            return a;
-        else
-            return null;
+        LoginReponseDTO loginReponseDTO = new LoginReponseDTO();
+        if(a == null){
+            loginReponseDTO.setMedic(null);
+            loginReponseDTO.setMesaj("Nu exista cont cu acest email!");
+        }else {
+            if (hashPassword(loginDto.getPassword()).equals(a.getPassword())) {
+                loginReponseDTO.setMedic(a);
+                loginReponseDTO.setMesaj("Logare cu succes!");
+            } else {
+                loginReponseDTO.setMedic(null);
+                loginReponseDTO.setMesaj("Email-ul sau parola sunt incorecte!");
+            }
+        }
+        return loginReponseDTO;
     }
 
     @Override

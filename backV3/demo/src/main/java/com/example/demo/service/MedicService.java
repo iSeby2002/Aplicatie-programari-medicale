@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dtos.LoginDto;
+import com.example.demo.dtos.LoginReponseDTO;
 import com.example.demo.dtos.RegisterDto;
 import com.example.demo.model.Medic;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Component
 public interface MedicService {
 
-    Medic logIn(LoginDto loginDto);
+    LoginReponseDTO logIn(LoginDto loginDto);
     Medic register(RegisterDto registerDto);
 
     //String deleteAccount(LoginDto loginDto);

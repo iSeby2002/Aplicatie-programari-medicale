@@ -32,20 +32,20 @@ const LoginPage = () => {
                 email: data.get('emailField'),
                 password: data.get('parolaField'),
             }
-            console.log(loginDTO)
+            //console.log(loginDTO)
 
             axios.post("http://localhost:8080/medici/login", loginDTO, {
                 headers: {
                     "content-type": "application/json"
                 }
             }).then((response: any) => {
-                console.log(response)
-                if(response.data.role === "diabetolog"){
+                console.log(response.data)
+                if(response.data.medic.role === "diabetolog"){
                     console.log(response.data)
                     navigate("/DiabetologPage");
                     // navigate("/MedicDiabetPage", { state: response.data.id })
-                }else if(response.data.role === "oftalmolog"){
-                    console.log(response.data)
+                }else if(response.data.medic.role === "oftalmolog"){
+                    console.log(response.data.medic.role)
                     navigate("/OftalmologPage");
                     // navigate("/MedicOftalmologicPage", { state: response.data.id })
                 }
@@ -56,10 +56,10 @@ const LoginPage = () => {
         }
     }
 
-    const handleForgot = (event) => {
-        event.preventDefault();
-        //navigate("/ChangePasswordPage");
-    }
+    // const handleForgot = (event) => {
+    //     event.preventDefault();
+    //     navigate("/ChangePasswordPage");
+    // }
 
     const handleCreateAccount = (event) => {
         event.preventDefault();
@@ -107,9 +107,9 @@ const LoginPage = () => {
                   sx={textFieldSx}
               />
 
-              <Typography sx={typographyForgotSx} onClick={handleForgot}>
-                  Ai uitat parola?
-              </Typography>
+              {/*<Typography sx={typographyForgotSx} onClick={handleForgot}>*/}
+              {/*    Ai uitat parola?*/}
+              {/*</Typography>*/}
               <Button sx={buttonSx} type="submit">
                   Autentificare
               </Button>

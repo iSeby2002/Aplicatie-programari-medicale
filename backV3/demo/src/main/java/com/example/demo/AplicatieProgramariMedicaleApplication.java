@@ -6,6 +6,7 @@ import com.example.demo.model.Medic;
 import com.example.demo.model.Pacient;
 import com.example.demo.service.MedicService;
 import com.example.demo.service.PacientService;
+import com.example.demo.service.SlotProgramariService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,7 +26,7 @@ public class AplicatieProgramariMedicaleApplication {
 	}
 
 	@Bean
-	CommandLineRunner init(MedicService medicService, PacientService pacientService) {
+	CommandLineRunner init(MedicService medicService, PacientService pacientService, SlotProgramariService slotProgramariService) {
 
 
 		return args -> {
@@ -46,8 +47,17 @@ public class AplicatieProgramariMedicaleApplication {
 					.email("oana_ilies@yahoo.com")
 					.password("1234")
 					.build();
+			RegisterDto registerDto3= RegisterDto.builder()
+					.nume("Damian")
+					.prenume("Sebastian")
+					.phoneNumber("0770994687")
+					.role("diabetolog")
+					.email("damiansebastian2002@gmail.com")
+					.password("1234")
+					.build();
 			Medic savedRegisterDto = medicService.register(registerDto1);
 			Medic savedRegisterDto2 = medicService.register(registerDto2);
+			Medic savedRegisterDto3 = medicService.register(registerDto3);
 			//pacienti diabet
 			PacientDto pacientDto1 = PacientDto.builder()
 					.numePrenume("Ion Popescu")
@@ -63,6 +73,8 @@ public class AplicatieProgramariMedicaleApplication {
 					.build();
 			Pacient savedPacientDto1 = pacientService.registerPacient(pacientDto1);
 			Pacient savedPacientDto2 = pacientService.registerPacient(pacientDto2);
+
+			slotProgramariService.generareSloturiSaptamanale();
 		};
 	}
 

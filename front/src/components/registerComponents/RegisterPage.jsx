@@ -185,7 +185,7 @@ const RegisterPage = () => {
                         setGresit({ ...gresit, parola: !validateParola(value) });
                     }}
                     error={gresit.parola}
-                    helperText={gresit.parola ? "Parolă incorectă." : ""}
+                    helperText={gresit.parola ? "Parola trebuie sa contină minim o literă mică, minim o literă mare, minim o cifră, minim un simbol." : ""}
                     sx={textFieldSx}
                 />
                 <TextField
