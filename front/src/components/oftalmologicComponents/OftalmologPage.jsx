@@ -210,16 +210,14 @@ function RadioButtonsGroupRecomandari({ recomandare, setRecomandare, setRecomand
     );
 }
 
-function handleDetaliiFundDeOchi() {
-    const text = document.getElementById("detaliiFundDeOchi").value;
-    // setDetaliiFundDeOchiText(text);
-    console.log(text);
+function handleDetaliiFundDeOchi(event, setDetaliiFundDeOchiText) {
+    const text = event.target.value;
+    setDetaliiFundDeOchiText(text);
 }
 
-function handleAlteModificariOculare() {
-    const text = document.getElementById("alteModificareOculare").value;
-    // setAlteModificariOculareText(text);
-    console.log(text);
+function handleAlteModificariOculare(event, setAlteModificariOculareText) {
+    const text = event.target.value;
+    setAlteModificariOculareText(text);
 }
 
 function RadioButtonsGroupUrmatorulControl({ urmatorulControl, setUrmatorulControl, pesteLuni, setPesteLuni, pesteSaptamani, setPesteSaptamani }) {
@@ -573,8 +571,8 @@ const OftalmologPage = () => {
             setMaiRauOS(false);
         }
     };
-    // const [detaliiFundDeOchiText, setDetaliiFundDeOchiText] = React.useState("");
-    // const [alteModificareOculareText, setAlteModificariOculareText] = React.useState("");
+    const [detaliiFundDeOchiText, setDetaliiFundDeOchiText] = React.useState("");
+    const [alteModificareOculareText, setAlteModificariOculareText] = React.useState("");
 
     // Box 4
     const [injectieNumarOD, setInjectieNumarOD] = React.useState(); // double
@@ -621,34 +619,91 @@ const OftalmologPage = () => {
     const [medicExaminatorField, setMedicExaminatorField] = React.useState(location.state.nume + " " + location.state.prenume);
     const handleSalvare = () => {
         // if (selectedData) {
-        //     const dataProgramarii = dayjs(selectedData).format('YYYY-MM-DD') + 'T' + oraProgramarii + ':00';
-        //
-        //     const fisaMedicala = {
-        //         numeSiPrenume: numeSiPrenume,
-        //         cnp: cnp,
-        //         tipDiabetZaharat: tipDiabetZaharat,
-        //         diabetZaharat: diabetZaharat,
-        //         dataDiagnosticului: dayjs(selectedDataDiagnoticului).format('YYYY-MM-DD'),
-        //         dataProgramarii: dayjs(selectedDataProgramare).format('YYYY-MM-DD'),
-        //         oraProgramarii: dataOraProgramarii,
-        //     };
-        //
-        //     // console.log(programareDTO);
-        //
-        //     axios.post("http://localhost:8080/medici/fisaMedicala/saveFisaMedicala", fisaMedicala, {
-        //         headers: {
-        //             "content-type": "application/json"
-        //         }
-        //     }).then(() => {
-        //         // setNumeSiPrenume("");
-        //         // setCnp("")
-        //         // setTipDiabetZaharat("tip 1");
-        //         // setDiabetZaharat("");
-        //         // setSelectedDataDiagnoticului(null);
-        //         // setSelectedDataProgramare(null);
-        //         // setOraProgramarii("");
-        //         navigate("/OftalmologPage");
-        //     });
+            const esteAn = (urmatorulControl === "an")
+
+            const fisaMedicalaDTO = {
+                idProgramare: selectedProgramare.id,
+                // Box 2
+                HbA1C: HbA1C,
+                tipHbA1C: tipHbA1C,
+                glicemie: glicemie,
+                uree: uree,
+                creatinina: creatinina,
+                eRFG: eRFG,
+                hta: HTA,
+                neuropatie: neuropatie,
+                nefropatie: nefropatie,
+                ci: CI,
+                avc: AVC,
+                ima: IMA,
+                hipercolesterolomie: hipercolesterolemie,
+                hipertrigliceridemie: hipertrigliceridemie,
+                insulina: insulina,
+                ado: ADO,
+                dieta: dieta,
+                nimic: nimic,
+                //box3
+                detaliiFundDeOchi: detaliiFundDeOchiText,
+                alteModalitatiOculare: alteModificareOculareText,
+                acuitateVizualaOD: acuitateOD,
+                acuitateVizualaOS: acuitateOS,
+                rubeozaIrianaOD: rubeozaIrianaOD,
+                rubeozaIrianaOS: rubeozaIrianaOS,
+                faraRetinopatieDiabeticaOD: faraRetinopatieDiabeticaOD,
+                faraRetinopatieDiabeticaOS: faraRetinopatieDiabeticaOS,
+                retinopatieDiabeticaNeproliferativaUsoaraOD: usoaraOD,
+                retinopatieDiabeticaNeproliferativaUsoaraOS: usoaraOS,
+                retinopatieDiabeticaNeproliferativaMedieOD: moderataOD,
+                retinopatieDiabeticaNeproliferativaMedieOS: moderataOS,
+                retinopatieDiabeticaNeproliferativaSeveraOD: severaOD,
+                retinopatieDiabeticaNeproliferativaSeveraOS: severaOS,
+                retinopatieDiabeticaProliferativaOD: retinopatieDiabeticaProliferativaOD,
+                retinopatieDiabeticaProliferativaOS: retinopatieDiabeticaProliferativaOS,
+                edemMacularClinicSemnificativOD: edemMacularOD,
+                edemMacularClinicSemnificativOS: edemMacularOS,
+                comparativCuUltimaExaminareLaFelOD: laFelOD,
+                comparativCuUltimaExaminareLaFelOS: laFelOS,
+                comparativCuUltimaExaminareMaiBineOS: maiBineOD,
+                comparativCuUltimaExaminareMaiBineOD: maiBineOS,
+                comparativCuUltimaExaminareMaiRauOD: maiRauOD,
+                comparativCuUltimaExaminareMaiRauOS: maiRauOS,
+                comparativCuUltimaExaminareNuSeCunoasteOD: nuSeCunoasteOD,
+                comparativCuUltimaExaminareNuSeCunoasteOS: nuSeCunoasteOS,
+                //box4
+                injectieNumarOS: injectieNumarOS,
+                injectieDozaOS: injectieDozaOS,
+                injectieNumarOD: injectieNumarOD,
+                injectieDozaOD: injectieDozaOD,
+                laserOD: panfotocoagulareOD,
+                laserOS: panfotocoagulareOS,
+                //box5
+                diagnosticOD: diagnosticOD,
+                diagnosticOS: diagnosticOS,
+                //box6
+                recomandare: recomandare,
+                recomandareField: recomandareField,
+                tratament: tratament,
+                tratamentField: tratamentField,
+                peste1An: esteAn,
+                pesteLuni: pesteLuni,
+                pesteSaptamani: pesteSaptamani,
+                ambulator: ambulator,
+                ambulatorLaField: ambulatorLaField,
+                ambulatorInField: ambulatorInField,
+                data: selectedData,
+                MedicExaminator: medicExaminatorField,
+            };
+
+            console.log(fisaMedicalaDTO);
+
+            axios.post("http://localhost:8080/medici/fisaMedicala/saveFisaMedicala", fisaMedicalaDTO, {
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then((response: any) => {
+                navigate("/OftalmologPage", { state: location.state });
+                console.log(response.data)
+            });
         // }
     };
     const handleDeconectare = () => {
@@ -658,6 +713,7 @@ const OftalmologPage = () => {
     const [selectedDataProgramarii, setSelectedDataProgramarii] = React.useState(dayjs()); // initial sa fie ziua de azi
     const handleDataProgramariiChange = (newValue) => {
         setSelectedDataProgramarii(newValue);
+        setOraProgramarii("");
     };
     const [listOreDisponibile, setListOreDisponibile] = React.useState([]);
     const [oraProgramarii, setOraProgramarii] = React.useState("");
@@ -693,6 +749,7 @@ const OftalmologPage = () => {
             setNrCrt(pacient.nrCrt || 0);
             setCnp(pacient.cnp || "");
             setTipDiabetZaharat(pacient.diabetZaharat || "tip 1");
+            setDiabetZaharat(pacient.diabetZaharatField || "");
             setDataDiagnosticului(dayjs(pacient.dataDiagnosticului).format("DD/MM/YYYY") || "");
         }
     };
@@ -1452,7 +1509,11 @@ const OftalmologPage = () => {
                                 <Typography sx={typographyDetaliiSx}>
                                     Detalii Fund de ochi (opțional):
                                 </Typography>
-                                <textarea id="detaliiFundDeOchi" style={{width: "98%", height: "85%"}} onInput={handleDetaliiFundDeOchi}></textarea>
+                                <textarea
+                                    id="detaliiFundDeOchi"
+                                    style={{width: "98%", height: "85%"}}
+                                    onInput={(event) => handleDetaliiFundDeOchi(event, setDetaliiFundDeOchiText)}
+                                ></textarea>
                             </Box>
                             <Box sx={{
                                 display: "flex",
@@ -1468,7 +1529,11 @@ const OftalmologPage = () => {
                                 <Typography sx={typographyAlteModificariSx}>
                                     Alte modificări oculare:
                                 </Typography>
-                                <textarea id="alteModificareOculare" style={{width: "98%", height: "85%"}} onInput={handleAlteModificariOculare}></textarea>
+                                <textarea
+                                    id="alteModificareOculare"
+                                    style={{width: "98%", height: "85%"}}
+                                    onInput={(event) => handleAlteModificariOculare(event, setAlteModificariOculareText)}
+                                ></textarea>
                             </Box>
                         </Box>
                     </Box>

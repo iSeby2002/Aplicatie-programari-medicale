@@ -27,7 +27,7 @@ public class FisaMedicalaController {
         this.programariService = programariService;
         this.fisaMedicalaService = fisaMedicalaService;
     }
-    @GetMapping("/getProgramariCurente")
+    @PostMapping("/getProgramariCurente")
     public ResponseEntity<List<Programari>> getProgramariCurente(@RequestBody LocalDate data) {
         List<Programari> programari = fisaMedicalaService.findProgramariCurente(data);
         return new ResponseEntity<>(programari, HttpStatus.OK);
