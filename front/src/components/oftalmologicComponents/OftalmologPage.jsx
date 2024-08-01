@@ -803,40 +803,6 @@ const OftalmologPage = () => {
             setDataDiagnosticului(dayjs(pacient.dataDiagnosticului).format("DD/MM/YYYY") || "");
         }
     };
-
-    const handleSalvarePDF = async () => {
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        let position = 3;
-        const boxes = ['box0', 'box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7']; // ID-urile boxurilor tale
-        const spaceBetween = 3; // Spațiu de 10mm între imagini
-
-        for (const boxId of boxes) {
-            const input = document.getElementById(boxId);
-            await html2canvas(input, {
-                scale: 3,
-                useCORS: true,
-                allowTaint: true,
-                scrollX: 0,
-                scrollY: 0,
-                width: input.scrollWidth,
-                height: input.scrollHeight,
-            }).then((canvas) => {
-                const imgData = canvas.toDataURL('image/png');
-                const imgWidth = 210; // Lățimea paginii A4 în mm
-                const imgHeight = canvas.height * imgWidth / canvas.width;
-
-                if (position + imgHeight > 297) { // Dacă imaginea curentă depășește înălțimea paginii
-                    pdf.addPage();
-                    position = 0; // Reîncepe poziționarea de la începutul paginii
-                }
-
-                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                position += imgHeight + spaceBetween; // Ajustează poziționarea pentru următoarea imagine, cu 10px spațiu
-            });
-        }
-
-        pdf.save('Fisa Medicala ' + numeSiPrenume + " " + dayjs(selectedData).format("DD/MM/YYYY") + '.pdf');
-    };
     
     return (
         <div className="oftalmologPage" style={{ height: '100vh', overflowY: 'auto' }}>
