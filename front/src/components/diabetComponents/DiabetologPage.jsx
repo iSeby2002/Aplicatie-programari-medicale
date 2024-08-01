@@ -24,7 +24,7 @@ import dayjs from "dayjs";
 import {useLocation, useNavigate} from "react-router-dom";
 
 
-function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat }) {
+function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat, setDiabetZaharat }) {
     return (
         <FormControl style={{ display: "flex", flexDirection: "row" }}>
             <RadioGroup
@@ -32,7 +32,13 @@ function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat }) {
                 value={tipDiabetZaharat}
                 name="radio-buttons-group"
                 sx={{ display: "flex", flexDirection: 'row', marginLeft: "-20px" }}
-                onChange={(e) => setTipDiabetZaharat(e.target.value)}
+                onChange={(e) => {
+                    const value = e.target.value;
+                    setTipDiabetZaharat(value);
+                    if(value === "tip 1") {
+                        setDiabetZaharat("");
+                    }
+                }}
             >
                 <FormControlLabel value="tip 1" control={<Radio />} label="tip 1" />
                 <FormControlLabel value="tip 2" control={<Radio />} label="tip 2" />
@@ -144,6 +150,7 @@ const DiabetologPage = () => {
 
     const handleDeconectare = () => {
           navigate("/");
+          localStorage.setItem('auth', 'false');
     };
 
     return (
@@ -211,7 +218,11 @@ const DiabetologPage = () => {
                         <Typography sx={typographyDiabetZaharatSx}>
                             Diabet zaharat:
                         </Typography>
-                        <RadioButtonsGroup1 tipDiabetZaharat={tipDiabetZaharat} setTipDiabetZaharat={setTipDiabetZaharat}/>
+                        <RadioButtonsGroup1
+                            tipDiabetZaharat={tipDiabetZaharat}
+                            setTipDiabetZaharat={setTipDiabetZaharat}
+                            setDiabetZaharat={setDiabetZaharat}
+                        />
                         <TextField
                             id="diabetZaharatField"
                             name="diabetZaharatField"
@@ -222,6 +233,7 @@ const DiabetologPage = () => {
                                 setDiabetZaharat(value);
                             }}
                             sx={diabetZaharatSx}
+                            disabled={tipDiabetZaharat !== 'tip 2'}
                         />
                         <Typography sx={typographyDataDiagnosticuluiSx}>
                             Data diagnosticului:

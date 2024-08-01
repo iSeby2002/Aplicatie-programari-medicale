@@ -124,14 +124,25 @@ import {
     typographyMaiBineODSx,
     typographyMaiBineSx,
     typographyLaFelOSSx,
-    typographyLaFelODSx, typographyLaFelSx, typographyComparativSx, typographyDetaliiSx, typographyAlteModificariSx,
-    medicExaminatorFieldSx, buttonDeconectareSx, buttonSalvareSx, typographyPesteLuniSx, typographyPesteSaptamaniSx,
+    typographyLaFelODSx,
+    typographyLaFelSx,
+    typographyComparativSx,
+    typographyDetaliiSx,
+    typographyAlteModificariSx,
+    medicExaminatorFieldSx,
+    buttonDeconectareSx,
+    buttonSalvareSx,
+    typographyPesteLuniSx,
+    typographyPesteSaptamaniSx,
+    typographySalvarePDFSx,
 } from "./OftalmologPage.styles";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DatePicker} from "@mui/x-date-pickers";
 import {useLocation, useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 
 function RadioButtonsGroupTipDiabetZaharat({ tipDiabetZaharat, setTipDiabetZaharat }) {
@@ -617,7 +628,11 @@ const OftalmologPage = () => {
         setSelectedData(newValue);
     };
     const [medicExaminatorField, setMedicExaminatorField] = React.useState(location.state.nume + " " + location.state.prenume);
-    const handleSalvare = () => {
+    const [salvarePDF, setSalvarePDF] = React.useState(false);
+    const handleChangeSalvarePDF = (event) => {
+        setSalvarePDF(event.target.checked);
+    };
+    const handleSalvare = async () => {
         // if (selectedData) {
             const esteAn = (urmatorulControl === "an")
 
@@ -704,10 +719,45 @@ const OftalmologPage = () => {
                 navigate("/OftalmologPage", { state: location.state });
                 console.log(response.data)
             });
+
+            if(salvarePDF){
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                let position = 3;
+                const boxes = ['box0', 'box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7']; // ID-urile boxurilor tale
+                const spaceBetween = 3; // Spațiu de 10mm între imagini
+
+                for (const boxId of boxes) {
+                    const input = document.getElementById(boxId);
+                    await html2canvas(input, {
+                        scale: 3,
+                        useCORS: true,
+                        allowTaint: true,
+                        scrollX: 0,
+                        scrollY: 0,
+                        width: input.scrollWidth,
+                        height: input.scrollHeight,
+                    }).then((canvas) => {
+                        const imgData = canvas.toDataURL('image/png');
+                        const imgWidth = 210; // Lățimea paginii A4 în mm
+                        const imgHeight = canvas.height * imgWidth / canvas.width;
+
+                        if (position + imgHeight > 297) { // Dacă imaginea curentă depășește înălțimea paginii
+                            pdf.addPage();
+                            position = 0; // Reîncepe poziționarea de la începutul paginii
+                        }
+
+                        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        position += imgHeight + spaceBetween; // Ajustează poziționarea pentru următoarea imagine, cu 10px spațiu
+                    });
+                }
+
+                pdf.save('Fisa Medicala ' + numeSiPrenume + " " + dayjs(selectedData).format("DD/MM/YYYY") + '.pdf');
+            }
         // }
     };
     const handleDeconectare = () => {
         navigate("/");
+        localStorage.setItem('auth', 'false');
     };
 
     const [selectedDataProgramarii, setSelectedDataProgramarii] = React.useState(dayjs()); // initial sa fie ziua de azi
@@ -720,7 +770,7 @@ const OftalmologPage = () => {
     const [selectedProgramare, setSelectedProgramare] = React.useState(null);
     
     useEffect(() => {
-        axios.post("http://localhost:8080/medici/fisaMedicala/getProgramariCurente", selectedDataProgramarii,{
+        axios.post("http://localhost:8080/medici/fisaMedicala/getProgramariCurente", selectedDataProgramarii.format('YYYY-MM-DD'),{
             headers: {
                 "content-type": "application/json"
             }
@@ -754,12 +804,40 @@ const OftalmologPage = () => {
         }
     };
 
-    useEffect(() => {
-        if (selectedProgramare) {
-            console.log("Programare selectată:", selectedProgramare);
-        }
-    }, [selectedProgramare]);
+    const handleSalvarePDF = async () => {
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        let position = 3;
+        const boxes = ['box0', 'box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7']; // ID-urile boxurilor tale
+        const spaceBetween = 3; // Spațiu de 10mm între imagini
 
+        for (const boxId of boxes) {
+            const input = document.getElementById(boxId);
+            await html2canvas(input, {
+                scale: 3,
+                useCORS: true,
+                allowTaint: true,
+                scrollX: 0,
+                scrollY: 0,
+                width: input.scrollWidth,
+                height: input.scrollHeight,
+            }).then((canvas) => {
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 210; // Lățimea paginii A4 în mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+
+                if (position + imgHeight > 297) { // Dacă imaginea curentă depășește înălțimea paginii
+                    pdf.addPage();
+                    position = 0; // Reîncepe poziționarea de la începutul paginii
+                }
+
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                position += imgHeight + spaceBetween; // Ajustează poziționarea pentru următoarea imagine, cu 10px spațiu
+            });
+        }
+
+        pdf.save('Fisa Medicala ' + numeSiPrenume + " " + dayjs(selectedData).format("DD/MM/YYYY") + '.pdf');
+    };
+    
     return (
         <div className="oftalmologPage" style={{ height: '100vh', overflowY: 'auto' }}>
             <CssBaseline />
@@ -794,11 +872,11 @@ const OftalmologPage = () => {
                         </Select>
                     </FormControl>
                 </Box>
-                <Typography sx={typographyTitluSx}>
+                <Typography id="box0" sx={typographyTitluSx}>
                     SCREENING RETINOPATIE DIABETICĂ
                 </Typography>
                 {/* Box 1 */}
-                <Box sx={boxSx}>
+                <Box id="box1" sx={boxSx}>
                     <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
                         <Typography sx={typographyNumeSiPrenumeSx}>
                             Nume și prenume:
@@ -873,7 +951,7 @@ const OftalmologPage = () => {
                     </Box>
                 </Box>
                 {/* Box 2 */}
-                <Box sx={boxSx}>
+                <Box id="box2" sx={boxSx}>
                     <Box sx={{display: "flex", flexDirection: "row", width: "100%"}}>
                         <Typography sx={typographyHbA1CSx}>
                             HbA1C:
@@ -1184,7 +1262,7 @@ const OftalmologPage = () => {
                     </Box>
                 </Box>
                 {/* Box 3 */}
-                <Box sx={boxSx}>
+                <Box id="box3" sx={boxSx}>
                     <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
                         <Box sx={{display: "flex", flexDirection: 'column', width: "50%"}}>
                             <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
@@ -1539,7 +1617,7 @@ const OftalmologPage = () => {
                     </Box>
                 </Box>
                 {/* Box 4 */}
-                <Box sx={boxSx}>
+                <Box id="box4" sx={boxSx}>
                     <Typography sx={typographyTratamentAnteriorOcularSx}>
                         Tratament anterior ocular:
                     </Typography>
@@ -1641,7 +1719,7 @@ const OftalmologPage = () => {
                     </Box>
                 </Box>
                 {/* Box 5 */}
-                <Box sx={boxSx}>
+                <Box id="box5" sx={boxSx}>
                     <Box sx={{display: "flex", flexDirection: 'row'}}>
                         <Typography sx={typographyDiagnosticSx}>
                             Diagnostic:
@@ -1683,7 +1761,7 @@ const OftalmologPage = () => {
                     </Box>
                 </Box>
                 {/* Box 6 */}
-                <Box sx={boxSx}>
+                <Box id="box6" sx={boxSx}>
                     <Typography sx={typographyRecomandariSx}>
                         Recomandări:
                     </Typography>
@@ -1782,7 +1860,7 @@ const OftalmologPage = () => {
                 </Box>
                 {/* Last Box */}
                 <Box sx={lastBoxSx}>
-                    <Box sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
+                    <Box id="box7" sx={{display: "flex", flexDirection: 'row', width: "100%"}}>
                         <Box sx={{display: "flex", flexDirection: 'column', width: "50%"}}>
                             <Typography sx={typographyDataSx}>
                                 Data
@@ -1817,12 +1895,27 @@ const OftalmologPage = () => {
                         </Box>
                     </Box>
                     <Box sx={{display: "flex", flexDirection: 'row', alignItems: "center", justifyContent: "center", width: "100%", gap: "5%"}}>
-                        <Button sx={buttonSalvareSx} onClick={handleSalvare}>
-                            Salvare
-                        </Button>
-                        <Button sx={buttonDeconectareSx} onClick={handleDeconectare}>
-                            Deconectare
-                        </Button>
+                        <Box sx={{display: "flex", flexDirection: 'column', alignItems: "center", justifyContent: "center", width: "20%"}}>
+                            <Button sx={buttonSalvareSx} onClick={handleSalvare}>
+                                Salvare
+                            </Button>
+                            <Box sx={{display: "flex", flexDirection: 'row', alignItems: "center", justifyContent: "center"}}>
+                                <Checkbox
+                                    checked={salvarePDF}
+                                    onChange={handleChangeSalvarePDF}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    sx={{padding: "10px 10px"}}
+                                />
+                                <Typography sx={typographySalvarePDFSx}>
+                                    Salvare ca PDF
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Box sx={{display: "flex", flexDirection: 'column',  height: "110px", width: "20%"}}>
+                            <Button sx={buttonDeconectareSx} onClick={handleDeconectare}>
+                                Deconectare
+                            </Button>
+                        </Box>
                     </Box>
                 </Box>
             </Box>

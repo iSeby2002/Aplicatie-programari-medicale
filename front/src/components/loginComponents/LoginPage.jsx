@@ -39,12 +39,10 @@ const LoginPage = () => {
                     "content-type": "application/json"
                 }
             }).then((response: any) => {
-                console.log(response.data)
+                localStorage.setItem('auth', 'true');
                 if(response.data.medic.role === "diabetolog"){
-                    console.log(response.data)
                     navigate("/DiabetologPage", { state: response.data.medic });
                 }else if(response.data.medic.role === "oftalmolog"){
-                    console.log(response.data.medic.role)
                     navigate("/OftalmologPage", { state: response.data.medic });
                 }
             }).catch((error: any) => {

@@ -934,7 +934,7 @@ export const medicExaminatorFieldSx: React.CSSProperties = {
 
 export const buttonSalvareSx: React.CSSProperties = {
     marginTop: "5%",
-    width: "20%",
+    width: "100%",
     height: "50px",
     border: "1px solid",
     background: "#2691d9",
@@ -950,9 +950,16 @@ export const buttonSalvareSx: React.CSSProperties = {
     },
 };
 
+export const typographySalvarePDFSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+};
+
 export const buttonDeconectareSx: React.CSSProperties = {
     marginTop: "5%",
-    width: "20%",
+    width: "100%",
     height: "50px",
     border: "1px solid",
     background: "#2691d9",
