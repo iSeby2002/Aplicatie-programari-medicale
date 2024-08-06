@@ -55,9 +55,10 @@ public class AplicatieProgramariMedicaleApplication {
 					.email("damiansebastian2002@gmail.com")
 					.password("1234")
 					.build();
-			Medic savedRegisterDto = medicService.register(registerDto1);
-			Medic savedRegisterDto2 = medicService.register(registerDto2);
-			Medic savedRegisterDto3 = medicService.register(registerDto3);
+			medicService.register(registerDto1);
+			medicService.register(registerDto2);
+			medicService.register(registerDto3);
+
 			//pacienti diabet
 			PacientDto pacientDto1 = PacientDto.builder()
 					.numePrenume("Ion Popescu")

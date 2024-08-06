@@ -109,26 +109,8 @@ export const typographyProgramaerSx: React.CSSProperties = {
     fontWeight: "600",
 };
 
-export const buttonProgrameazaSx: React.CSSProperties = {
+export const buttonSx: React.CSSProperties = {
     marginTop: "1%",
-    width: "20%",
-    height: "50px",
-    border: "1px solid",
-    background: "#2691d9",
-    borderRadius: "25px",
-    fontSize: "18px",
-    color: "#e9f4fb",
-    fontWeight: "700",
-    cursor: "pointer",
-    '&:hover': {
-        background: "#2691d9",
-        borderColor: "#2691d9",
-        transition: ".5s",
-    },
-};
-
-export const buttonDeconectareSx: React.CSSProperties = {
-    marginBottom: "1%",
     width: "20%",
     height: "50px",
     border: "1px solid",
