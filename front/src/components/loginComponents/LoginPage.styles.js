@@ -33,16 +33,6 @@ export const textFieldSx: React.CSSProperties = {
     height: "40px",
 };
 
-export const typographyForgotSx: React.CSSProperties = {
-    padding: "15px 0px",
-    color: "#a6a6a6",
-    cursor: "pointer",
-    transition: "color .5s",
-    '&:hover': {
-        color: "#2691d9",
-    },
-};
-
 export const buttonSx: React.CSSProperties = {
     width: "75%",
     height: "50px",

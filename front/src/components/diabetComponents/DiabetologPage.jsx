@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {
-    boxSx, buttonDeconectareSx, buttonProgrameazaSx,
+    boxSx, buttonSx,
     centerBoxSx, CNPSx, diabetZaharatSx, nrCrtSx,
     numeSiPrenumeSx, typographyCNPSx, typographyDataDiagnosticuluiSx, typographyDiabetZaharatSx, typographyNrCrtSx,
     typographyNumeSiPrenumeSx, typographyProgramaerSx,
@@ -21,10 +21,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {DatePicker} from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 
-function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat }) {
+function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat, setDiabetZaharat }) {
     return (
         <FormControl style={{ display: "flex", flexDirection: "row" }}>
             <RadioGroup
@@ -32,7 +32,13 @@ function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat }) {
                 value={tipDiabetZaharat}
                 name="radio-buttons-group"
                 sx={{ display: "flex", flexDirection: 'row', marginLeft: "-20px" }}
-                onChange={(e) => setTipDiabetZaharat(e.target.value)}
+                onChange={(e) => {
+                    const value = e.target.value;
+                    setTipDiabetZaharat(value);
+                    if(value === "tip 1") {
+                        setDiabetZaharat("");
+                    }
+                }}
             >
                 <FormControlLabel value="tip 1" control={<Radio />} label="tip 1" />
                 <FormControlLabel value="tip 2" control={<Radio />} label="tip 2" />
@@ -43,8 +49,6 @@ function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat }) {
 
 const DiabetologPage = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const [medic, setMedic] = React.useState(location.state)
 
     // BOX 1
     const [gresit, setGresit] = React.useState({
@@ -80,16 +84,16 @@ const DiabetologPage = () => {
     };
 
     useEffect(() => {
-        axios.get("http://localhost:8080/pacienti/getUrmatorulNrCrt", {
+        axios.get(`${process.env.REACT_APP_SERVER_LINK}/pacienti/getUrmatorulNrCrt`, {
             headers: {
                 "content-type": "application/json"
             }
         }).then((response: any) => {
             setNrCrt(response.data);
-            });
+        });
 
         if (selectedDataProgramare) {
-            axios.post("http://localhost:8080/programari/getAvailableSlots", {
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/getAvailableSlots`, {
                 dataProgramare: dayjs(selectedDataProgramare).format('YYYY-MM-DD')
             }, {
                 headers: {
@@ -119,9 +123,7 @@ const DiabetologPage = () => {
                 oraProgramarii: dataOraProgramarii,
             };
 
-            // console.log(programareDTO);
-
-            axios.post("http://localhost:8080/programari/programare", programareDTO, {
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/programare`, programareDTO, {
                 headers: {
                     "content-type": "application/json"
                 }
@@ -143,7 +145,8 @@ const DiabetologPage = () => {
     }
 
     const handleDeconectare = () => {
-          navigate("/");
+        navigate("/");
+        localStorage.setItem('auth', 'false');
     };
 
     return (
@@ -211,7 +214,11 @@ const DiabetologPage = () => {
                         <Typography sx={typographyDiabetZaharatSx}>
                             Diabet zaharat:
                         </Typography>
-                        <RadioButtonsGroup1 tipDiabetZaharat={tipDiabetZaharat} setTipDiabetZaharat={setTipDiabetZaharat}/>
+                        <RadioButtonsGroup1
+                            tipDiabetZaharat={tipDiabetZaharat}
+                            setTipDiabetZaharat={setTipDiabetZaharat}
+                            setDiabetZaharat={setDiabetZaharat}
+                        />
                         <TextField
                             id="diabetZaharatField"
                             name="diabetZaharatField"
@@ -222,6 +229,7 @@ const DiabetologPage = () => {
                                 setDiabetZaharat(value);
                             }}
                             sx={diabetZaharatSx}
+                            disabled={tipDiabetZaharat !== 'tip 2'}
                         />
                         <Typography sx={typographyDataDiagnosticuluiSx}>
                             Data diagnosticului:
@@ -274,12 +282,12 @@ const DiabetologPage = () => {
                                 ))}
                             </Select>
                         </FormControl>
-                        <Button sx={buttonProgrameazaSx} type="submit">
+                        <Button sx={buttonSx} type="submit">
                             Programează
                         </Button>
                     </Box>
                 </Box>
-                <Button sx={buttonDeconectareSx} onClick={handleDeconectare}>
+                <Button sx={{ ...buttonSx, marginBottom: "15px" }} onClick={handleDeconectare}>
                     Deconectare
                 </Button>
             </Box>
