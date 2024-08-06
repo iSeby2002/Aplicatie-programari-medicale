@@ -20,6 +20,7 @@ import {
 } from "./RegisterPage.styles";
 import {useNavigate} from "react-router-dom";
 import {FormControl} from "@mui/base";
+import CustomizedSnackbars from "../../utils/CustomizedSnackbars";
 
 
 function RadioButtonsGroup({ tipMedic, setTipMedic }) {
@@ -41,6 +42,14 @@ function RadioButtonsGroup({ tipMedic, setTipMedic }) {
 }
 
 const RegisterPage = () => {
+    const navigate = useNavigate();
+    const [open, setOpen] = React.useState(false);
+    const [severity, setSeverity] = React.useState("")
+    const [message, setMessage] = React.useState("");
+    const handleCloseSnackbar = () => {
+        setOpen(false);
+    };
+
     const [prenume, setPrenume] = React.useState("");
     const [nume, setNume] = React.useState("");
     const [email, setEmail] = React.useState("");
@@ -49,13 +58,13 @@ const RegisterPage = () => {
     const [confirmareParola, setConfirmareParola] = React.useState("");
     const [tipMedic, setTipMedic] = React.useState("diabetolog");
     const [gresit, setGresit] = React.useState({ prenume: false, nume: false, email: false, telefon: false, parola: false, confirmareParola: false });
-    const navigate = useNavigate();
 
     const validatePrenume = (value: string) => /^[a-zA-Z\s-]+$/.test(value);
     const validateNume = (value: string) => /^[a-zA-Z\s-]+$/.test(value);
     const validateEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
     const validateTelefon = (value: string) => /^[0-9]{10}$/.test(value);
-    const validateParola = (value: string) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value);
+    const validateParola = (value: string) =>
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[().*[\]!@#$%^&_\-+={}|~`:;"'<,>?/]).{8,}$/.test(value);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -71,18 +80,24 @@ const RegisterPage = () => {
                 password: data.get('parolaField'),
                 role: tipMedic,
             }
-            console.log(registerDTO)
 
-            axios.post("http://localhost:8080/medici/register", registerDTO, {
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/register`, registerDTO, {
                 headers: {
                     "content-type": "application/json"
                 }
             }).then((response: any) => {
-                console.log(response)
-                navigate("/LoginPage");
+                setOpen(true);
+                setSeverity("success");
+                setMessage(response.data.mesaj);
+
+                setTimeout(() => {
+                    navigate("/");
+                }, 1000);
+
             }).catch((error: any) => {
-                console.error(error)
-                setGresit(true)
+                setOpen(true);
+                setSeverity("error");
+                setMessage(error.response.data.mesaj);
             })
         }
     }
@@ -205,6 +220,12 @@ const RegisterPage = () => {
                     Ai deja un cont? Autentifică-te
                 </Typography>
             </Box>
+            <CustomizedSnackbars
+                open={open}
+                severity={severity}
+                message={message}
+                onClose={handleCloseSnackbar}
+            />
         </div>
     );
 }

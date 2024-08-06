@@ -27,29 +27,17 @@ import {
     typographyeRFGSx,
     eRFGSx,
     typographyHTASx,
-    HTASx,
     typographyNeuropatieSx,
-    neuropatieSx,
     typographyNefropatieSx,
-    nefropatieSx,
     typographyCISx,
-    CISx,
     typographyeAVCSx,
-    AVCSx,
     typographyeIMASx,
-    IMASx,
     typographyeHipercolesterolemieSx,
-    hipercolesterolemieSx,
     typographyHipertrigliceridemieSx,
-    hipertrigliceridemieSx,
     typographyTratamentDiabetInPrezentSx,
-    insulinaSx,
     typographyInsulinaSx,
-    ADOSx,
     typographyADOSx,
-    dietaSx,
     typographyeDietaSx,
-    nimicSx,
     typographyeNimicSx,
     typographyDiagnosticSx,
     typographyDiagnosticODSx,
@@ -130,8 +118,7 @@ import {
     typographyDetaliiSx,
     typographyAlteModificariSx,
     medicExaminatorFieldSx,
-    buttonDeconectareSx,
-    buttonSalvareSx,
+    buttonSx,
     typographyPesteLuniSx,
     typographyPesteSaptamaniSx,
     typographySalvarePDFSx,
@@ -159,7 +146,7 @@ function RadioButtonsGroupTipDiabetZaharat({ tipDiabetZaharat, setTipDiabetZahar
                     height: "100%",
                     width: "100%"
                 }}
-              //  onChange={(e) => setTipDiabetZaharat(e.target.value)}
+                //  onChange={(e) => setTipDiabetZaharat(e.target.value)}
             >
                 <FormControlLabel value="tip 1" control={<Radio />} label="tip 1" />
                 <FormControlLabel value="tip 2" control={<Radio />} label="tip 2" />
@@ -318,7 +305,6 @@ const OftalmologPage = () => {
     const [diabetZaharat, setDiabetZaharat] = React.useState("");
     const [tipDiabetZaharat, setTipDiabetZaharat] = React.useState("");
     const [dataDiagnosticului, setDataDiagnosticului] = React.useState("");
-
 
     // BOX 2
     const [HbA1C, setHbA1C] = React.useState(0); // double
@@ -627,132 +613,132 @@ const OftalmologPage = () => {
     const handleDataChange = (newValue) => {
         setSelectedData(newValue);
     };
-    const [medicExaminatorField, setMedicExaminatorField] = React.useState(location.state.nume + " " + location.state.prenume);
+    const [medicExaminatorField] = React.useState(location.state.nume + " " + location.state.prenume);
     const [salvarePDF, setSalvarePDF] = React.useState(false);
     const handleChangeSalvarePDF = (event) => {
         setSalvarePDF(event.target.checked);
     };
     const handleSalvare = async () => {
         // if (selectedData) {
-            const esteAn = (urmatorulControl === "an")
+        const esteAn = (urmatorulControl === "an")
 
-            const fisaMedicalaDTO = {
-                idProgramare: selectedProgramare.id,
-                // Box 2
-                HbA1C: HbA1C,
-                tipHbA1C: tipHbA1C,
-                glicemie: glicemie,
-                uree: uree,
-                creatinina: creatinina,
-                eRFG: eRFG,
-                hta: HTA,
-                neuropatie: neuropatie,
-                nefropatie: nefropatie,
-                ci: CI,
-                avc: AVC,
-                ima: IMA,
-                hipercolesterolomie: hipercolesterolemie,
-                hipertrigliceridemie: hipertrigliceridemie,
-                insulina: insulina,
-                ado: ADO,
-                dieta: dieta,
-                nimic: nimic,
-                //box3
-                detaliiFundDeOchi: detaliiFundDeOchiText,
-                alteModalitatiOculare: alteModificareOculareText,
-                acuitateVizualaOD: acuitateOD,
-                acuitateVizualaOS: acuitateOS,
-                rubeozaIrianaOD: rubeozaIrianaOD,
-                rubeozaIrianaOS: rubeozaIrianaOS,
-                faraRetinopatieDiabeticaOD: faraRetinopatieDiabeticaOD,
-                faraRetinopatieDiabeticaOS: faraRetinopatieDiabeticaOS,
-                retinopatieDiabeticaNeproliferativaUsoaraOD: usoaraOD,
-                retinopatieDiabeticaNeproliferativaUsoaraOS: usoaraOS,
-                retinopatieDiabeticaNeproliferativaMedieOD: moderataOD,
-                retinopatieDiabeticaNeproliferativaMedieOS: moderataOS,
-                retinopatieDiabeticaNeproliferativaSeveraOD: severaOD,
-                retinopatieDiabeticaNeproliferativaSeveraOS: severaOS,
-                retinopatieDiabeticaProliferativaOD: retinopatieDiabeticaProliferativaOD,
-                retinopatieDiabeticaProliferativaOS: retinopatieDiabeticaProliferativaOS,
-                edemMacularClinicSemnificativOD: edemMacularOD,
-                edemMacularClinicSemnificativOS: edemMacularOS,
-                comparativCuUltimaExaminareLaFelOD: laFelOD,
-                comparativCuUltimaExaminareLaFelOS: laFelOS,
-                comparativCuUltimaExaminareMaiBineOS: maiBineOD,
-                comparativCuUltimaExaminareMaiBineOD: maiBineOS,
-                comparativCuUltimaExaminareMaiRauOD: maiRauOD,
-                comparativCuUltimaExaminareMaiRauOS: maiRauOS,
-                comparativCuUltimaExaminareNuSeCunoasteOD: nuSeCunoasteOD,
-                comparativCuUltimaExaminareNuSeCunoasteOS: nuSeCunoasteOS,
-                //box4
-                injectieNumarOS: injectieNumarOS,
-                injectieDozaOS: injectieDozaOS,
-                injectieNumarOD: injectieNumarOD,
-                injectieDozaOD: injectieDozaOD,
-                laserOD: panfotocoagulareOD,
-                laserOS: panfotocoagulareOS,
-                //box5
-                diagnosticOD: diagnosticOD,
-                diagnosticOS: diagnosticOS,
-                //box6
-                recomandare: recomandare,
-                recomandareField: recomandareField,
-                tratament: tratament,
-                tratamentField: tratamentField,
-                peste1An: esteAn,
-                pesteLuni: pesteLuni,
-                pesteSaptamani: pesteSaptamani,
-                ambulator: ambulator,
-                ambulatorLaField: ambulatorLaField,
-                ambulatorInField: ambulatorInField,
-                data: selectedData,
-                MedicExaminator: medicExaminatorField,
-            };
+        const fisaMedicalaDTO = {
+            idProgramare: selectedProgramare.id,
+            // Box 2
+            HbA1C: HbA1C,
+            tipHbA1C: tipHbA1C,
+            glicemie: glicemie,
+            uree: uree,
+            creatinina: creatinina,
+            eRFG: eRFG,
+            hta: HTA,
+            neuropatie: neuropatie,
+            nefropatie: nefropatie,
+            ci: CI,
+            avc: AVC,
+            ima: IMA,
+            hipercolesterolomie: hipercolesterolemie,
+            hipertrigliceridemie: hipertrigliceridemie,
+            insulina: insulina,
+            ado: ADO,
+            dieta: dieta,
+            nimic: nimic,
+            //box3
+            detaliiFundDeOchi: detaliiFundDeOchiText,
+            alteModalitatiOculare: alteModificareOculareText,
+            acuitateVizualaOD: acuitateOD,
+            acuitateVizualaOS: acuitateOS,
+            rubeozaIrianaOD: rubeozaIrianaOD,
+            rubeozaIrianaOS: rubeozaIrianaOS,
+            faraRetinopatieDiabeticaOD: faraRetinopatieDiabeticaOD,
+            faraRetinopatieDiabeticaOS: faraRetinopatieDiabeticaOS,
+            retinopatieDiabeticaNeproliferativaUsoaraOD: usoaraOD,
+            retinopatieDiabeticaNeproliferativaUsoaraOS: usoaraOS,
+            retinopatieDiabeticaNeproliferativaMedieOD: moderataOD,
+            retinopatieDiabeticaNeproliferativaMedieOS: moderataOS,
+            retinopatieDiabeticaNeproliferativaSeveraOD: severaOD,
+            retinopatieDiabeticaNeproliferativaSeveraOS: severaOS,
+            retinopatieDiabeticaProliferativaOD: retinopatieDiabeticaProliferativaOD,
+            retinopatieDiabeticaProliferativaOS: retinopatieDiabeticaProliferativaOS,
+            edemMacularClinicSemnificativOD: edemMacularOD,
+            edemMacularClinicSemnificativOS: edemMacularOS,
+            comparativCuUltimaExaminareLaFelOD: laFelOD,
+            comparativCuUltimaExaminareLaFelOS: laFelOS,
+            comparativCuUltimaExaminareMaiBineOS: maiBineOD,
+            comparativCuUltimaExaminareMaiBineOD: maiBineOS,
+            comparativCuUltimaExaminareMaiRauOD: maiRauOD,
+            comparativCuUltimaExaminareMaiRauOS: maiRauOS,
+            comparativCuUltimaExaminareNuSeCunoasteOD: nuSeCunoasteOD,
+            comparativCuUltimaExaminareNuSeCunoasteOS: nuSeCunoasteOS,
+            //box4
+            injectieNumarOS: injectieNumarOS,
+            injectieDozaOS: injectieDozaOS,
+            injectieNumarOD: injectieNumarOD,
+            injectieDozaOD: injectieDozaOD,
+            laserOD: panfotocoagulareOD,
+            laserOS: panfotocoagulareOS,
+            //box5
+            diagnosticOD: diagnosticOD,
+            diagnosticOS: diagnosticOS,
+            //box6
+            recomandare: recomandare,
+            recomandareField: recomandareField,
+            tratament: tratament,
+            tratamentField: tratamentField,
+            peste1An: esteAn,
+            pesteLuni: pesteLuni,
+            pesteSaptamani: pesteSaptamani,
+            ambulator: ambulator,
+            ambulatorLaField: ambulatorLaField,
+            ambulatorInField: ambulatorInField,
+            data: selectedData,
+            MedicExaminator: medicExaminatorField,
+        };
 
-            console.log(fisaMedicalaDTO);
+        console.log(fisaMedicalaDTO);
 
-            axios.post("http://localhost:8080/medici/fisaMedicala/saveFisaMedicala", fisaMedicalaDTO, {
-                headers: {
-                    "content-type": "application/json"
-                }
-            }).then((response: any) => {
-                navigate("/OftalmologPage", { state: location.state });
-                console.log(response.data)
-            });
-
-            if(salvarePDF){
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                let position = 3;
-                const boxes = ['box0', 'box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7']; // ID-urile boxurilor tale
-                const spaceBetween = 3; // Spațiu de 10mm între imagini
-
-                for (const boxId of boxes) {
-                    const input = document.getElementById(boxId);
-                    await html2canvas(input, {
-                        scale: 3,
-                        useCORS: true,
-                        allowTaint: true,
-                        scrollX: 0,
-                        scrollY: 0,
-                        width: input.scrollWidth,
-                        height: input.scrollHeight,
-                    }).then((canvas) => {
-                        const imgData = canvas.toDataURL('image/png');
-                        const imgWidth = 210; // Lățimea paginii A4 în mm
-                        const imgHeight = canvas.height * imgWidth / canvas.width;
-
-                        if (position + imgHeight > 297) { // Dacă imaginea curentă depășește înălțimea paginii
-                            pdf.addPage();
-                            position = 0; // Reîncepe poziționarea de la începutul paginii
-                        }
-
-                        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                        position += imgHeight + spaceBetween; // Ajustează poziționarea pentru următoarea imagine, cu 10px spațiu
-                    });
-                }
-
-                pdf.save('Fisa Medicala ' + numeSiPrenume + " " + dayjs(selectedData).format("DD/MM/YYYY") + '.pdf');
+        axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/saveFisaMedicala`, fisaMedicalaDTO, {
+            headers: {
+                "content-type": "application/json"
             }
+        }).then((response: any) => {
+            navigate("/OftalmologPage", { state: location.state });
+            console.log(response.data)
+        });
+
+        if(salvarePDF){
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            let position = 3;
+            const boxes = ['box0', 'box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7']; // ID-urile boxurilor tale
+            const spaceBetween = 3; // Spațiu de 10mm între imagini
+
+            for (const boxId of boxes) {
+                const input = document.getElementById(boxId);
+                await html2canvas(input, {
+                    scale: 3,
+                    useCORS: true,
+                    allowTaint: true,
+                    scrollX: 0,
+                    scrollY: 0,
+                    width: input.scrollWidth,
+                    height: input.scrollHeight,
+                }).then((canvas) => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const imgWidth = 210; // Lățimea paginii A4 în mm
+                    const imgHeight = canvas.height * imgWidth / canvas.width;
+
+                    if (position + imgHeight > 297) { // Dacă imaginea curentă depășește înălțimea paginii
+                        pdf.addPage();
+                        position = 0; // Reîncepe poziționarea de la începutul paginii
+                    }
+
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    position += imgHeight + spaceBetween; // Ajustează poziționarea pentru următoarea imagine, cu 10px spațiu
+                });
+            }
+
+            pdf.save('Fisa Medicala ' + numeSiPrenume + " " + dayjs(selectedData).format("DD/MM/YYYY") + '.pdf');
+        }
         // }
     };
     const handleDeconectare = () => {
@@ -768,9 +754,9 @@ const OftalmologPage = () => {
     const [listOreDisponibile, setListOreDisponibile] = React.useState([]);
     const [oraProgramarii, setOraProgramarii] = React.useState("");
     const [selectedProgramare, setSelectedProgramare] = React.useState(null);
-    
+
     useEffect(() => {
-        axios.post("http://localhost:8080/medici/fisaMedicala/getProgramariCurente", selectedDataProgramarii.format('YYYY-MM-DD'),{
+        axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/getProgramariCurente`, selectedDataProgramarii.format('YYYY-MM-DD'),{
             headers: {
                 "content-type": "application/json"
             }
@@ -794,7 +780,7 @@ const OftalmologPage = () => {
 
         if (programareDetails?.details) {
             const { pacient } = programareDetails.details;
-    
+
             setNumeSiPrenume(pacient.numePrenume || "");
             setNrCrt(pacient.nrCrt || 0);
             setCnp(pacient.cnp || "");
@@ -803,7 +789,7 @@ const OftalmologPage = () => {
             setDataDiagnosticului(dayjs(pacient.dataDiagnosticului).format("DD/MM/YYYY") || "");
         }
     };
-    
+
     return (
         <div className="oftalmologPage" style={{ height: '100vh', overflowY: 'auto' }}>
             <CssBaseline />
@@ -1186,7 +1172,7 @@ const OftalmologPage = () => {
                         <Typography sx={typographyTratamentDiabetInPrezentSx}>
                             Tratament diabet în prezent:
                         </Typography>
-                         <Checkbox
+                        <Checkbox
                             checked={insulina}
                             onChange={handleChangeInsulina}
                             inputProps={{ 'aria-label': 'controlled' }}
@@ -1224,7 +1210,7 @@ const OftalmologPage = () => {
                         />
                         <Typography sx={typographyeNimicSx}>
                             Nimic.
-                        </Typography> 
+                        </Typography>
                     </Box>
                 </Box>
                 {/* Box 3 */}
@@ -1862,7 +1848,7 @@ const OftalmologPage = () => {
                     </Box>
                     <Box sx={{display: "flex", flexDirection: 'row', alignItems: "center", justifyContent: "center", width: "100%", gap: "5%"}}>
                         <Box sx={{display: "flex", flexDirection: 'column', alignItems: "center", justifyContent: "center", width: "20%"}}>
-                            <Button sx={buttonSalvareSx} onClick={handleSalvare}>
+                            <Button sx={buttonSx} onClick={handleSalvare}>
                                 Salvare
                             </Button>
                             <Box sx={{display: "flex", flexDirection: 'row', alignItems: "center", justifyContent: "center"}}>
@@ -1878,7 +1864,7 @@ const OftalmologPage = () => {
                             </Box>
                         </Box>
                         <Box sx={{display: "flex", flexDirection: 'column',  height: "110px", width: "20%"}}>
-                            <Button sx={buttonDeconectareSx} onClick={handleDeconectare}>
+                            <Button sx={buttonSx} onClick={handleDeconectare}>
                                 Deconectare
                             </Button>
                         </Box>

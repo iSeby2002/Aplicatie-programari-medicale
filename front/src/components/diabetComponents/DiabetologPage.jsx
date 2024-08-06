@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {
-    boxSx, buttonDeconectareSx, buttonProgrameazaSx,
+    boxSx, buttonSx,
     centerBoxSx, CNPSx, diabetZaharatSx, nrCrtSx,
     numeSiPrenumeSx, typographyCNPSx, typographyDataDiagnosticuluiSx, typographyDiabetZaharatSx, typographyNrCrtSx,
     typographyNumeSiPrenumeSx, typographyProgramaerSx,
@@ -21,7 +21,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {DatePicker} from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 
 function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat, setDiabetZaharat }) {
@@ -49,8 +49,6 @@ function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat, setDiabetZa
 
 const DiabetologPage = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const [medic, setMedic] = React.useState(location.state)
 
     // BOX 1
     const [gresit, setGresit] = React.useState({
@@ -86,16 +84,16 @@ const DiabetologPage = () => {
     };
 
     useEffect(() => {
-        axios.get("http://localhost:8080/pacienti/getUrmatorulNrCrt", {
+        axios.get(`${process.env.REACT_APP_SERVER_LINK}/pacienti/getUrmatorulNrCrt`, {
             headers: {
                 "content-type": "application/json"
             }
         }).then((response: any) => {
             setNrCrt(response.data);
-            });
+        });
 
         if (selectedDataProgramare) {
-            axios.post("http://localhost:8080/programari/getAvailableSlots", {
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/getAvailableSlots`, {
                 dataProgramare: dayjs(selectedDataProgramare).format('YYYY-MM-DD')
             }, {
                 headers: {
@@ -125,9 +123,7 @@ const DiabetologPage = () => {
                 oraProgramarii: dataOraProgramarii,
             };
 
-            // console.log(programareDTO);
-
-            axios.post("http://localhost:8080/programari/programare", programareDTO, {
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/programare`, programareDTO, {
                 headers: {
                     "content-type": "application/json"
                 }
@@ -149,8 +145,8 @@ const DiabetologPage = () => {
     }
 
     const handleDeconectare = () => {
-          navigate("/");
-          localStorage.setItem('auth', 'false');
+        navigate("/");
+        localStorage.setItem('auth', 'false');
     };
 
     return (
@@ -286,12 +282,12 @@ const DiabetologPage = () => {
                                 ))}
                             </Select>
                         </FormControl>
-                        <Button sx={buttonProgrameazaSx} type="submit">
+                        <Button sx={buttonSx} type="submit">
                             Programează
                         </Button>
                     </Box>
                 </Box>
-                <Button sx={buttonDeconectareSx} onClick={handleDeconectare}>
+                <Button sx={{ ...buttonSx, marginBottom: "15px" }} onClick={handleDeconectare}>
                     Deconectare
                 </Button>
             </Box>
