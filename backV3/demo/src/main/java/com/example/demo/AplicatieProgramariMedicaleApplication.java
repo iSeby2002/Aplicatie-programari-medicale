@@ -31,6 +31,14 @@ public class AplicatieProgramariMedicaleApplication {
 
 		return args -> {
 			//medici
+			RegisterDto registerDtoAdmin= RegisterDto.builder()
+					.nume("Admin")
+					.prenume("Admin")
+					.phoneNumber("0745706903")
+					.role("admin")
+					.email("admin@yahoo.com")
+					.password("admin")
+					.build();
 			RegisterDto registerDto1= RegisterDto.builder()
 					.nume("Diana")
 					.prenume("Anghelus")
@@ -55,9 +63,11 @@ public class AplicatieProgramariMedicaleApplication {
 					.email("damiansebastian2002@gmail.com")
 					.password("1234")
 					.build();
+			medicService.register(registerDtoAdmin);
 			medicService.register(registerDto1);
 			medicService.register(registerDto2);
 			medicService.register(registerDto3);
+
 
 			//pacienti diabet
 			PacientDto pacientDto1 = PacientDto.builder()

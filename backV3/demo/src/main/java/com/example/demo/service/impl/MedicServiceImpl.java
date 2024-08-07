@@ -1,9 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dtos.LoginDto;
-import com.example.demo.dtos.LoginResponseDTO;
-import com.example.demo.dtos.RegisterDto;
-import com.example.demo.dtos.RegisterResponseDTO;
+import com.example.demo.dtos.*;
 import com.example.demo.model.Medic;
 import com.example.demo.repository.MedicRepository;
 import com.example.demo.service.MedicService;
@@ -11,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.List;
 
 @Service
 public class MedicServiceImpl implements MedicService {
@@ -66,8 +64,57 @@ public class MedicServiceImpl implements MedicService {
         return registerResponseDTO;
     }
 
+    @Override
+    public List<Medic> getMedici() {
+        return (List<Medic>) medicRepository.findAll();
+    }
+
+    @Override
+    public UpdateResponseDTO update(Medic medicUpdate) {
+        UpdateResponseDTO updateResponseDTO = new UpdateResponseDTO();
+        Medic medic = medicRepository.findMedicById(medicUpdate.getId());
+        if(medic == null){
+            updateResponseDTO.setMedic(null);
+            updateResponseDTO.setMesaj("Nu există medicul selectat!");
+        }else{
+            List<Medic>medici = (List<Medic>) medicRepository.findAll();
+            medici.remove(medic);
+            boolean exista=false;
+            for(Medic m:medici){
+                if(m.getEmail().equals(medicUpdate.getEmail())){
+                    exista=true;
+                }
+            }
+            if(exista){
+                updateResponseDTO.setMedic(null);
+                updateResponseDTO.setMesaj("Există deja un cont cu acest email!");
+            }else if(!isValidRole(medicUpdate.getRole())) {
+                updateResponseDTO.setMedic(null);
+                updateResponseDTO.setMesaj("Rol invalid. Rolul trebuie sa fie \"oftalmolog\" sau \"diabetolog\" !");
+            }else{
+                medicRepository.save(medicUpdate);
+                updateResponseDTO.setMedic(medicUpdate);
+                updateResponseDTO.setMesaj("Actualizare reușită!");
+            }
+
+        }
+        return updateResponseDTO;
+
+    }
+
+    @Override
+    public String delete(Medic medicDelete) {
+        Medic medic = medicRepository.findMedicById(medicDelete.getId());
+        if(medic == null){
+           return "Nu există medicul selectat!";
+        }else {
+            medicRepository.delete(medicDelete);
+            return "Ștergere reușită!";
+        }
+    }
+
     private boolean isValidRole(String role) {
-        return "oftalmolog".equalsIgnoreCase(role) || "diabetolog".equalsIgnoreCase(role);
+        return "oftalmolog".equalsIgnoreCase(role) || "diabetolog".equalsIgnoreCase(role) || "admin".equalsIgnoreCase(role);
     }
 
     private String hashPassword(String password) {
