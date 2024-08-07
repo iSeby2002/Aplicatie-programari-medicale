@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface MedicRepository extends CrudRepository<Medic,Long> {
 
     Medic findFirstByEmail(String email);
+    Medic findMedicById(Long id);
 }
