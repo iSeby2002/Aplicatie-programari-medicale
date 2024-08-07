@@ -54,6 +54,8 @@ const LoginPage = () => {
                         navigate("/DiabetologPage", { state: response.data.medic });
                     }else if(response.data.medic.role === "oftalmolog"){
                         navigate("/OftalmologPage", { state: response.data.medic });
+                    }else if(response.data.medic.role === "admin"){
+                        navigate("/AdminPage", { state: response.data.medic });
                     }
                 }, 1000);
 
