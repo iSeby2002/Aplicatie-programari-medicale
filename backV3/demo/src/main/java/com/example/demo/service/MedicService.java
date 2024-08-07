@@ -12,5 +12,6 @@ public interface MedicService {
     RegisterResponseDTO register(RegisterDto registerDto);
     List<Medic> getMedici();
     UpdateResponseDTO update(Medic medic);
+    UpdateResponseDTO schimbareParola(Medic medicUpdate);
     String  delete(Medic medic);
 }

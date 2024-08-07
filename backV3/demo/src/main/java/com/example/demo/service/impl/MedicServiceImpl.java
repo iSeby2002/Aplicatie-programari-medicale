@@ -66,7 +66,9 @@ public class MedicServiceImpl implements MedicService {
 
     @Override
     public List<Medic> getMedici() {
-        return (List<Medic>) medicRepository.findAll();
+        List<Medic> medici = (List<Medic>) medicRepository.findAll();
+        medici.removeIf(medic -> medic.getRole().equals("admin"));
+        return medici;
     }
 
     @Override
@@ -81,8 +83,9 @@ public class MedicServiceImpl implements MedicService {
             medici.remove(medic);
             boolean exista=false;
             for(Medic m:medici){
-                if(m.getEmail().equals(medicUpdate.getEmail())){
-                    exista=true;
+                if (m.getEmail().equals(medicUpdate.getEmail())) {
+                    exista = true;
+                    break;
                 }
             }
             if(exista){
@@ -92,14 +95,38 @@ public class MedicServiceImpl implements MedicService {
                 updateResponseDTO.setMedic(null);
                 updateResponseDTO.setMesaj("Rol invalid. Rolul trebuie sa fie \"oftalmolog\" sau \"diabetolog\" !");
             }else{
-                medicRepository.save(medicUpdate);
-                updateResponseDTO.setMedic(medicUpdate);
+                medic.setPrenume(medicUpdate.getPrenume());
+                medic.setNume(medicUpdate.getNume());
+                medic.setEmail(medicUpdate.getEmail());
+                medic.setPhoneNumber(medicUpdate.getPhoneNumber());
+                medic.setRole(medicUpdate.getRole());
+                medicRepository.save(medic);
+                updateResponseDTO.setMedic(medic);
                 updateResponseDTO.setMesaj("Actualizare reușită!");
             }
-
         }
         return updateResponseDTO;
+    }
 
+    @Override
+    public UpdateResponseDTO schimbareParola(Medic medicUpdate) {
+        UpdateResponseDTO updateResponseDTO = new UpdateResponseDTO();
+        Medic medic = medicRepository.findMedicById(medicUpdate.getId());
+        if(medic == null){
+            updateResponseDTO.setMedic(null);
+            updateResponseDTO.setMesaj("Nu există medicul selectat!");
+        }else{
+            if(hashPassword(medicUpdate.getPassword()).equals(medic.getPassword())){
+                updateResponseDTO.setMedic(null);
+                updateResponseDTO.setMesaj("Noua parolă nu poate să fie la fel cu cea anterioară!");
+            }else{
+                medic.setPassword(hashPassword(medicUpdate.getPassword()));
+                medicRepository.save(medic);
+                updateResponseDTO.setMedic(medic);
+                updateResponseDTO.setMesaj("Schimbare parolă reușită!");
+            }
+        }
+        return updateResponseDTO;
     }
 
     @Override

@@ -6,8 +6,7 @@ import {
     buttonSx,
     centerBoxSx,
     textFieldSx,
-    typographyAutentificareSx,
-    typographyCreateSx,
+    typographyAutentificareSx
 } from "./LoginPage.styles";
 import {useNavigate} from "react-router-dom";
 import CustomizedSnackbars from "../../utils/CustomizedSnackbars";
@@ -67,11 +66,6 @@ const LoginPage = () => {
         }
     }
 
-    const handleCreateAccount = (event) => {
-        event.preventDefault();
-        navigate("/RegisterPage");
-    }
-
     return (
         <div className="loginPage" style={{ height: '100vh', overflowY: 'auto' }}>
             <CssBaseline />
@@ -113,16 +107,9 @@ const LoginPage = () => {
                         helperText={gresit.parola ? "Parolă incorectă." : ""}
                         sx={textFieldSx}
                     />
-
-                    {/*<Typography sx={typographyForgotSx} onClick={handleForgot}>*/}
-                    {/*    Ai uitat parola?*/}
-                    {/*</Typography>*/}
                     <Button sx={buttonSx} type="submit">
                         Autentificare
                     </Button>
-                    <Typography sx={typographyCreateSx} onClick={handleCreateAccount}>
-                        Nu ai cont? Creează cont
-                    </Typography>
                 </Box>
             </Box>
             <CustomizedSnackbars

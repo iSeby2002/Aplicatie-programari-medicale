@@ -25,4 +25,17 @@ public class Medic {
     private String prenume;
     private String email;
     private String role;
+
+    @Override
+    public String toString() {
+        return "Medic{" +
+                "id=" + id +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", password='" + password + '\'' +
+                ", nume='" + nume + '\'' +
+                ", prenume='" + prenume + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }

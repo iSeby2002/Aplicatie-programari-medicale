@@ -33,35 +33,40 @@ public class AdminController {
             return new ResponseEntity<>(registerResponseDTO, HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("/getMedici")
-    public ResponseEntity<List<Medic>> getMedici()
-    {
-        List<Medic> medici =medicService.getMedici();
-        return new ResponseEntity<>(medici,HttpStatus.OK);
+    public ResponseEntity<List<Medic>> getMedici() {
+        List<Medic> medici = medicService.getMedici();
+        return new ResponseEntity<>(medici, HttpStatus.OK);
     }
 
     @PostMapping("/update")
-    public ResponseEntity<UpdateResponseDTO> update(@RequestBody Medic medic)
-    {
-        UpdateResponseDTO updateResponseDTO=medicService.update(medic);
+    public ResponseEntity<UpdateResponseDTO> update(@RequestBody Medic medic) {
+        UpdateResponseDTO updateResponseDTO = medicService.update(medic);
         if(updateResponseDTO.getMesaj().equals("Actualizare reușită!")){
-            return new ResponseEntity<>(updateResponseDTO,HttpStatus.OK);
+            return new ResponseEntity<>(updateResponseDTO, HttpStatus.OK);
         }else{
-            return new ResponseEntity<>(updateResponseDTO,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(updateResponseDTO, HttpStatus.BAD_REQUEST);
         }
-
     }
+
+    @PostMapping("/schimbareParola")
+    public ResponseEntity<UpdateResponseDTO> schimbareParola(@RequestBody Medic medic) {
+        UpdateResponseDTO updateResponseDTO = medicService.schimbareParola(medic);
+        if(updateResponseDTO.getMesaj().equals("Schimbare parolă reușită!")){
+            return new ResponseEntity<>(updateResponseDTO, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(updateResponseDTO, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("/delete")
-    public ResponseEntity<String> delete(@RequestBody Medic medic)
-    {
-        String mesaj=medicService.delete(medic);
+    public ResponseEntity<String> delete(@RequestBody Medic medic) {
+        String mesaj = medicService.delete(medic);
         if(mesaj.equals("Ștergere reușită!")){
-            return new ResponseEntity<>(mesaj,HttpStatus.OK);
+            return new ResponseEntity<>(mesaj, HttpStatus.OK);
         }else{
-            return new ResponseEntity<>(mesaj,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(mesaj, HttpStatus.BAD_REQUEST);
         }
     }
-
-
-
 }

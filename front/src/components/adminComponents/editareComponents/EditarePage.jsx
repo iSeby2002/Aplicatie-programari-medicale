@@ -8,19 +8,18 @@ import {
     Radio,
     RadioGroup,
     TextField,
-    Typography
+    Typography,
+    FormControl
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import {
     buttonSx,
     centerBoxSx,
     textFieldSx,
-    typographyCreazaContSx,
-    typographyAutentificareSx
-} from "./RegisterPage.styles";
-import {useNavigate} from "react-router-dom";
-import {FormControl} from "@mui/base";
-import CustomizedSnackbars from "../../utils/CustomizedSnackbars";
+    typographyEditareContSx
+} from "./EditarePage.styles";
+import {useLocation, useNavigate} from "react-router-dom";
+import CustomizedSnackbars from "../../../utils/CustomizedSnackbars";
 
 
 function RadioButtonsGroup({ tipMedic, setTipMedic }) {
@@ -41,8 +40,9 @@ function RadioButtonsGroup({ tipMedic, setTipMedic }) {
     );
 }
 
-const RegisterPage = () => {
+const EditarePage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [open, setOpen] = React.useState(false);
     const [severity, setSeverity] = React.useState("")
     const [message, setMessage] = React.useState("");
@@ -50,21 +50,17 @@ const RegisterPage = () => {
         setOpen(false);
     };
 
-    const [prenume, setPrenume] = React.useState("");
-    const [nume, setNume] = React.useState("");
-    const [email, setEmail] = React.useState("");
-    const [telefon, setTelefon] = React.useState("");
-    const [parola, setParola] = React.useState("");
-    const [confirmareParola, setConfirmareParola] = React.useState("");
+    const [prenume, setPrenume] = React.useState(location.state.medic.prenume);
+    const [nume, setNume] = React.useState(location.state.medic.nume);
+    const [email, setEmail] = React.useState(location.state.medic.email);
+    const [telefon, setTelefon] = React.useState(location.state.medic.phoneNumber);
     const [tipMedic, setTipMedic] = React.useState("diabetolog");
-    const [gresit, setGresit] = React.useState({ prenume: false, nume: false, email: false, telefon: false, parola: false, confirmareParola: false });
+    const [gresit, setGresit] = React.useState({ prenume: false, nume: false, email: false, telefon: false});
 
     const validatePrenume = (value: string) => /^[a-zA-Z\s-]+$/.test(value);
     const validateNume = (value: string) => /^[a-zA-Z\s-]+$/.test(value);
     const validateEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
     const validateTelefon = (value: string) => /^[0-9]{10}$/.test(value);
-    const validateParola = (value: string) =>
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[().*[\]!@#$%^&_\-+={}|~`:;"'<,>?/]).{8,}$/.test(value);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -72,16 +68,16 @@ const RegisterPage = () => {
 
         if(allFieldsValid) {
             const data = new FormData(event.currentTarget);
-            const registerDTO = {
+            const updateDTO = {
+                id: location.state.medic.id,
                 prenume: data.get('prenumeField'),
                 nume: data.get('numeField'),
                 email: data.get('emailField'),
                 phoneNumber: data.get('telefonField'),
-                password: data.get('parolaField'),
                 role: tipMedic,
             }
 
-            axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/register`, registerDTO, {
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/admin/update`, updateDTO, {
                 headers: {
                     "content-type": "application/json"
                 }
@@ -89,11 +85,6 @@ const RegisterPage = () => {
                 setOpen(true);
                 setSeverity("success");
                 setMessage(response.data.mesaj);
-
-                setTimeout(() => {
-                    navigate("/");
-                }, 1000);
-
             }).catch((error: any) => {
                 setOpen(true);
                 setSeverity("error");
@@ -102,17 +93,20 @@ const RegisterPage = () => {
         }
     }
 
-    const handleAutentificare = (event) => {
-        event.preventDefault();
-        navigate("/");
+    const handleSchimbareParola = () => {
+        navigate("/AdminPage/EditarePage/SchimbareParolaPage", { state: location.state });
+    }
+
+    const handleInapoi = () => {
+        navigate("/AdminPage", { state: location.state.admin });
     }
 
     return (
-        <div className="registerPage" style={{ height: '100vh', overflowY: 'auto' }}>
+        <div className="editarePage" style={{ height: '100vh', overflowY: 'auto' }}>
             <CssBaseline />
             <Box sx={centerBoxSx} component="form" onSubmit={handleSubmit}>
-                <Typography sx={typographyCreazaContSx}>
-                    Creează cont
+                <Typography sx={typographyEditareContSx}>
+                    Actualizează cont
                 </Typography>
                 <TextField
                     id="prenumeField"
@@ -178,47 +172,16 @@ const RegisterPage = () => {
                     helperText={gresit.telefon ? "Telefon incorect." : ""}
                     sx={textFieldSx}
                 />
-                <TextField
-                    id="parolaField"
-                    type="password"
-                    label="Parolă"
-                    name="parolaField"
-                    required
-                    value={parola}
-                    variant="standard"
-                    onChange={(e) => {
-                        const value = e.target.value;
-                        setParola(value);
-                        setGresit({ ...gresit, parola: !validateParola(value) });
-                    }}
-                    error={gresit.parola}
-                    helperText={gresit.parola ? "Parola trebuie sa contină minim o literă mică, minim o literă mare, minim o cifră, minim un simbol." : ""}
-                    sx={textFieldSx}
-                />
-                <TextField
-                    id="confirmareParolaField"
-                    type="password"
-                    label="Confirmare Parolă"
-                    name="confirmareParolaField"
-                    required
-                    value={confirmareParola}
-                    variant="standard"
-                    onChange={(e) => {
-                        const value = e.target.value;
-                        setConfirmareParola(value);
-                        setGresit({ ...gresit, confirmareParola: value !== parola });
-                    }}
-                    error={gresit.confirmareParola}
-                    helperText={gresit.confirmareParola ? "Confirmare parolă incorectă." : ""}
-                    sx={textFieldSx}
-                />
                 <RadioButtonsGroup tipMedic={tipMedic} setTipMedic={setTipMedic} />
                 <Button sx={buttonSx} type="submit">
-                    Înregistrează-te
+                    Actualizează datele
                 </Button>
-                <Typography sx={typographyAutentificareSx} onClick={handleAutentificare}>
-                    Ai deja un cont? Autentifică-te
-                </Typography>
+                <Button sx={buttonSx} onClick={handleSchimbareParola}>
+                    Schimbare parolă
+                </Button>
+                <Button sx={{...buttonSx, marginBottom: "4%"}} onClick={handleInapoi}>
+                    Înapoi
+                </Button>
             </Box>
             <CustomizedSnackbars
                 open={open}
@@ -230,4 +193,4 @@ const RegisterPage = () => {
     );
 }
 
-export default RegisterPage;
+export default EditarePage;

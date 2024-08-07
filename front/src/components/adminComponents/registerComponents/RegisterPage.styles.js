@@ -48,13 +48,3 @@ export const buttonSx: React.CSSProperties = {
         transition: ".5s",
     },
 };
-
-export const typographyAutentificareSx: React.CSSProperties = {
-    padding: "20px 0px",
-    color: "#a6a6a6",
-    cursor: "pointer",
-    transition: "color .5s",
-    '&:hover': {
-        color: "#2691d9",
-    },
-};

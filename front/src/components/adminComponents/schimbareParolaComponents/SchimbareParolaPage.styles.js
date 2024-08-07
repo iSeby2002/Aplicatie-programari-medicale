@@ -6,7 +6,6 @@ export const centerBoxSx: React.CSSProperties = {
     left: "50%",
     transform: "translateX(-50%)",
     width: "450px",
-    height: "450px",
     background: "white",
     borderRadius: "10px",
     boxShadow: "0px 0px 100px rgba(0, 0, 0, 0.8)",
@@ -16,7 +15,7 @@ export const centerBoxSx: React.CSSProperties = {
     overflow: 'auto',
 };
 
-export const typographyAutentificareSx: React.CSSProperties = {
+export const typographySchimbareParolaSx: React.CSSProperties = {
     padding: "20px 0px",
     borderBottom: "2px solid #adadad",
     color: "black",
@@ -33,6 +32,7 @@ export const textFieldSx: React.CSSProperties = {
 };
 
 export const buttonSx: React.CSSProperties = {
+    marginTop: "15px",
     width: "75%",
     height: "50px",
     border: "1px solid",
