@@ -17,8 +17,9 @@ function App() {
             <Router>
                 <Routes>
                     <Route path="/" element={<LoginPage />} />
+                    <Route path="/DiabetologPage" element={<DiabetologPage />} exact/>
                     <Route element={<PrivateRoutes />}>
-                        <Route path="/DiabetologPage" element={<DiabetologPage />} exact/>
+
                         <Route path="/OftalmologPage" element={<OftalmologPage />} exact/>
                         <Route path="/AdminPage" element={<AdminPage />} />
                         <Route path="/AdminPage/RegisterPage" element={<RegisterPage />} />
