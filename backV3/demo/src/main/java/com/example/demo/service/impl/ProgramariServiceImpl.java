@@ -1,6 +1,9 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dtos.PacientDto;
+import com.example.demo.dtos.ProgramareResponseDto;
+import com.example.demo.dtos.UpdateResponseDTO;
+import com.example.demo.model.Medic;
 import com.example.demo.model.Pacient;
 import com.example.demo.model.Programari;
 import com.example.demo.repository.ProgramariRepository;
@@ -67,5 +70,50 @@ public class ProgramariServiceImpl implements ProgramariService{
         }
 
         return "Programare reușită";
+    }
+
+    @Override
+    public ProgramareResponseDto update(Programari programareUpdate) {
+        ProgramareResponseDto programareResponseDto = new ProgramareResponseDto();
+        programareResponseDto.setMesaj("");
+
+        Programari programare = programariRepository.findProgramariByStartTime(programareUpdate.getStartTime());
+        if (programare == null) {
+            programareResponseDto.setProgramare(null);
+            programareResponseDto.setMesaj("Nu există programarea selectat!");
+        } else {
+            Pacient pacientExistent = pacientService.findPacientByCnp(programareUpdate.getPacient().getCnp());
+            if (pacientExistent == null) {
+                PacientDto pacientDto = new PacientDto();
+                pacientDto.setCnp(programareUpdate.getPacient().getCnp());
+                pacientDto.setNumePrenume(programareUpdate.getPacient().getNumePrenume());
+                Pacient registerPacient = pacientService.registerPacient(pacientDto);
+                programare.setPacient(registerPacient);
+                programariRepository.save(programare);
+                programareResponseDto.setProgramare(programare);
+                programareResponseDto.setMesaj("Update și register realizat cu succes!");
+            }
+            else {
+                //System.out.println("Pacient id" + pacientExistent.getId());
+                programare.setPacient(pacientExistent);
+                System.out.println("Pacient id:"+programare.getPacient().getId());
+                programariRepository.save(programare);
+                programareResponseDto.setProgramare(programare);
+                programareResponseDto.setMesaj("Update realizat cu succes!");
+            }
+
+        }
+        return programareResponseDto;
+    }
+
+    @Override
+    public String delete(Programari programareDelete) {
+        Programari programare= programariRepository.findProgramariByStartTime(programareDelete.getStartTime());
+        if(programare == null){
+            return "Nu există programarea selectată!";
+        }else {
+            programariRepository.delete(programare);
+            return "Ștergere reușită!";
+        }
     }
 }
