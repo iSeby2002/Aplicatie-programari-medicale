@@ -15,10 +15,5 @@ import java.time.LocalDate;
 public class PacientDto {
 
     private String numePrenume;
-
     private long cnp;
-    private String diabetZaharat;
-    private String diabetZaharatField;
-    private LocalDate dataDiagnosticului;
-
 }

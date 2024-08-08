@@ -1,19 +1,11 @@
 package com.example.demo;
 
-import com.example.demo.dtos.PacientDto;
-import com.example.demo.dtos.RegisterDto;
-import com.example.demo.model.Medic;
-import com.example.demo.model.Pacient;
 import com.example.demo.service.MedicService;
 import com.example.demo.service.PacientService;
-import com.example.demo.service.SlotProgramariService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
-import java.sql.SQLOutput;
-import java.time.LocalDate;
 
 @SpringBootApplication
 public class AplicatieProgramariMedicaleApplication {
@@ -26,7 +18,7 @@ public class AplicatieProgramariMedicaleApplication {
 	}
 
 	@Bean
-	CommandLineRunner init(MedicService medicService, PacientService pacientService, SlotProgramariService slotProgramariService) {
+	CommandLineRunner init(MedicService medicService, PacientService pacientService) {
 
 
 		return args -> {

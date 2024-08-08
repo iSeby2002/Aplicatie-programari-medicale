@@ -19,14 +19,7 @@ public class Pacient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long nrCrt;
-
+    private Long id;
     private String numePrenume;
-
-
     private long cnp;
-    private String diabetZaharat;
-    private String diabetZaharatField;
-    private LocalDate dataDiagnosticului;
-
 }

@@ -11,9 +11,11 @@ import java.util.List;
 
 @Repository
 public interface PacientRepository extends CrudRepository<Pacient,Long> {
-    Pacient findByNrCrt(Long nrCrt);
-    boolean existsByNrCrt(Long nrCrt);
+    Pacient findPacientById(Long id);
+    boolean existsById(Long id);
 
-    @Query("SELECT p FROM Pacient p ORDER BY p.nrCrt DESC")
+    Pacient findPacientByCnp(Long cnp);
+
+    @Query("SELECT p FROM Pacient p ORDER BY p.id DESC")
     List<Pacient> findLastPacient(Pageable pageable);
 }

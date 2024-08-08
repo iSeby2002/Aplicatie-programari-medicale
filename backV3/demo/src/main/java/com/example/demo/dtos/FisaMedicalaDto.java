@@ -14,6 +14,12 @@ import java.time.LocalDate;
 public class FisaMedicalaDto {
 
     private long idProgramare;
+    //Box1
+    private long nrCrt;
+    private String tipDiabetZaharat;
+    private String diabetZaharat;
+    private LocalDate dataDiagnosticului;
+    //Box2
     private double HbA1C;
     private String tipHbA1C;//luni
 

@@ -1,65 +1,71 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dtos.PacientDto;
-import com.example.demo.dtos.ProgramareDTO;
 import com.example.demo.model.Pacient;
 import com.example.demo.model.Programari;
-import com.example.demo.model.SlotProgramari;
 import com.example.demo.repository.ProgramariRepository;
 import com.example.demo.service.PacientService;
 import com.example.demo.service.ProgramariService;
-import com.example.demo.service.SlotProgramariService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
 
 public class ProgramariServiceImpl implements ProgramariService{
     private final ProgramariRepository programariRepository;
-    private final SlotProgramariService slotProgramariService;
     private final PacientService pacientService;
 
 
     @Autowired
-    public ProgramariServiceImpl(ProgramariRepository programariRepository, SlotProgramariService slotProgramariService, PacientService pacientService) {
+    public ProgramariServiceImpl(ProgramariRepository programariRepository, PacientService pacientService) {
         this.programariRepository = programariRepository;
-        this.slotProgramariService = slotProgramariService;
         this.pacientService = pacientService;
     }
 
     @Override
-    public String saveProgramare(ProgramareDTO programareDTO) {
+    public String saveProgramare(Programari programare) {
 //                System.out.println(programareDTO.getNumeSiPrenume() + " " + programareDTO.getCnp() + " " +
 //                programareDTO.getTipDiabetZaharat() + " " + programareDTO.getDiabetZaharat() + " " +
 //                programareDTO.getDataDiagnosticului() + " " + programareDTO.getDataProgramarii() + " " +
 //                programareDTO.getOraProgramarii());
 
         PacientDto pacientDto = PacientDto.builder()
-                .numePrenume(programareDTO.getNumeSiPrenume())
-                .cnp(programareDTO.getCnp())
-                .diabetZaharat(programareDTO.getTipDiabetZaharat())
-                .diabetZaharatField(programareDTO.getDiabetZaharat())
-                .dataDiagnosticului(programareDTO.getDataDiagnosticului())
+                .numePrenume(programare.getPacient().getNumePrenume())
+                .cnp(programare.getPacient().getCnp())
                 .build();
-        Pacient savedPacient = pacientService.registerPacient(pacientDto);
-
-
-        SlotProgramari slot = slotProgramariService.findSlotProgramariByStartTime(programareDTO.getOraProgramarii());
-        //System.out.println(slot.getId() + " " + slot.getStartTime() + " " + slot.getEndTime() + " " + slot.isAvailable());
-        slot.setAvailable(false);
-        slotProgramariService.save(slot);
-
-        Programari programare = Programari.builder()
+        Pacient pacientCautat = pacientService.findPacientByCnp(programare.getPacient().getCnp());
+        if (pacientCautat==null) {
+            Pacient savedPacient = pacientService.registerPacient(pacientDto);
+        Programari savedProgramare = Programari.builder()
                 .pacient(savedPacient)
-                .slot(slot)
-                .startTime(slot.getStartTime())
-                .endTime(slot.getEndTime())
+                .startTime(programare.getStartTime())
                 .build();
-        programariRepository.save(programare);
+        programariRepository.save(savedProgramare);
+        }else
+        {
+            // Verifică dacă există deja o programare în aceeași săptămână
+            LocalDateTime startTime = programare.getStartTime();
+            LocalDate startOfWeek = startTime.toLocalDate().with(java.time.DayOfWeek.MONDAY);
+            LocalDate endOfWeek = startOfWeek.plusDays(6);
 
-        return "Programare reusita";
+            List<Programari> programariInAceeasiSaptamana = programariRepository.findAllByPacientAndStartTimeBetween(
+                    pacientCautat, startOfWeek.atStartOfDay(), endOfWeek.atTime(23, 59));
+
+            if (!programariInAceeasiSaptamana.isEmpty()) {
+                Programari savedProgramare = Programari.builder()
+                        .pacient(pacientCautat)
+                        .startTime(programare.getStartTime())
+                        .build();
+                programariRepository.save(savedProgramare);
+                return "Avertizare! Pacientul are deja o programare în această săptămână.";
+            }
+        }
+
+        return "Programare reușită";
     }
 }
