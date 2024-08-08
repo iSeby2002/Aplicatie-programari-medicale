@@ -22,6 +22,7 @@ import {DatePicker} from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
 import {useNavigate} from "react-router-dom";
+import CustomizedSnackbars from "../../utils/CustomizedSnackbars";
 
 
 function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat, setDiabetZaharat }) {
@@ -49,6 +50,12 @@ function RadioButtonsGroup1({ tipDiabetZaharat, setTipDiabetZaharat, setDiabetZa
 
 const DiabetologPage = () => {
     const navigate = useNavigate();
+    const [open, setOpen] = React.useState(false);
+    const [severity, setSeverity] = React.useState("")
+    const [message, setMessage] = React.useState("");
+    const handleCloseSnackbar = () => {
+        setOpen(false);
+    };
 
     // BOX 1
     const [gresit, setGresit] = React.useState({
@@ -83,7 +90,7 @@ const DiabetologPage = () => {
 
     };
 
-    useEffect(() => {
+    const handleGetNext = () => {
         axios.get(`${process.env.REACT_APP_SERVER_LINK}/pacienti/getUrmatorulNrCrt`, {
             headers: {
                 "content-type": "application/json"
@@ -91,7 +98,13 @@ const DiabetologPage = () => {
         }).then((response: any) => {
             setNrCrt(response.data);
         });
+    }
 
+    useEffect(() => {
+        handleGetNext()
+    }, []);
+
+    useEffect(() => {
         if (selectedDataProgramare) {
             axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/getAvailableSlots`, {
                 dataProgramare: dayjs(selectedDataProgramare).format('YYYY-MM-DD')
@@ -108,40 +121,60 @@ const DiabetologPage = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const allFieldsValid = Object.values(gresit).every(value => value === false) && selectedDataDiagnoticului && selectedDataProgramare && oraProgramarii;
+        if (selectedDataDiagnoticului == null) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Data diagnosticului trebuie selectată!");
 
-        if (allFieldsValid) {
-            const dataOraProgramarii = dayjs(selectedDataProgramare).format('YYYY-MM-DD') + 'T' + oraProgramarii + ':00';
+        } else if (selectedDataProgramare == null) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Data programării trebuie selectată!");
+        } else if (oraProgramarii === "") {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Ora programării trebuie selectată!");
+        }else{
+            const allFieldsValid = Object.values(gresit).every(value => value === false) && selectedDataDiagnoticului && selectedDataProgramare && oraProgramarii;
 
-            const programareDTO = {
-                numeSiPrenume: numeSiPrenume,
-                cnp: cnp,
-                tipDiabetZaharat: tipDiabetZaharat,
-                diabetZaharat: diabetZaharat,
-                dataDiagnosticului: dayjs(selectedDataDiagnoticului).format('YYYY-MM-DD'),
-                dataProgramarii: dayjs(selectedDataProgramare).format('YYYY-MM-DD'),
-                oraProgramarii: dataOraProgramarii,
-            };
+            if (allFieldsValid) {
+                const dataOraProgramarii = dayjs(selectedDataProgramare).format('YYYY-MM-DD') + 'T' + oraProgramarii + ':00';
 
-            axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/programare`, programareDTO, {
-                headers: {
-                    "content-type": "application/json"
-                }
-            }).then(() => {
-                setNumeSiPrenume("");
-                setCnp("")
-                setTipDiabetZaharat("tip 1");
-                setDiabetZaharat("");
-                setSelectedDataDiagnoticului(null);
-                setSelectedDataProgramare(null);
-                setOraProgramarii("");
-                navigate("/DiabetologPage");
-            });
+                const programareDTO = {
+                    numeSiPrenume: numeSiPrenume,
+                    cnp: cnp,
+                    tipDiabetZaharat: tipDiabetZaharat,
+                    diabetZaharat: diabetZaharat,
+                    dataDiagnosticului: dayjs(selectedDataDiagnoticului).format('YYYY-MM-DD'),
+                    dataProgramarii: dayjs(selectedDataProgramare).format('YYYY-MM-DD'),
+                    oraProgramarii: dataOraProgramarii,
+                };
 
-        } else {
-            if (!selectedDataDiagnoticului) setGresit({ ...gresit, dataDiagnosticului: true });
-            if (!selectedDataProgramare) setGresit({ ...gresit, dataProgramarii: true });
+                axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/programare`, programareDTO, {
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                }).then((response: any) => {
+                    setOpen(true);
+                    setSeverity("success");
+                    setMessage(response.data);
+
+                    setNumeSiPrenume("");
+                    setCnp("")
+                    setTipDiabetZaharat("tip 1");
+                    setDiabetZaharat("");
+                    setSelectedDataDiagnoticului(null);
+                    setSelectedDataProgramare(null);
+                    setOraProgramarii("");
+                    handleGetNext()
+                });
+
+            } else {
+                if (!selectedDataDiagnoticului) setGresit({ ...gresit, dataDiagnosticului: true });
+                if (!selectedDataProgramare) setGresit({ ...gresit, dataProgramarii: true });
+            }
         }
+
     }
 
     const handleDeconectare = () => {
@@ -273,7 +306,6 @@ const DiabetologPage = () => {
                                 value={oraProgramarii}
                                 onChange={(e) => setOraProgramarii(e.target.value)}
                                 label="Ora Programării"
-                                required
                             >
                                 {listOreDisponibile.map((ora, index) => (
                                     <MenuItem key={index} value={ora}>
@@ -291,6 +323,12 @@ const DiabetologPage = () => {
                     Deconectare
                 </Button>
             </Box>
+            <CustomizedSnackbars
+                open={open}
+                severity={severity}
+                message={message}
+                onClose={handleCloseSnackbar}
+            />
         </div>
     )
 }

@@ -6,8 +6,7 @@ import {
     buttonSx,
     centerBoxSx,
     textFieldSx,
-    typographyAutentificareSx,
-    typographyCreateSx,
+    typographyAutentificareSx
 } from "./LoginPage.styles";
 import {useNavigate} from "react-router-dom";
 import CustomizedSnackbars from "../../utils/CustomizedSnackbars";
@@ -54,6 +53,8 @@ const LoginPage = () => {
                         navigate("/DiabetologPage", { state: response.data.medic });
                     }else if(response.data.medic.role === "oftalmolog"){
                         navigate("/OftalmologPage", { state: response.data.medic });
+                    }else if(response.data.medic.role === "admin"){
+                        navigate("/AdminPage", { state: response.data.medic });
                     }
                 }, 1000);
 
@@ -63,11 +64,6 @@ const LoginPage = () => {
                 setMessage(error.response.data.mesaj);
             })
         }
-    }
-
-    const handleCreateAccount = (event) => {
-        event.preventDefault();
-        navigate("/RegisterPage");
     }
 
     return (
@@ -111,16 +107,9 @@ const LoginPage = () => {
                         helperText={gresit.parola ? "Parolă incorectă." : ""}
                         sx={textFieldSx}
                     />
-
-                    {/*<Typography sx={typographyForgotSx} onClick={handleForgot}>*/}
-                    {/*    Ai uitat parola?*/}
-                    {/*</Typography>*/}
                     <Button sx={buttonSx} type="submit">
                         Autentificare
                     </Button>
-                    <Typography sx={typographyCreateSx} onClick={handleCreateAccount}>
-                        Nu ai cont? Creează cont
-                    </Typography>
                 </Box>
             </Box>
             <CustomizedSnackbars

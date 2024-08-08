@@ -24,9 +24,6 @@ public class PacientServiceImpl implements PacientService {
         Pacient pacient = Pacient.builder()
                 .numePrenume(pacientDto.getNumePrenume())
                 .cnp(pacientDto.getCnp())
-                .diabetZaharat(pacientDto.getDiabetZaharat())
-                .diabetZaharatField(pacientDto.getDiabetZaharatField())
-                .dataDiagnosticului(pacientDto.getDataDiagnosticului())
                 .build();
         return pacientRepository.save(pacient);
 
@@ -34,28 +31,26 @@ public class PacientServiceImpl implements PacientService {
     }
 
     @Override
-    public void deletePacient(Long nrCrt) {
-        if (pacientRepository.existsByNrCrt(nrCrt)) {
-            Pacient pacient = pacientRepository.findByNrCrt(nrCrt);
+    public void deletePacient(Long id) {
+        if (pacientRepository.existsById(id)) {
+            Pacient pacient = pacientRepository.findPacientById(id);
             if (pacient != null) {
                 pacientRepository.delete(pacient);
             } else {
-                throw new RuntimeException("Pacientul cu nrCrt " + nrCrt + " nu a fost găsit");
+                throw new RuntimeException("Pacientul cu nrCrt " + id + " nu a fost găsit");
             }
         } else {
-            throw new RuntimeException("Pacientul cu nrCrt " + nrCrt + " nu a fost găsit");
+            throw new RuntimeException("Pacientul cu nrCrt " + id + " nu a fost găsit");
         }
     }
 
     @Override
     public Pacient updatePacient(Long nrCrt, PacientDto pacientDto) {
-        if (pacientRepository.existsByNrCrt(nrCrt)) {
-            Pacient pacient = pacientRepository.findByNrCrt(nrCrt);
+        if (pacientRepository.existsById(nrCrt)) {
+            Pacient pacient = pacientRepository.findPacientById(nrCrt);
             if (pacient != null) {
                 pacient.setNumePrenume(pacientDto.getNumePrenume());
                 pacient.setCnp(pacientDto.getCnp());
-                pacient.setDiabetZaharat(pacientDto.getDiabetZaharat());
-                pacient.setDataDiagnosticului(pacientDto.getDataDiagnosticului());
                 return pacientRepository.save(pacient);
             } else {
                 throw new RuntimeException("Pacientul cu nrCrt " + nrCrt + " nu a fost găsit");
@@ -65,16 +60,25 @@ public class PacientServiceImpl implements PacientService {
         }
     }
 
-    @Override
-    public Long getNextPacientId() {
-        Pageable topOne = PageRequest.of(0, 1);
-        List<Pacient> pacients = pacientRepository.findLastPacient(topOne);
-
-        if (!pacients.isEmpty()) {
-            Pacient lastPacient = pacients.get(0);
-            return lastPacient.getNrCrt() + 1;
-        } else {
-            return -1L;
+    public Pacient findPacientByCnp(Long cnp){
+        Pacient pacientCautat = pacientRepository.findPacientByCnp(cnp);
+        //System.out.println( pacientCautat.toString());
+        if(pacientCautat!=null){
+            return pacientCautat;
         }
+        return null;
     }
+
+//    @Override
+//    public Long getNextPacientId() {
+//        Pageable topOne = PageRequest.of(0, 1);
+//        List<Pacient> pacients = pacientRepository.findLastPacient(topOne);
+//
+//        if (!pacients.isEmpty()) {
+//            Pacient lastPacient = pacients.get(0);
+//            return lastPacient.getId() + 1;
+//        } else {
+//            return -1L;
+//        }
+//    }
 }

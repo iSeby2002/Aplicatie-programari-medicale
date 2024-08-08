@@ -45,9 +45,9 @@ public class PacientController {
         }
     }
 
-    @GetMapping("/getUrmatorulNrCrt")
-    public ResponseEntity<Long> getUrmatorulNrCrt(){
-        Long nextNrCrt = pacientService.getNextPacientId();
-        return new ResponseEntity<>(nextNrCrt,HttpStatus.OK);
-    }
+//    @GetMapping("/getUrmatorulNrCrt")
+//    public ResponseEntity<Long> getUrmatorulNrCrt(){
+//        Long nextNrCrt = pacientService.getNextPacientId();
+//        return new ResponseEntity<>(nextNrCrt,HttpStatus.OK);
+//    }
 }

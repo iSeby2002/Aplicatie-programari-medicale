@@ -1,16 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.dtos.DataProgramareDTO;
-import com.example.demo.dtos.ProgramareDTO;
-import com.example.demo.model.SlotProgramari;
+import com.example.demo.model.Programari;
 import com.example.demo.service.ProgramariService;
-import com.example.demo.service.SlotProgramariService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 
@@ -18,11 +15,9 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/programari")
 public class ProgramariController {
-    private final SlotProgramariService slotProgramariService;
     private final ProgramariService programariService;
     @Autowired
-    public ProgramariController(SlotProgramariService slotProgramariService, ProgramariService programariService){
-        this.slotProgramariService=slotProgramariService;
+    public ProgramariController(ProgramariService programariService){
         this.programariService=programariService;
     }
 //    @PostMapping("/generate-slots")
@@ -31,11 +26,7 @@ public class ProgramariController {
 //        return new ResponseEntity<>(HttpStatus.CREATED);
 //    }
 
-    @GetMapping("/slots")
-    public ResponseEntity<List<SlotProgramari>> getAllSlots() {
-        List<SlotProgramari> slots = (List<SlotProgramari>) slotProgramariService.findAll();
-        return new ResponseEntity<>(slots, HttpStatus.OK);
-    }
+
    /* @PostMapping("/book")
     public ResponseEntity<?> bookAppointment(@RequestBody Programari programari) {
         try {
@@ -75,16 +66,11 @@ public class ProgramariController {
 //       }
 //   }
 
-    @PostMapping("/getAvailableSlots")
-    public ResponseEntity<List<SlotProgramari>> getAvailableSlots(@RequestBody DataProgramareDTO dataProgramareDTO) {
-        List<SlotProgramari> slots = slotProgramariService.findAvailableSlotsByDataProgramarii(dataProgramareDTO.getDataProgramare());
-        return new ResponseEntity<>(slots, HttpStatus.OK);
-    }
 
     @PostMapping("/programare")
-    public ResponseEntity<?> programare(@RequestBody ProgramareDTO programareDTO) {
-       String mesaj = programariService.saveProgramare(programareDTO);
-       if(mesaj.equals("Programare reusita")) {
+    public ResponseEntity<?> programare(@RequestBody Programari programare) {
+       String mesaj = programariService.saveProgramare(programare);
+       if(mesaj.equals("Programare reușită")) {
            return new ResponseEntity<>(mesaj, HttpStatus.OK);
        }
        return new ResponseEntity<>(mesaj, HttpStatus.BAD_REQUEST);

@@ -17,10 +17,15 @@ public class FisaMedicala {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long nrCrt;
+    private Long id;
+    //Box1
     @ManyToOne
     @JoinColumn(name = "programare_id")
     private Programari programari;
+    private long nrCrt;
+    private String tipDiabetZaharat;
+    private String diabetZaharat;
+    private LocalDate dataDiagnosticului;
     //box2
     private double HbA1C;
     private String tipHbA1C;//luni

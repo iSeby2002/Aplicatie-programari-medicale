@@ -35,13 +35,5 @@ public class MedicController {
         }
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterDto registerDto){
-        RegisterResponseDTO registerResponseDTO = medicService.register(registerDto);
-        if(registerResponseDTO.getMesaj().equals("Înregistrare cu succes!")) {
-            return new ResponseEntity<>(registerResponseDTO, HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>(registerResponseDTO, HttpStatus.BAD_REQUEST);
-        }
-    }
+
 }

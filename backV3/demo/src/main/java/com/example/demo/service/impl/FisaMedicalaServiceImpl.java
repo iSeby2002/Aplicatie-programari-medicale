@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dtos.FisaMedicalaDto;
+import com.example.demo.dtos.FisaMedicalaResponseDTO;
 import com.example.demo.model.FisaMedicala;
 import com.example.demo.model.Programari;
 import com.example.demo.repository.FisaMedicalaRepository;
@@ -24,16 +25,17 @@ public class FisaMedicalaServiceImpl implements FisaMedicalaService {
     }
 
     @Override
-    public List<Programari> findProgramariCurente(LocalDate data) {
-        LocalDate dataCurenta=data;
+    public List<Programari> findProgramariCurente(LocalDateTime startTime) {
+        LocalDateTime timeCurent=startTime;
         /*Iterable<Programari> allProgramari= programariRepository.findAll();
         List<Programari> programariCurente= StreamSupport.stream(allProgramari.spliterator(),false)
                 .filter(programari->programari.getStartTime().toLocalDate().equals(dataCurenta)).collect(Collectors.toList());
         return programariCurente;*/
-        LocalDateTime startOfDay = dataCurenta.atStartOfDay();
-        LocalDateTime endOfDay = dataCurenta.plusDays(1).atStartOfDay().minusSeconds(1);
+        LocalDateTime startOfDay = timeCurent.toLocalDate().atStartOfDay();
 
-        return programariRepository.findAllByDate(startOfDay, endOfDay);
+        //Poate trebe si end,vedem
+
+        return programariRepository.findAllByDate(startOfDay);
 
     }
 
@@ -43,6 +45,10 @@ public class FisaMedicalaServiceImpl implements FisaMedicalaService {
 
         FisaMedicala fisaMedicala = FisaMedicala.builder()
                 .programari(programari)
+                .nrCrt(fisaMedicalaDto.getNrCrt())
+                .tipDiabetZaharat(fisaMedicalaDto.getTipDiabetZaharat())
+                .diabetZaharat(fisaMedicalaDto.getDiabetZaharat())
+                .dataDiagnosticului(fisaMedicalaDto.getDataDiagnosticului())
                 .HbA1C(fisaMedicalaDto.getHbA1C())
                 .tipHbA1C(fisaMedicalaDto.getTipHbA1C())
                 .glicemie(fisaMedicalaDto.getGlicemie())
@@ -113,5 +119,31 @@ public class FisaMedicalaServiceImpl implements FisaMedicalaService {
 
         fisaMedicalaRepository.save(fisaMedicala);
         return "Salvare cu succes";
+    }
+
+    public FisaMedicalaResponseDTO findAllByCnp(long cnp){
+        FisaMedicalaResponseDTO fisaResponse = new FisaMedicalaResponseDTO();
+        if(cnp==0){
+            fisaResponse.setFiseMedicale((List<FisaMedicala>) fisaMedicalaRepository.findAll());
+            fisaResponse.setMesaj("Succes1!");
+        }
+        else
+        {
+            List<FisaMedicala> fiseCautate = fisaMedicalaRepository.findByProgramari_Pacient_Cnp(cnp);
+            System.out.println(fiseCautate);
+            if(!fiseCautate.isEmpty()){
+                fisaResponse.setFiseMedicale(fiseCautate);
+                fisaResponse.setMesaj("Succes2!");
+            }
+            else
+            {
+                fisaResponse.setFiseMedicale(null);
+                fisaResponse.setMesaj("Nu există fișă medicală pentru acest CNP!");
+            }
+        }
+
+
+        return fisaResponse;
+
     }
 }
