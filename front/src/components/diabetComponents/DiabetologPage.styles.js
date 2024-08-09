@@ -2,7 +2,7 @@ import React from 'react'
 
 export const centerBoxSx: React.CSSProperties = {
     position: "relative",
-    margin: "100px 0",
+    margin: "50px 0",
     left: "50%",
     transform: "translateX(-50%)",
     width: "80%",

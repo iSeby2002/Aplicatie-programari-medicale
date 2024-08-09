@@ -28,25 +28,36 @@
     padding: 10px;
     text-align: center;
     cursor: pointer;
+    vertical-align: middle; /* Aliniere verticală */
 }
 
 .calendar-table .time-slot {
     background-color: #f9f9f9;
+    width: 60px; /* Dimensiune fixă pentru coloana de ore */
+    height: 50px; /* Dimensiune fixă pentru rândurile de ore */
+    text-align: center; /* Centrarea textului */
+    line-height: 50px; /* Aliniere verticală în mijloc */
 }
 
 .calendar-table .calendar-cell {
-    height: 50px;
-}
-
-.calendar-table .calendar-cell:hover {
-    background-color: #f0f8ff;
+    width: 100px; /* Setează o lățime fixă pentru celulă */
+    height: 50px; /* Setează o înălțime fixă pentru celulă */
+    overflow: hidden; /* Ascunde orice conținut care depășește dimensiunile */
+    padding: 5px; /* Adaugă puțin padding pentru estetică */
+    box-sizing: border-box; /* Asigură-te că padding-ul nu afectează dimensiunea celulei */
 }
 
 .calendar-table .calendar-cell.disabled-cell {
-    background-color: #d3d3d3;
-    cursor: not-allowed;
+    background-color: #d3d3d3; /* Culoare gri pentru celulele dezactivate */
+    pointer-events: none; /* Previne interacțiunea cu celulele dezactivate */
 }
 
-.calendar-table .highlighted-day {
-    background-color: #cce5ff;
+.selected-cell {
+    background-color: #b3e5fc; /* Culoare pentru celula selectată */
+    border: 1px solid #0091ea; /* Opțional: border pentru a evidenția mai bine */
+}
+
+.calendar-table .occupied-cell {
+    background-color: #c8e6c9; /* Verde deschis */
+    border: 1px solid #2e7d32; /* Bordură verde închis pentru evidențiere */
 }
