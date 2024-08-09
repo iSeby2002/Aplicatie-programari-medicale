@@ -65,8 +65,11 @@ export const buttonSagetiSx: React.CSSProperties = {
 };
 
 export const buttonSx: React.CSSProperties = {
+    whiteSpace: 'pre-wrap',
+    lineHeight: 'normal',  // Ajustează linia de bază a textului
+    textAlign: 'center',   // Opțional: centrează textul
     width: "20%",
-    height: "50px",
+    height: "60px",
     border: "1px solid",
     background: "#2691d9",
     borderRadius: "25px",
@@ -79,70 +82,4 @@ export const buttonSx: React.CSSProperties = {
         borderColor: "#2691d9",
         transition: ".5s",
     },
-};
-
-
-export const typographyTitluSx: React.CSSProperties = {
-    padding: "20px 0px",
-    color: "black",
-    width: "100%",
-    fontSize: "25px",
-    fontWeight: "600",
-};
-
-export const boxSx: React.CSSProperties = {
-    width: "90%",
-    background: "white",
-    borderRadius: "5px",
-    border: "4px solid #adadad",
-    margin: "10px 0px",
-    display: "flex",
-    flexDirection: 'column',
-};
-
-export const typographyNrCrtSx: React.CSSProperties = {
-    padding: "10px 10px",
-    color: "black",
-    width: "130px",
-    textAlign: "left",
-    fontSize: "18px",
-    fontWeight: "600",
-};
-
-export const nrCrtSx: React.CSSProperties = {
-    padding: "10px 10px",
-    width: "250px",
-};
-
-export const typographyDiabetZaharatSx: React.CSSProperties = {
-    padding: "10px 10px",
-    color: "black",
-    width: "190px",
-    textAlign: "left",
-    fontSize: "18px",
-    fontWeight: "600",
-};
-
-export const diabetZaharatSx: React.CSSProperties = {
-    padding: "10px 10px",
-    width: "300px",
-};
-
-export const typographyDataDiagnosticuluiSx: React.CSSProperties = {
-    padding: "10px 10px",
-    color: "black",
-    width: "200px",
-    textAlign: "left",
-    fontSize: "18px",
-    fontWeight: "600",
-};
-
-export const typographyProgramaerSx: React.CSSProperties = {
-    padding: "10px 10px",
-    color: "black",
-    width: "300px",
-    alignContent: "center",
-    textAlign: "left",
-    fontSize: "18px",
-    fontWeight: "600",
 };

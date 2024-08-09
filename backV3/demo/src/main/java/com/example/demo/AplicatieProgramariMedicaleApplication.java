@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.dtos.RegisterDto;
 import com.example.demo.service.MedicService;
 import com.example.demo.service.PacientService;
 import org.springframework.boot.CommandLineRunner;

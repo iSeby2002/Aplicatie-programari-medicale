@@ -13,14 +13,18 @@ import {
     numeSiPrenumeSx, typographyCNPSx,
     typographyNumeSiPrenumeSx,
     typographyWeekSx
-} from "./DiabetologPage.styles";
+} from "./CalendarPage.styles";
 import axios from "axios";
 import CustomizedSnackbars from "../../utils/CustomizedSnackbars";
+import {useNavigate, useLocation} from "react-router-dom";
+
 
 const daysOfWeek = ["Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă", "Duminică"];
 const timeSlots = ["10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45"];
 
-const DiabetologPage = () => {
+const CalendarPage = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
     const [open, setOpen] = React.useState(false);
     const [severity, setSeverity] = React.useState("")
     const [message, setMessage] = React.useState("");
@@ -37,20 +41,23 @@ const DiabetologPage = () => {
     const [selectedSlot, setSelectedSlot] = useState(null);  // Pentru a stoca celula selectată
 
     const handleProgrameaza = () => {
-        if (!selectedSlot) {
+        if( !selectedSlot ) {
             setOpen(true);
             setSeverity("error");
-            setMessage("Selectați un slot de timp înainte de a programa!");
-        }else if(numeSiPrenume === "" || cnp === "") {
+            setMessage("Selectați un slot!");
+        }else if( selectedSlot.isBlocked ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Acest slot este blocat. Nu se poate face programare!");
+        }else if( numeSiPrenume === "" || cnp === "" ) {
             setOpen(true);
             setSeverity("error");
             setMessage("Câmpurile trebuie completate!");
-        }else{
+        }else {
             const allFieldsValid = Object.values(gresit).every(value => value === false);
 
-            if (allFieldsValid) {
+            if( allFieldsValid ) {
                 const { day, time } = selectedSlot;
-
                 const dayIndex = daysOfWeek.indexOf(day);
                 const selectedDayDate = getCurrentWeekDates()[dayIndex];
 
@@ -65,30 +72,22 @@ const DiabetologPage = () => {
                     startTime: startTime  // Data și ora slotului selectat în formatul necesar
                 };
 
-                console.log(programareDTO)
-
-                axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/programare`, programareDTO,{
+                axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/saveProgramare`, programareDTO,{
                     headers: {
                         "content-type": "application/json"
                     }
                 }).then((response: any) => {
-                    if(response.data === "Programare reușită"){
+                    if( response.data === "Programare reușită" ) {
                         setOpen(true);
                         setSeverity("success");
                         setMessage(response.data);
-                    }else{
+                    }else {
                         setOpen(true);
                         setSeverity("warning");
                         setMessage(response.data);
                     }
 
-                    setAppointments({
-                        ...appointments,
-                        [`${day}-${time}`]: {
-                            numePrenume: numeSiPrenume,
-                            cnp: cnp
-                        }  // Salvează numele, prenumele și CNP-ul în celula selectată
-                    });
+                    getProgramariByWeek(weekStartDate.format('YYYY-MM-DD'));
 
                     setNumeSiPrenume("");
                     setCnp("");
@@ -103,9 +102,197 @@ const DiabetologPage = () => {
     };
 
     const handleEditeazaProgramare = () => {
+        if( !selectedSlot ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Selectați un slot!");
+        }else if( selectedSlot.isBlocked ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Acest slot este blocat. Nu se poate edita!");
+        }else if( !selectedSlot.isOccupied ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Selectați un slot cu o programare existentă înainte de a edita!");
+        }else if( numeSiPrenume === "" || cnp === "" ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Câmpurile trebuie completate!");
+        }else {
+            const allFieldsValid = Object.values(gresit).every(value => value === false);
+
+            if(allFieldsValid) {
+                const { day, time } = selectedSlot;
+                const dayIndex = daysOfWeek.indexOf(day);
+                const selectedDayDate = getCurrentWeekDates()[dayIndex];
+
+                // Construiește data și ora în formatul "YYYY-MM-DDTHH:MM"
+                const startTime = `${selectedDayDate.format('YYYY-MM-DD')}T${time}`;
+
+                const programareDTO = {
+                    pacient: {
+                        numePrenume: numeSiPrenume,
+                        cnp: cnp,
+                    },
+                    startTime: startTime  // Data și ora slotului selectat în formatul necesar
+                };
+
+                axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/updateProgramare`, programareDTO,{
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                }).then((response: any) => {
+                    if( response.data === "Editare programare realizată cu succes!" ) {
+                        setOpen(true);
+                        setSeverity("success");
+                        setMessage(response.data);
+                    }else {
+                        setOpen(true);
+                        setSeverity("warning");
+                        setMessage(response.data);
+                    }
+
+                    getProgramariByWeek(weekStartDate.format('YYYY-MM-DD'));
+
+                    setNumeSiPrenume("");
+                    setCnp("");
+                    setSelectedSlot(null);
+                }).catch((error) => {
+                    setOpen(true);
+                    setSeverity("error");
+                    setMessage(error.response.data);
+                });
+            }
+        }
     };
 
     const handleAnuleazaProgramare = () => {
+        if( !selectedSlot ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Selectați un slot!");
+        }else if( selectedSlot.isBlocked ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Acest slot este blocat. Nu se poate face anulare!");
+        }else if ( !selectedSlot.isOccupied ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Selectați un slot cu o programare existentă înainte de a anula!");
+        }else {
+            const { day, time } = selectedSlot;
+            const dayIndex = daysOfWeek.indexOf(day);
+            const selectedDayDate = getCurrentWeekDates()[dayIndex];
+
+            // Construiește data și ora în formatul "YYYY-MM-DDTHH:MM"
+            const startTime = `${selectedDayDate.format('YYYY-MM-DD')}T${time}`;
+
+            const programareDTO = {
+                pacient: {
+                    numePrenume: numeSiPrenume,
+                    cnp: cnp,
+                },
+                startTime: startTime  // Data și ora slotului selectat în formatul necesar
+            };
+
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/deleteProgramare`, programareDTO,{
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then((response: any) => {
+                setOpen(true);
+                setSeverity("success");
+                setMessage(response.data);
+
+                getProgramariByWeek(weekStartDate.format('YYYY-MM-DD'));
+
+                setNumeSiPrenume("");
+                setCnp("");
+                setSelectedSlot(null);
+            }).catch((error) => {
+                setOpen(true);
+                setSeverity("error");
+                setMessage(error.response.data);
+            });
+        }
+    };
+
+    const [blockedSlots, setBlockedSlots] = useState({});
+
+    const handleBlocareSlot = () => {
+        if(!selectedSlot) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Selectați un slot!");
+        }else if( selectedSlot.isOccupied || selectedSlot.isBlocked) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Selectați un slot deblocat si fară programare!");
+        }else {
+            const { day, time } = selectedSlot;
+            const dayIndex = daysOfWeek.indexOf(day);
+            const selectedDayDate = getCurrentWeekDates()[dayIndex];
+
+            // Construiește data și ora în formatul "YYYY-MM-DDTHH:MM"
+            const startTime = `${selectedDayDate.format('YYYY-MM-DD')}T${time}`;
+
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/blocareSlot`, startTime,{
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then((response: any) => {
+                setOpen(true);
+                setSeverity("success");
+                setMessage(response.data);
+
+                getSloturiBlocateByWeek(weekStartDate.format('YYYY-MM-DD'));
+
+            }).catch((error) => {
+                setOpen(true);
+                setSeverity("error");
+                setMessage(error.response.data);
+            });
+
+            setSelectedSlot(null); // Deselectează slotul după blocare
+        }
+    };
+
+    const handleDeblocareSlot = () => {
+        if(!selectedSlot) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Selectați un slot!");
+        }else if(!selectedSlot.isBlocked) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Slotul selectat nu este blocat!");
+        }else {
+            const { day, time } = selectedSlot;
+            const dayIndex = daysOfWeek.indexOf(day);
+            const selectedDayDate = getCurrentWeekDates()[dayIndex];
+
+            // Construiește data și ora în formatul "YYYY-MM-DDTHH:MM"
+            const startTime = `${selectedDayDate.format('YYYY-MM-DD')}T${time}`;
+
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/deblocareSlot`, startTime,{
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then((response: any) => {
+                setOpen(true);
+                setSeverity("success");
+                setMessage(response.data);
+
+                getSloturiBlocateByWeek(weekStartDate.format('YYYY-MM-DD'));
+
+            }).catch((error) => {
+                setOpen(true);
+                setSeverity("error");
+                setMessage(error.response.data);
+            });
+
+            setSelectedSlot(null); // Deselectează slotul după deblocare
+        }
     };
 
     const [appointments, setAppointments] = useState({});
@@ -120,23 +307,27 @@ const DiabetologPage = () => {
     }, []);
 
     const handleCellClick = (day, time) => {
-        if (day === "Sâmbătă" || day === "Duminică") return;
+        if(day === "Sâmbătă" || day === "Duminică") return;
 
         const slotKey = `${day}-${time}`;
         const appointment = appointments[slotKey];
+        const isBlocked = blockedSlots[slotKey];
 
-        if (appointment) {
-            // Slotul este ocupat, completează câmpurile cu informațiile existente
+        if(appointment) {
+            // Slotul este ocupat
             setNumeSiPrenume(appointment.numePrenume);
             setCnp(appointment.cnp);
-
-            // Poți adăuga și o logică pentru a preveni editarea, dacă este necesar
-            setSelectedSlot({ day, time, isOccupied: true });
-        } else {
-            // Slotul este liber, golește câmpurile și permite selecția
+            setSelectedSlot({ day, time, isOccupied: true, isBlocked: false });
+        }else if (isBlocked) {
+            // Slotul este blocat
             setNumeSiPrenume("");
             setCnp("");
-            setSelectedSlot({ day, time, isOccupied: false });
+            setSelectedSlot({ day, time, isOccupied: false, isBlocked: true });
+        }else {
+            // Slotul este liber
+            setNumeSiPrenume("");
+            setCnp("");
+            setSelectedSlot({ day, time, isOccupied: false, isBlocked: false });
         }
     };
 
@@ -160,7 +351,7 @@ const DiabetologPage = () => {
 
     const handleDateChange = (date) => {
         // Dacă este selectată duminica, asigură-te că rămâne în săptămâna curentă
-        if (dayjs(date).day() === 0) {
+        if( dayjs(date).day() === 0 ) {
             date = dayjs(date).subtract(1, 'day');
         }
         setSelectedDate(date);
@@ -184,11 +375,11 @@ const DiabetologPage = () => {
         const currentDate = getCurrentWeekDates()[dayIndex];
 
         // Verifică dacă ziua este sâmbătă (dayIndex = 5) sau duminică (dayIndex = 6)
-        if (currentDate.day() === 6 || currentDate.day() === 0) {
+        if( currentDate.day() === 6 || currentDate.day() === 0 ) {
             return false; // Nu aplica highlight pentru sâmbătă și duminică
         }
 
-        if (!selectedDate) return false;
+        if(!selectedDate) return false;
 
         return currentDate.isSame(selectedDate, 'day');
     };
@@ -199,9 +390,7 @@ const DiabetologPage = () => {
         return `${startOfWeek.format('MMM D')} - ${endOfWeek.format('MMM D, YYYY')}`;
     };
 
-    useEffect(() => {
-        const startWeek = weekStartDate.format('YYYY-MM-DD'); // Formatează startWeek pentru a o trimite la backend
-
+    const getProgramariByWeek = (startWeek) => {
         axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/getProgramariByWeek`, startWeek, {
             headers: {
                 "content-type": "application/json"
@@ -228,12 +417,46 @@ const DiabetologPage = () => {
         }).catch((error) => {
             console.error("Eroare la obținerea programărilor:", error);
         });
+    };
+
+    const getSloturiBlocateByWeek = (startWeek) => {
+        axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/getSloturiBlocateByWeek`, startWeek, {
+            headers: {
+                "content-type": "application/json"
+            }
+        }).then((response: any) => {
+            const sloturiBlocate = response.data;
+            const updatedBlockedSlots = {};
+
+            sloturiBlocate.forEach(slotBlocat => {
+                const dateTime = dayjs(slotBlocat.slot);
+                const day = daysOfWeek[dateTime.day() - 1];
+                const time = dateTime.format('HH:mm');
+                const slotKey = `${day}-${time}`;
+                updatedBlockedSlots[slotKey] = true;
+            });
+
+            setBlockedSlots(updatedBlockedSlots); // Actualizează starea cu sloturile blocate
+        }).catch((error) => {
+            console.error("Eroare la obținerea sloturilor blocate:", error);
+        });
+    };
+
+    useEffect(() => {
+        getProgramariByWeek(weekStartDate.format('YYYY-MM-DD'));
+        getSloturiBlocateByWeek(weekStartDate.format('YYYY-MM-DD'));
     }, [weekStartDate]); // Re-execută useEffect când weekStartDate se schimbă
+
+    const handleDeconectare = () => {
+        navigate("/");
+        localStorage.setItem('auth', 'false');
+    };
 
     return (
         <div className="diabetologPage" style={{ height: '100vh', overflowY: 'auto' }}>
             <CssBaseline />
             <Box sx={centerBoxSx}>
+                {/* Calendar*/}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <div className="calendar-container">
                         <Box
@@ -286,16 +509,18 @@ const DiabetologPage = () => {
                                         const appointment = appointments[slotKey];
                                         const isOccupied = Boolean(appointment);
                                         const isSelected = selectedSlot && selectedSlot.day === day && selectedSlot.time === time;
+                                        const isBlocked = blockedSlots[slotKey];
 
                                         return (
                                             <td
                                                 key={`${day}-${time}`}
                                                 className={`calendar-cell ${day === "Sâmbătă" || day === "Duminică" ? "disabled-cell" : ""}
-                            ${isSelected ? "selected-cell" : ""}
-                            ${!isSelected && isOccupied ? "occupied-cell" : ""}`} // Prioritizează clasa "selected-cell" dacă slotul este selectat
-                                                onClick={() => handleCellClick(day, time)}
+                                                    ${isSelected ? "selected-cell" : ""}
+                                                    ${!isSelected && isOccupied ? "occupied-cell" : ""}
+                                                    ${!isSelected && isBlocked ? "blocked-cell" : ""}`} // Adaugă clasa "blocked-cell" dacă slotul este blocat
+                                                onClick={() => handleCellClick(day, time)} // Ignoră click-ul dacă slotul este blocat
                                             >
-                                                {isOccupied ? appointment.numePrenume : ""} {/* Afișează doar numele și prenumele */}
+                                                {isOccupied ? appointment.numePrenume : ""}
                                             </td>
                                         );
                                     })}
@@ -305,6 +530,7 @@ const DiabetologPage = () => {
                         </table>
                     </div>
                 </LocalizationProvider>
+                {/* Typography si TextField*/}
                 <Box sx={{display: "flex", justifyContent: "center", width: "100%", padding: "10px 10px"}}>
                     <Typography sx={typographyNumeSiPrenumeSx}>
                         Nume și prenume:
@@ -343,15 +569,38 @@ const DiabetologPage = () => {
                         sx={CNPSx}
                     />
                 </Box>
+                {/* Butoane pentru diabetolog*/}
+                <div hidden={location.state.role === "oftalmolog"} style={{width: "100%"}}>
+                    <Box  sx={{display: "flex", justifyContent: "center", width: "100%", padding: "10px 10px", gap: "20px"}}>
+                        <Button sx={buttonSx} onClick={handleProgrameaza}>
+                            Programează
+                        </Button>
+                        <Button sx={buttonSx} onClick={handleEditeazaProgramare}>
+                            {"Editează\nProgramare"}
+                        </Button>
+                        <Button sx={buttonSx} onClick={handleAnuleazaProgramare}>
+                            {"Anulează\nProgramare"}
+                        </Button>
+                    </Box>
+                </div>
+                {/* Butoane pentru oftalmolog*/}
+                <div hidden={location.state.role === "diabetolog"} style={{width: "100%"}}>
+                    <Box  sx={{display: "flex", justifyContent: "center", width: "100%", padding: "10px 10px", gap: "20px"}}>
+                        <Button sx={buttonSx}>
+                            {"Completează\nscreening-ul"}
+                        </Button>
+                        <Button sx={buttonSx} onClick={handleBlocareSlot}>
+                            {"Blochează\nslotul"}
+                        </Button>
+                        <Button sx={buttonSx} onClick={handleDeblocareSlot}>
+                            {"Deblochează\nslotul"}
+                        </Button>
+                    </Box>
+                </div>
+                {/* Buton deconectare*/}
                 <Box sx={{display: "flex", justifyContent: "center", width: "100%", padding: "10px 10px", gap: "20px"}}>
-                    <Button sx={buttonSx} onClick={handleProgrameaza}>
-                        Programează
-                    </Button>
-                    <Button sx={buttonSx} onClick={handleEditeazaProgramare}>
-                        Editează Programare
-                    </Button>
-                    <Button sx={buttonSx} onClick={handleAnuleazaProgramare}>
-                        Anulează Programare
+                    <Button sx={buttonSx} onClick={handleDeconectare}>
+                        Deconectare
                     </Button>
                 </Box>
             </Box>
@@ -365,4 +614,4 @@ const DiabetologPage = () => {
     );
 };
 
-export default DiabetologPage;
+export default CalendarPage;

@@ -1,15 +1,16 @@
 package com.example.demo.controller;
 
-import com.example.demo.dtos.IntervalDTO;
-import com.example.demo.dtos.ProgramareResponseDto;
 import com.example.demo.model.Programari;
+import com.example.demo.model.SlotBlocat;
 import com.example.demo.service.ProgramariService;
+import com.example.demo.service.SlotBlocatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -18,41 +19,41 @@ import java.util.List;
 public class ProgramariController {
 
     private final ProgramariService programariService;
+    private final SlotBlocatService slotBlocatService;
 
     @Autowired
-    public ProgramariController(ProgramariService programariService){
+    public ProgramariController(ProgramariService programariService, SlotBlocatService slotBlocatService){
         this.programariService=programariService;
+        this.slotBlocatService = slotBlocatService;
     }
 
-    @PostMapping("/programare")
-    public ResponseEntity<?> programare(@RequestBody Programari programare) {
+    @PostMapping("/saveProgramare")
+    public ResponseEntity<String> programare(@RequestBody Programari programare) {
         String mesaj = programariService.saveProgramare(programare);
         if(mesaj.equals("Programare reușită") ||
-                mesaj.equals("Avertizare! Pacientul are deja o programare în această săptămână.")) {
+                mesaj.equals("Avertizare! Pacientul are deja o programare în această săptămână!")) {
             return new ResponseEntity<>(mesaj, HttpStatus.OK);
         }
         return new ResponseEntity<>(mesaj, HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping("/updateProgramare")
-    public ResponseEntity<ProgramareResponseDto> updateProgramare(@RequestBody Programari programareUpdate) {
-        ProgramareResponseDto responseDto = programariService.update(programareUpdate);
-
-        if (responseDto.getMesaj().equals("Nu există programarea selectat!")) {
-            return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
+    @PostMapping("/updateProgramare")
+    public ResponseEntity<String> updateProgramare(@RequestBody Programari programareUpdate) {
+        String mesaj = programariService.updateProgramare(programareUpdate);
+        if (mesaj.equals("Nu există programarea selectată!")) {
+            return new ResponseEntity<>(mesaj, HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+            return new ResponseEntity<>(mesaj, HttpStatus.OK);
         }
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/deleteProgramare")
     public ResponseEntity<String> deleteProgramare(@RequestBody Programari programareDelete) {
-        String responseMessage = programariService.delete(programareDelete);
-
-        if (responseMessage.equals("Nu există programarea selectată!")) {
-            return ResponseEntity.status(404).body(responseMessage);
+        String mesaj = programariService.deleteProgramare(programareDelete);
+        if (mesaj.equals("Nu există programarea selectată!")) {
+            return new ResponseEntity<>(mesaj, HttpStatus.BAD_REQUEST);
         } else {
-            return ResponseEntity.ok(responseMessage);
+            return new ResponseEntity<>(mesaj, HttpStatus.OK);
         }
     }
 
@@ -62,12 +63,29 @@ public class ProgramariController {
         return new ResponseEntity<>(programari, HttpStatus.OK);
     }
 
-    @GetMapping("/getInterval")
-    public ResponseEntity<IntervalDTO> getInterval(){
-        IntervalDTO i = new IntervalDTO();
-        i.setStartHour(10); // ora de start a intervalului programari
-        i.setEndHour(12); // ora de sfarsit a intervalului programari
-        i.setLength(15); // lungimea in minute solturilor de programare
-        return new ResponseEntity<>(i, HttpStatus.OK);
+    @PostMapping("/blocareSlot")
+    public ResponseEntity<String> blocareSlot(@RequestBody LocalDateTime slot) {
+        String mesaj = slotBlocatService.saveSlotBlocat(slot);
+        if(mesaj.equals("Slot blocat cu succes!")){
+            return new ResponseEntity<>(mesaj, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(mesaj, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/deblocareSlot")
+    public ResponseEntity<String> deblocareSlot(@RequestBody LocalDateTime slot) {
+        String mesaj = slotBlocatService.deleteSlotBlocat(slot);
+        if(mesaj.equals("Slot deblocat cu succes!")){
+            return new ResponseEntity<>(mesaj, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(mesaj, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/getSloturiBlocateByWeek")
+    public ResponseEntity<List<SlotBlocat>> blocareSlot(@RequestBody LocalDate startWeek) {
+        List<SlotBlocat> slotBlocats = slotBlocatService.getAllSlotBlocat(startWeek);
+        return new ResponseEntity<>(slotBlocats, HttpStatus.OK);
     }
 }

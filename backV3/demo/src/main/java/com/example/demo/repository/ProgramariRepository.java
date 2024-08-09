@@ -19,4 +19,6 @@ public interface ProgramariRepository extends CrudRepository<Programari, Long> {
     List<Programari> findAllByPacientAndStartTimeBetween(Pacient pacient, LocalDateTime startTimeStart, LocalDateTime startTimeEnd);
     @Query("SELECT p FROM Programari p WHERE p.startTime BETWEEN :startOfWeek AND :endOfWeek")
     List<Programari> findProgramariByWeek(@Param("startOfWeek") LocalDateTime startOfWeek, @Param("endOfWeek") LocalDateTime endOfWeek);
+    @Query("SELECT COUNT(p) FROM Programari p WHERE p.startTime BETWEEN :startOfDay AND :endOfDay")
+    int countProgramariByDay(@Param("startOfDay") LocalDateTime startOfDay, @Param("endOfDay") LocalDateTime endOfDay);
 }

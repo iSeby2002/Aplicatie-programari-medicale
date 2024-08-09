@@ -3,25 +3,24 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 @Builder
-@Table(name = "pacient")
-public class Pacient {
+@Table(name = "slot_blocat")
+public class SlotBlocat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String numePrenume;
-    private long cnp;
+    private LocalDateTime slot;
 
     @Override
     public String toString() {
-        return "Pacient{" +
-                "id=" + id +
-                ", numePrenume='" + numePrenume + '\'' +
-                ", cnp=" + cnp +
+        return "SlotBlocat{" +
+                "slotBlocat=" + slot +
                 '}';
     }
 }

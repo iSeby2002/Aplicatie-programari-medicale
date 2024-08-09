@@ -61,3 +61,13 @@
     background-color: #c8e6c9; /* Verde deschis */
     border: 1px solid #2e7d32; /* Bordură verde închis pentru evidențiere */
 }
+
+.calendar-table .highlighted-day {
+    background-color: #cce5ff; /* Sau orice culoare doriți */
+}
+
+.calendar-table .blocked-cell {
+    background-color: #f8d7da; /* Roșu deschis */
+    border: 1px solid #dc3545; /* Bordură roșie */
+    color: #721c24; /* Text roșu */
+}
