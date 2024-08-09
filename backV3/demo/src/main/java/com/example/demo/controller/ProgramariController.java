@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dtos.DataProgramareDTO;
+import com.example.demo.dtos.ProgramareResponseDto;
 import com.example.demo.model.Programari;
 import com.example.demo.service.ProgramariService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,4 +76,27 @@ public class ProgramariController {
        }
        return new ResponseEntity<>(mesaj, HttpStatus.BAD_REQUEST);
     }
+
+    @PutMapping("/updateProgramare")
+    public ResponseEntity<ProgramareResponseDto> updateProgramare(@RequestBody Programari programareUpdate) {
+        ProgramareResponseDto responseDto = programariService.update(programareUpdate);
+
+        if (responseDto.getMesaj().equals("Nu există programarea selectat!")) {
+            return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteProgramare(@RequestBody Programari programareDelete) {
+        String responseMessage = programariService.delete(programareDelete);
+
+        if (responseMessage.equals("Nu există programarea selectată!")) {
+            return ResponseEntity.status(404).body(responseMessage);
+        } else {
+            return ResponseEntity.ok(responseMessage);
+        }
+    }
+
 }

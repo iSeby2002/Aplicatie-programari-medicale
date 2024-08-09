@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,6 +16,5 @@ public interface ProgramariRepository extends CrudRepository<Programari, Long> {
     Programari findProgramariById(long id);
     Programari findProgramariByStartTime (LocalDateTime startTime);
     List<Programari> findAllByPacientAndStartTimeBetween(Pacient pacient, LocalDateTime startTimeStart, LocalDateTime startTimeEnd);
-
 
 }
