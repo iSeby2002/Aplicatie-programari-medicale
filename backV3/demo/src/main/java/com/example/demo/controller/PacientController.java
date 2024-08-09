@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RequestMapping("/pacienti")
 public class PacientController {
+
     private final PacientService pacientService;
+
     @Autowired
     public PacientController(PacientService pacientService){
         this.pacientService=pacientService;
@@ -23,6 +25,7 @@ public class PacientController {
         Pacient pacient=pacientService.registerPacient(pacientDto);
         return new ResponseEntity<>(pacient, HttpStatus.CREATED);
     }
+
     @DeleteMapping("/{nrCrt}")
     public ResponseEntity<Void> delete(@PathVariable Long nrCrt){
         try{
@@ -44,10 +47,4 @@ public class PacientController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-//    @GetMapping("/getUrmatorulNrCrt")
-//    public ResponseEntity<Long> getUrmatorulNrCrt(){
-//        Long nextNrCrt = pacientService.getNextPacientId();
-//        return new ResponseEntity<>(nextNrCrt,HttpStatus.OK);
-//    }
 }

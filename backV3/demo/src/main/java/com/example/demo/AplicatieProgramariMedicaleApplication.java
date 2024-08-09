@@ -11,16 +11,11 @@ import org.springframework.context.annotation.Bean;
 public class AplicatieProgramariMedicaleApplication {
 
 	public static void main(String[] args) {
-
-
-
 		SpringApplication.run(AplicatieProgramariMedicaleApplication.class, args);
 	}
 
 	@Bean
 	CommandLineRunner init(MedicService medicService, PacientService pacientService) {
-
-
 		return args -> {
 //			//medici
 //			RegisterDto registerDtoAdmin= RegisterDto.builder()

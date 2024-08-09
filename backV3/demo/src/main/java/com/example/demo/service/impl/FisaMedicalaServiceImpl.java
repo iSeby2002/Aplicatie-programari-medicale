@@ -9,13 +9,12 @@ import com.example.demo.repository.ProgramariRepository;
 import com.example.demo.service.FisaMedicalaService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FisaMedicalaServiceImpl implements FisaMedicalaService {
+
     private final ProgramariRepository programariRepository;
     private final FisaMedicalaRepository fisaMedicalaRepository;
 
@@ -36,7 +35,6 @@ public class FisaMedicalaServiceImpl implements FisaMedicalaService {
         //Poate trebe si end,vedem
 
         return programariRepository.findAllByDate(startOfDay);
-
     }
 
     @Override

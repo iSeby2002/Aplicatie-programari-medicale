@@ -2,9 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.dtos.LoginDto;
 import com.example.demo.dtos.LoginResponseDTO;
-import com.example.demo.dtos.RegisterDto;
-import com.example.demo.dtos.RegisterResponseDTO;
-import com.example.demo.model.Medic;
 import com.example.demo.service.MedicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +31,4 @@ public class MedicController {
             return new ResponseEntity<>(loginResponseDTO, HttpStatus.BAD_REQUEST);
         }
     }
-
-
 }

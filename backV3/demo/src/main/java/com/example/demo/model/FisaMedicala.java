@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,9 +11,8 @@ import java.util.Optional;
 @Setter
 @Entity
 @Builder
-
+@Table(name = "fisa_medicala")
 public class FisaMedicala {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -109,4 +107,79 @@ public class FisaMedicala {
     private LocalDate data;
     private String MedicExaminator;
 
+    @Override
+    public String toString() {
+        return "FisaMedicala{" +
+                "id=" + id +
+                ", programari=" + programari +
+                ", nrCrt=" + nrCrt +
+                ", tipDiabetZaharat='" + tipDiabetZaharat + '\'' +
+                ", diabetZaharat='" + diabetZaharat + '\'' +
+                ", dataDiagnosticului=" + dataDiagnosticului +
+                ", HbA1C=" + HbA1C +
+                ", tipHbA1C='" + tipHbA1C + '\'' +
+                ", glicemie=" + glicemie +
+                ", uree=" + uree +
+                ", creatinina=" + creatinina +
+                ", eRFG=" + eRFG +
+                ", hta=" + hta +
+                ", neuropatie=" + neuropatie +
+                ", nefropatie=" + nefropatie +
+                ", ci=" + ci +
+                ", avc=" + avc +
+                ", ima=" + ima +
+                ", hipercolesterolomie=" + hipercolesterolomie +
+                ", hipertrigliceridemie=" + hipertrigliceridemie +
+                ", insulina=" + insulina +
+                ", ado=" + ado +
+                ", dieta=" + dieta +
+                ", nimic=" + nimic +
+                ", detaliiFundDeOchi='" + detaliiFundDeOchi + '\'' +
+                ", alteModalitatiOculare='" + alteModalitatiOculare + '\'' +
+                ", acuitateVizualaOD=" + acuitateVizualaOD +
+                ", acuitateVizualaOS=" + acuitateVizualaOS +
+                ", rubeozaIrianaOD=" + rubeozaIrianaOD +
+                ", rubeozaIrianaOS=" + rubeozaIrianaOS +
+                ", faraRetinopatieDiabeticaOD=" + faraRetinopatieDiabeticaOD +
+                ", faraRetinopatieDiabeticaOS=" + faraRetinopatieDiabeticaOS +
+                ", retinopatieDiabeticaNeproliferativaUsoaraOD=" + retinopatieDiabeticaNeproliferativaUsoaraOD +
+                ", retinopatieDiabeticaNeproliferativaUsoaraOS=" + retinopatieDiabeticaNeproliferativaUsoaraOS +
+                ", retinopatieDiabeticaNeproliferativaMedieOD=" + retinopatieDiabeticaNeproliferativaMedieOD +
+                ", retinopatieDiabeticaNeproliferativaMedieOS=" + retinopatieDiabeticaNeproliferativaMedieOS +
+                ", retinopatieDiabeticaNeproliferativaSeveraOD=" + retinopatieDiabeticaNeproliferativaSeveraOD +
+                ", retinopatieDiabeticaNeproliferativaSeveraOS=" + retinopatieDiabeticaNeproliferativaSeveraOS +
+                ", retinopatieDiabeticaProliferativaOD=" + retinopatieDiabeticaProliferativaOD +
+                ", retinopatieDiabeticaProliferativaOS=" + retinopatieDiabeticaProliferativaOS +
+                ", edemMacularClinicSemnificativOD=" + edemMacularClinicSemnificativOD +
+                ", edemMacularClinicSemnificativOS=" + edemMacularClinicSemnificativOS +
+                ", comparativCuUltimaExaminareLaFelOD=" + comparativCuUltimaExaminareLaFelOD +
+                ", comparativCuUltimaExaminareLaFelOS=" + comparativCuUltimaExaminareLaFelOS +
+                ", comparativCuUltimaExaminareMaiBineOS=" + comparativCuUltimaExaminareMaiBineOS +
+                ", comparativCuUltimaExaminareMaiBineOD=" + comparativCuUltimaExaminareMaiBineOD +
+                ", comparativCuUltimaExaminareMaiRauOD=" + comparativCuUltimaExaminareMaiRauOD +
+                ", comparativCuUltimaExaminareMaiRauOS=" + comparativCuUltimaExaminareMaiRauOS +
+                ", comparativCuUltimaExaminareNuSeCunoasteOD=" + comparativCuUltimaExaminareNuSeCunoasteOD +
+                ", comparativCuUltimaExaminareNuSeCunoasteOS=" + comparativCuUltimaExaminareNuSeCunoasteOS +
+                ", injectieNumarOS=" + injectieNumarOS +
+                ", injectieDozaOS=" + injectieDozaOS +
+                ", injectieNumarOD=" + injectieNumarOD +
+                ", injectieDozaOD=" + injectieDozaOD +
+                ", laserOD='" + laserOD + '\'' +
+                ", laserOS='" + laserOS + '\'' +
+                ", diagnosticOD='" + diagnosticOD + '\'' +
+                ", diagnosticOS='" + diagnosticOS + '\'' +
+                ", recomandare='" + recomandare + '\'' +
+                ", recomandareField='" + recomandareField + '\'' +
+                ", tratament=" + tratament +
+                ", tratamentField='" + tratamentField + '\'' +
+                ", peste1An=" + peste1An +
+                ", pesteLuni=" + pesteLuni +
+                ", pesteSaptamani=" + pesteSaptamani +
+                ", ambulator=" + ambulator +
+                ", ambulatorLaField='" + ambulatorLaField + '\'' +
+                ", ambulatorInField='" + ambulatorInField + '\'' +
+                ", data=" + data +
+                ", MedicExaminator='" + MedicExaminator + '\'' +
+                '}';
+    }
 }
