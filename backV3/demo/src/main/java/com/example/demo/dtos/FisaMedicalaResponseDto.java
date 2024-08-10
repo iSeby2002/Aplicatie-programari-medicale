@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class FisaMedicalaResponseDTO {
-    private List<FisaMedicala> fiseMedicale;
+public class FisaMedicalaResponseDto {
+    private FisaMedicala fiseMedicale;
     private String mesaj;
 }

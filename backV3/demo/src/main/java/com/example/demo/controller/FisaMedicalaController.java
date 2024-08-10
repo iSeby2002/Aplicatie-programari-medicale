@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.dtos.FisaMedicalaDto;
-import com.example.demo.dtos.FisaMedicalaResponseDTO;
-import com.example.demo.dtos.RegisterResponseDTO;
+import com.example.demo.dtos.*;
+import com.example.demo.dtos.FiseMedicaleResponseDTO;
 import com.example.demo.model.FisaMedicala;
 import com.example.demo.model.Programari;
 import com.example.demo.service.FisaMedicalaService;
@@ -43,14 +42,25 @@ public class FisaMedicalaController {
     }
 
     @PostMapping("/getRaportFise")
-    public ResponseEntity<FisaMedicalaResponseDTO> getRaportFise(@RequestBody long cnp){
+    public ResponseEntity<FiseMedicaleResponseDTO> getRaportFise(@RequestBody long cnp){
 
-        FisaMedicalaResponseDTO fisaMedicalaResponseDTO = fisaMedicalaService.findAllByCnp(cnp);
+        FiseMedicaleResponseDTO fisaMedicalaResponseDTO = fisaMedicalaService.findAllByCnp(cnp);
         if(fisaMedicalaResponseDTO.getMesaj().equals("Nu există fișă medicală pentru acest CNP!")) {
             return new ResponseEntity<>(fisaMedicalaResponseDTO, HttpStatus.BAD_REQUEST);
         }else {
             return new ResponseEntity<>(fisaMedicalaResponseDTO, HttpStatus.OK);
         }
 
+    }
+
+    @PutMapping("/updateFisaMedicala")
+    public ResponseEntity<FisaMedicalaResponseDto> updateFisaMedicala(@RequestBody FisaMedicala fisaMedicalaUpdate) {
+        FisaMedicalaResponseDto responseDto = fisaMedicalaService.update(fisaMedicalaUpdate);
+
+        if (responseDto.getMesaj().equals("Nu există fisa selectat!")) {
+            return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        }
     }
 }

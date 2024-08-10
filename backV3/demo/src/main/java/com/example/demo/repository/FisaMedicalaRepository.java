@@ -11,5 +11,6 @@ import java.util.List;
 public interface FisaMedicalaRepository extends CrudRepository<FisaMedicala,Long> {
 
     List<FisaMedicala> findByProgramari_Pacient_Cnp(long cnp);
+    FisaMedicala findFisaMedicalaById(long id);
 
 }

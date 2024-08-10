@@ -1,9 +1,10 @@
 package com.example.demo.service;
 
 
-import com.example.demo.dtos.FisaMedicalaDto;
-import com.example.demo.dtos.FisaMedicalaResponseDTO;
+import com.example.demo.dtos.*;
+import com.example.demo.dtos.FiseMedicaleResponseDTO;
 import com.example.demo.model.FisaMedicala;
+import com.example.demo.model.Medic;
 import com.example.demo.model.Programari;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -17,5 +18,6 @@ import java.util.List;
 public interface FisaMedicalaService {
     List<Programari> findProgramariCurente(LocalDateTime data);
     String saveFisaMedicala(FisaMedicalaDto fisaMedicalaDto);
-    FisaMedicalaResponseDTO findAllByCnp(long cnp);
+    FiseMedicaleResponseDTO findAllByCnp(long cnp);
+    FisaMedicalaResponseDto update(FisaMedicala fisaMedicala);
 }
