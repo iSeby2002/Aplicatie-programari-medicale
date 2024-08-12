@@ -217,6 +217,57 @@ const CalendarPage = () => {
         }
     };
 
+    const handleVizualizareScreening = () => {
+        if( !selectedSlot ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Selectați un slot!");
+        }else if( selectedSlot.isBlocked ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Acest slot este blocat!");
+        }else if ( !selectedSlot.isOccupied ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Selectați un slot cu o programare existentă înainte!");
+        }else {
+            // const { day, time } = selectedSlot;
+            // const dayIndex = daysOfWeek.indexOf(day);
+            // const selectedDayDate = getCurrentWeekDates()[dayIndex];
+            //
+            // // Construiește data și ora în formatul "YYYY-MM-DDTHH:MM"
+            // const startTime = `${selectedDayDate.format('YYYY-MM-DD')}T${time}`;
+            //
+            // const programareDTO = {
+            //     pacient: {
+            //         numePrenume: numeSiPrenume,
+            //         cnp: cnp,
+            //     },
+            //     startTime: startTime  // Data și ora slotului selectat în formatul necesar
+            // };
+            //
+            // axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/deleteProgramare`, programareDTO,{
+            //     headers: {
+            //         "content-type": "application/json"
+            //     }
+            // }).then((response: any) => {
+            //     setOpen(true);
+            //     setSeverity("success");
+            //     setMessage(response.data);
+            //
+            //     getProgramariByWeek(weekStartDate.format('YYYY-MM-DD'));
+            //
+            //     setNumeSiPrenume("");
+            //     setCnp("");
+            //     setSelectedSlot(null);
+            // }).catch((error) => {
+            //     setOpen(true);
+            //     setSeverity("error");
+            //     setMessage(error.response.data);
+            // });
+        }
+    };
+
     const [blockedSlots, setBlockedSlots] = useState({});
 
     const handleBlocareSlot = () => {
@@ -292,6 +343,48 @@ const CalendarPage = () => {
             });
 
             setSelectedSlot(null); // Deselectează slotul după deblocare
+        }
+    };
+
+    const handleCompletareScreening = () => {
+        if( !selectedSlot ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Selectați un slot!");
+        }else if( selectedSlot.isBlocked ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Acest slot este blocat!");
+        }else if ( !selectedSlot.isOccupied ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Selectați un slot cu o programare existentă înainte!");
+        }else {
+            // /OftalmologPage/CompletareScreening
+
+            const { day, time } = selectedSlot;
+            const dayIndex = daysOfWeek.indexOf(day);
+            const selectedDayDate = getCurrentWeekDates()[dayIndex];
+
+            // Construiește data și ora în formatul "YYYY-MM-DDTHH:MM"
+            const startTime = `${selectedDayDate.format('YYYY-MM-DD')}T${time}`;
+
+            const programareDTO = {
+                pacient: {
+                    numePrenume: numeSiPrenume,
+                    cnp: cnp,
+                },
+                startTime: startTime  // Data și ora slotului selectat în formatul necesar
+            };
+
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/getFisaMedicalaByProgramare`, programareDTO,{
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then((response: any) => {
+                const stateData = { medic: location.state, fisaMedicala: response.data };
+                navigate("/OftalmologPage/CompletareScreening", { state: stateData });
+            });
         }
     };
 
@@ -582,12 +675,17 @@ const CalendarPage = () => {
                             {"Anulează\nProgramare"}
                         </Button>
                     </Box>
+                    <Box  sx={{display: "flex", justifyContent: "center", width: "100%", padding: "10px 10px", gap: "20px"}}>
+                        <Button sx={buttonSx} onClick={handleVizualizareScreening}>
+                            {"Vizualizează\nScreening"}
+                        </Button>
+                    </Box>
                 </div>
                 {/* Butoane pentru oftalmolog*/}
                 <div hidden={location.state.role === "diabetolog"} style={{width: "100%"}}>
                     <Box  sx={{display: "flex", justifyContent: "center", width: "100%", padding: "10px 10px", gap: "20px"}}>
-                        <Button sx={buttonSx}>
-                            {"Completează\nscreening-ul"}
+                        <Button sx={buttonSx} onClick={handleCompletareScreening}>
+                            {"Completează\nscreening"}
                         </Button>
                         <Button sx={buttonSx} onClick={handleBlocareSlot}>
                             {"Blochează\nslotul"}

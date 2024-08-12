@@ -15,6 +15,15 @@ export const centerBoxSx: React.CSSProperties = {
     overflow: 'auto',
 };
 
+export const typographySx: React.CSSProperties = {
+    textAlign: "left",
+    padding: "20px 0px",
+    color: "black",
+    width: "90%",
+    fontSize: "25px",
+    fontWeight: "300",
+};
+
 export const typographyTitluSx: React.CSSProperties = {
     padding: "20px 0px",
     color: "black",
@@ -82,9 +91,11 @@ export const typographyDiabetZaharatSx: React.CSSProperties = {
     fontWeight: "600",
 };
 
-export const diabetZaharatSx: React.CSSProperties = {
-    padding: "5px 10px",
-    width: "28%",
+export const typographyTipSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
 };
 
 export const typographyDataDiagnosticuluiSx: React.CSSProperties = {
@@ -93,11 +104,7 @@ export const typographyDataDiagnosticuluiSx: React.CSSProperties = {
     width: "20%",
     fontSize: "18px",
     fontWeight: "600",
-};
-
-export const dataDiagnosticuluiSx: React.CSSProperties = {
-    padding: "5px 10px",
-    width: "15%",
+    ml: "35%"
 };
 
 // Box 2
@@ -113,6 +120,14 @@ export const typographyHbA1CSx: React.CSSProperties = {
 export const HbA1CSx: React.CSSProperties = {
     padding: "5px 10px",
     width: "10%",
+};
+
+export const typographyMaiSx: React.CSSProperties = {
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: "300",
+    width: "8%"
 };
 
 export const typographyGlicemieSx: React.CSSProperties = {
@@ -176,11 +191,6 @@ export const typographyHTASx: React.CSSProperties = {
     mr: "5%",
 };
 
-// export const HTASx: React.CSSProperties = {
-//     padding: "5px 10px",
-//     width: "10%",
-// };
-
 export const typographyNeuropatieSx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",
@@ -189,11 +199,6 @@ export const typographyNeuropatieSx: React.CSSProperties = {
     width: "8.5%",
     mr: "5%",
 };
-
-// export const neuropatieSx: React.CSSProperties = {
-//     padding: "5px 10px",
-//     width: "10%",
-// };
 
 export const typographyNefropatieSx: React.CSSProperties = {
     padding: "10px 10px",
@@ -204,11 +209,6 @@ export const typographyNefropatieSx: React.CSSProperties = {
     mr: "5%",
 };
 
-// export const nefropatieSx: React.CSSProperties = {
-//     padding: "5px 10px",
-//     width: "10%",
-// };
-
 export const typographyCISx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",
@@ -217,11 +217,6 @@ export const typographyCISx: React.CSSProperties = {
     width: "2.5%",
     mr: "5%",
 };
-
-// export const CISx: React.CSSProperties = {
-//     padding: "5px 10px",
-//     width: "10%",
-// };
 
 export const typographyeAVCSx: React.CSSProperties = {
     padding: "10px 10px",
@@ -232,11 +227,6 @@ export const typographyeAVCSx: React.CSSProperties = {
     mr: "5%",
 };
 
-// export const AVCSx: React.CSSProperties = {
-//     padding: "5px 10px",
-//     width: "10%",
-// };
-
 export const typographyeIMASx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",
@@ -246,11 +236,6 @@ export const typographyeIMASx: React.CSSProperties = {
     mr: "5%",
 };
 
-// export const IMASx: React.CSSProperties = {
-//     padding: "5px 10px",
-//     width: "10%",
-// };
-
 export const typographyeHipercolesterolemieSx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",
@@ -258,12 +243,6 @@ export const typographyeHipercolesterolemieSx: React.CSSProperties = {
     fontWeight: "600",
     width: "14.5%",
 };
-
-// export const hipercolesterolemieSx: React.CSSProperties = {
-//     padding: "5px 10px",
-//     width: "10%",
-//
-// };
 
 export const typographyHipertrigliceridemieSx: React.CSSProperties = {
     padding: "10px 10px",
@@ -274,11 +253,6 @@ export const typographyHipertrigliceridemieSx: React.CSSProperties = {
     mr: "5%",
 };
 
-// export const hipertrigliceridemieSx: React.CSSProperties = {
-//     padding: "5px 10px",
-//     width: "10%",
-// };
-
 export const typographyTratamentDiabetInPrezentSx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",
@@ -286,11 +260,6 @@ export const typographyTratamentDiabetInPrezentSx: React.CSSProperties = {
     fontWeight: "600",
     width: "20%",
 };
-
-// export const insulinaSx: React.CSSProperties = {
-//     padding: "5px 10px",
-//     width: "10%",
-// };
 
 export const typographyInsulinaSx: React.CSSProperties = {
     padding: "10px 10px",
@@ -300,11 +269,6 @@ export const typographyInsulinaSx: React.CSSProperties = {
     width: "7%",
 };
 
-// export const ADOSx: React.CSSProperties = {
-//     padding: "5px 10px",
-//     width: "10%",
-// };
-
 export const typographyADOSx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",
@@ -313,11 +277,6 @@ export const typographyADOSx: React.CSSProperties = {
     width: "7%",
 };
 
-// export const dietaSx: React.CSSProperties = {
-//     padding: "5px 10px",
-//     width: "10%",
-// };
-
 export const typographyeDietaSx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",
@@ -325,11 +284,6 @@ export const typographyeDietaSx: React.CSSProperties = {
     fontWeight: "300",
     width: "7%",
 };
-
-// export const nimicSx: React.CSSProperties = {
-//     padding: "5px 10px",
-//     width: "10%",
-// };
 
 export const typographyeNimicSx: React.CSSProperties = {
     padding: "10px 10px",
@@ -719,24 +673,7 @@ export const typographyPanfotocoagulareSx: React.CSSProperties = {
     fontWeight: "300",
 };
 
-export const panfotocoagulareODSx: React.CSSProperties = {
-    padding: "5px 5px",
-    width: "10%",
-};
-
-export const typographyPanfotocoagulareODSx: React.CSSProperties = {
-    padding: "10px 10px",
-    color: "black",
-    fontSize: "18px",
-    fontWeight: "300",
-};
-
-export const panfotocoagulareOSSx: React.CSSProperties = {
-    padding: "5px 5px",
-    width: "10%",
-};
-
-export const typographyPanfotocoagulareOSSx: React.CSSProperties = {
+export const typographyLaserSx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",
     fontSize: "18px",
@@ -786,7 +723,7 @@ export const typographyRecomandariSx: React.CSSProperties = {
     fontWeight: "600",
 };
 
-export const typographySauSx: React.CSSProperties = {
+export const typographyDoarSx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",
     fontSize: "18px",
@@ -795,20 +732,19 @@ export const typographySauSx: React.CSSProperties = {
 
 export const recomandareFieldSx: React.CSSProperties = {
     padding: "5px 10px",
-    width: "73%",
+    width: "61%",
 };
 
 export const typographyTratamentRecomandatSx: React.CSSProperties = {
     padding: "10px 10px",
     color: "black",
-    width: "18%",
     fontSize: "18px",
     fontWeight: "300",
 };
 
 export const tratamentFieldSx: React.CSSProperties = {
     padding: "5px 10px",
-    width: "82%",
+    width: "80%",
 };
 
 export const typographyControlOftalmologicSx: React.CSSProperties = {
@@ -891,11 +827,6 @@ export const typographyInSx: React.CSSProperties = {
     width: "4%",
     fontSize: "18px",
     fontWeight: "300",
-};
-
-export const ambulatorInFieldSx: React.CSSProperties = {
-    padding: "5px 10px",
-    width: "38%",
 };
 
 // Last box

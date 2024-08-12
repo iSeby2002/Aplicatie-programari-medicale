@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dtos.FisaMedicalaDto;
 import com.example.demo.dtos.FisaMedicalaResponseDTO;
+import com.example.demo.model.FisaMedicala;
 import com.example.demo.model.Programari;
 import com.example.demo.service.FisaMedicalaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,11 @@ public class FisaMedicalaController {
         }else {
             return new ResponseEntity<>(fisaMedicalaResponseDTO, HttpStatus.OK);
         }
+    }
+
+    @PostMapping("/getFisaMedicalaByProgramare")
+    public ResponseEntity<FisaMedicala> getFisaMedicalaByProgramare(@RequestBody Programari programare) {
+        FisaMedicala fisaMedicala = fisaMedicalaService.findFisaMedicalaByProgramare(programare);
+        return new ResponseEntity<>(fisaMedicala, HttpStatus.OK);
     }
 }
