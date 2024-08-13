@@ -36,8 +36,14 @@ public class FisaMedicalaController {
         return new ResponseEntity<>(msg,HttpStatus.OK);
     }
 
-    @PostMapping("/getRaportFise")
-    public ResponseEntity<FisaMedicalaResponseDTO> getRaportFise(@RequestBody long cnp){
+    @GetMapping("/getRaportFise")
+    public ResponseEntity<FisaMedicalaResponseDTO> getRaportFise(){
+        FisaMedicalaResponseDTO fisaMedicalaResponseDTO = fisaMedicalaService.findAll();
+        return new ResponseEntity<>(fisaMedicalaResponseDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/getRaportFiseByCNP")
+    public ResponseEntity<FisaMedicalaResponseDTO> getRaportFise(@RequestBody Long cnp){
         FisaMedicalaResponseDTO fisaMedicalaResponseDTO = fisaMedicalaService.findAllByCnp(cnp);
         if(fisaMedicalaResponseDTO.getMesaj().equals("Nu există fișă medicală pentru acest CNP!")) {
             return new ResponseEntity<>(fisaMedicalaResponseDTO, HttpStatus.BAD_REQUEST);

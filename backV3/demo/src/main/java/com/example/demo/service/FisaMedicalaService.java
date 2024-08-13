@@ -12,6 +12,7 @@ import java.util.List;
 public interface FisaMedicalaService {
     List<Programari> findProgramariCurente(LocalDateTime data);
     String saveFisaMedicala(FisaMedicala fisaMedicala);
-    FisaMedicalaResponseDTO findAllByCnp(long cnp);
+    FisaMedicalaResponseDTO findAll();
+    FisaMedicalaResponseDTO findAllByCnp(Long cnp);
     FisaMedicala findFisaMedicalaByProgramare(Programari programare);
 }

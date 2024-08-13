@@ -1782,31 +1782,68 @@ const FisaMedicalaPage = () => {
                         </Box>
                     </Box>
                 </div>
-                <Box sx={{display: "flex", flexDirection: 'row', alignItems: "center", justifyContent: "center", width: "100%", gap: "5%"}}>
-                    <Box sx={{display: "flex", flexDirection: 'column', alignItems: "center", justifyContent: "center", width: "20%"}}>
-                        <Button sx={buttonSx} onClick={handleSalvare}>
-                            Salvare
-                        </Button>
-                        <Box sx={{display: "flex", flexDirection: 'row', alignItems: "center", justifyContent: "center"}}>
-                            <Checkbox
-                                checked={salvarePDF}
-                                onChange={handleChangeSalvarePDF}
-                                inputProps={{ 'aria-label': 'controlled' }}
-                                sx={{padding: "10px 10px"}}
-                                icon={<CheckBoxOutlineBlankIcon />}
-                                checkedIcon={<CheckedIcon />}
-                            />
-                            <Typography sx={typographySalvarePDFSx}>
-                                Salvare ca PDF
-                            </Typography>
+                {/* Butoane pentru oftalmolog*/}
+                <div hidden={medic.role === "diabetolog"} style={{width: "100%"}}>
+                    <Box sx={{
+                        display: "flex",
+                        flexDirection: 'row',
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "100%",
+                        gap: "5%"
+                    }}>
+                        <Box sx={{
+                            display: "flex",
+                            flexDirection: 'column',
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "20%"
+                        }}>
+                            <Button sx={buttonSx} onClick={handleSalvare}>
+                                Salvare
+                            </Button>
+                            <Box sx={{
+                                display: "flex",
+                                flexDirection: 'row',
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}>
+                                <Checkbox
+                                    checked={salvarePDF}
+                                    onChange={handleChangeSalvarePDF}
+                                    inputProps={{'aria-label': 'controlled'}}
+                                    sx={{padding: "10px 10px"}}
+                                    icon={<CheckBoxOutlineBlankIcon/>}
+                                    checkedIcon={<CheckedIcon/>}
+                                />
+                                <Typography sx={typographySalvarePDFSx}>
+                                    Salvare ca PDF
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Box sx={{display: "flex", flexDirection: 'column', height: "110px", width: "20%"}}>
+                            <Button sx={buttonSx} onClick={handleInapoi}>
+                                Înapoi
+                            </Button>
                         </Box>
                     </Box>
-                    <Box sx={{display: "flex", flexDirection: 'column',  height: "110px", width: "20%"}}>
-                        <Button sx={buttonSx} onClick={handleInapoi}>
-                            Înapoi
-                        </Button>
+                </div>
+                {/* Butoane pentru diabetolog*/}
+                <div hidden={medic.role === "oftalmolog"} style={{width:"100%"}}>
+                    <Box sx={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                        <Box sx={{
+                            display: "flex",
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: "110px",
+                            width: "20%"
+                        }}>
+                            <Button sx={buttonSx} onClick={handleInapoi}>
+                                Înapoi
+                            </Button>
+                        </Box>
                     </Box>
-                </Box>
+                </div>
             </Box>
             <CustomizedSnackbars
                 open={open}

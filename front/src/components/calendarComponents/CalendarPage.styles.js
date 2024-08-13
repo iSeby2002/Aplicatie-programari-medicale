@@ -83,3 +83,11 @@ export const buttonSx: React.CSSProperties = {
         transition: ".5s",
     },
 };
+
+export const typographyRapoarteSx: React.CSSProperties = {
+    mt: "5%",
+    padding: "10px 10px",
+    color: "black",
+    fontSize: "25px",
+    fontWeight: "600",
+};
