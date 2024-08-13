@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,11 +7,10 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Data
-@Setter
 @Entity
 @Builder
+@Table(name = "programari")
 public class Programari {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +19,13 @@ public class Programari {
     @JoinColumn(name = "pacient_id")
     private Pacient pacient;
     private LocalDateTime startTime;
+
+    @Override
+    public String toString() {
+        return "Programari{" +
+                "id=" + id +
+                ", pacient=" + pacient +
+                ", startTime=" + startTime +
+                '}';
+    }
 }

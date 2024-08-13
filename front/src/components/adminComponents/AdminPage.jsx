@@ -15,7 +15,6 @@ function DataTable({columns, rows, onSelectUser }: { columns: GridColDef[], rows
             columns={columns}
             pageSize={rows.length}
             disableColumnMenu={true}
-            disableColumnResize={true}
             hideFooter
             checkboxSelection
             disableMultipleRowSelection={true}
@@ -26,7 +25,7 @@ function DataTable({columns, rows, onSelectUser }: { columns: GridColDef[], rows
             }}
         />
     );
-};
+}
 
 const AdminPage = () => {
     const navigate = useNavigate();

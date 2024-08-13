@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dtos.*;
-import com.example.demo.dtos.FisaMedicalaResponseDto;
+import com.example.demo.dtos.FisaMedicalaResponseDTO;
 import com.example.demo.model.FisaMedicala;
 import com.example.demo.model.Pacient;
 import com.example.demo.model.Programari;
@@ -10,13 +9,12 @@ import com.example.demo.repository.ProgramariRepository;
 import com.example.demo.service.FisaMedicalaService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FisaMedicalaServiceImpl implements FisaMedicalaService {
+
     private final ProgramariRepository programariRepository;
     private final FisaMedicalaRepository fisaMedicalaRepository;
 
@@ -37,93 +35,94 @@ public class FisaMedicalaServiceImpl implements FisaMedicalaService {
         //Poate trebe si end,vedem
 
         return programariRepository.findAllByDate(startOfDay);
-
     }
 
     @Override
-    public String saveFisaMedicala(FisaMedicalaDto fisaMedicalaDto) {
-        Programari programari= programariRepository.findProgramariById(fisaMedicalaDto.getIdProgramare());
-
-        FisaMedicala fisaMedicala = FisaMedicala.builder()
-                .programari(programari)
-                .nrCrt(fisaMedicalaDto.getNrCrt())
-                .tipDiabetZaharat(fisaMedicalaDto.getTipDiabetZaharat())
-                .diabetZaharat(fisaMedicalaDto.getDiabetZaharat())
-                .dataDiagnosticului(fisaMedicalaDto.getDataDiagnosticului())
-                .HbA1C(fisaMedicalaDto.getHbA1C())
-                .tipHbA1C(fisaMedicalaDto.getTipHbA1C())
-                .glicemie(fisaMedicalaDto.getGlicemie())
-                .uree(fisaMedicalaDto.getUree())
-                .creatinina(fisaMedicalaDto.getCreatinina())
-                .eRFG(fisaMedicalaDto.getERFG())
-                .hta(fisaMedicalaDto.isHta())
-                .neuropatie(fisaMedicalaDto.isNeuropatie())
-                .nefropatie(fisaMedicalaDto.isNefropatie())
-                .ci(fisaMedicalaDto.isCi())
-                .avc(fisaMedicalaDto.isAvc())
-                .ima(fisaMedicalaDto.isIma())
-                .hipercolesterolomie(fisaMedicalaDto.isHipercolesterolomie())
-                .hipertrigliceridemie(fisaMedicalaDto.isHipertrigliceridemie())
-                .insulina(fisaMedicalaDto.isInsulina())
-                .ado(fisaMedicalaDto.isAdo())
-                .dieta(fisaMedicalaDto.isDieta())
-                .nimic(fisaMedicalaDto.isNimic())
-                .detaliiFundDeOchi(fisaMedicalaDto.getDetaliiFundDeOchi())
-                .alteModalitatiOculare(fisaMedicalaDto.getAlteModalitatiOculare())
-                .acuitateVizualaOD(fisaMedicalaDto.getAcuitateVizualaOD())
-                .acuitateVizualaOS(fisaMedicalaDto.getAcuitateVizualaOS())
-                .rubeozaIrianaOD(fisaMedicalaDto.isRubeozaIrianaOD())
-                .rubeozaIrianaOS(fisaMedicalaDto.isRubeozaIrianaOS())
-                .faraRetinopatieDiabeticaOD(fisaMedicalaDto.isFaraRetinopatieDiabeticaOD())
-                .faraRetinopatieDiabeticaOS(fisaMedicalaDto.isFaraRetinopatieDiabeticaOS())
-                .retinopatieDiabeticaNeproliferativaUsoaraOD(fisaMedicalaDto.isRetinopatieDiabeticaNeproliferativaUsoaraOD())
-                .retinopatieDiabeticaNeproliferativaUsoaraOS(fisaMedicalaDto.isRetinopatieDiabeticaNeproliferativaUsoaraOS())
-                .retinopatieDiabeticaNeproliferativaMedieOD(fisaMedicalaDto.isRetinopatieDiabeticaNeproliferativaMedieOD())
-                .retinopatieDiabeticaNeproliferativaMedieOS(fisaMedicalaDto.isRetinopatieDiabeticaNeproliferativaMedieOS())
-                .retinopatieDiabeticaNeproliferativaSeveraOD(fisaMedicalaDto.isRetinopatieDiabeticaNeproliferativaSeveraOD())
-                .retinopatieDiabeticaNeproliferativaSeveraOS(fisaMedicalaDto.isRetinopatieDiabeticaNeproliferativaSeveraOS())
-                .retinopatieDiabeticaProliferativaOD(fisaMedicalaDto.isRetinopatieDiabeticaProliferativaOD())
-                .retinopatieDiabeticaProliferativaOS(fisaMedicalaDto.isRetinopatieDiabeticaProliferativaOS())
-                .edemMacularClinicSemnificativOD(fisaMedicalaDto.isEdemMacularClinicSemnificativOD())
-                .edemMacularClinicSemnificativOS(fisaMedicalaDto.isEdemMacularClinicSemnificativOS())
-                .comparativCuUltimaExaminareLaFelOD(fisaMedicalaDto.isComparativCuUltimaExaminareLaFelOD())
-                .comparativCuUltimaExaminareLaFelOS(fisaMedicalaDto.isComparativCuUltimaExaminareLaFelOS())
-                .comparativCuUltimaExaminareMaiBineOS(fisaMedicalaDto.isComparativCuUltimaExaminareMaiBineOS())
-                .comparativCuUltimaExaminareMaiBineOD(fisaMedicalaDto.isComparativCuUltimaExaminareMaiBineOD())
-                .comparativCuUltimaExaminareMaiRauOD(fisaMedicalaDto.isComparativCuUltimaExaminareMaiRauOD())
-                .comparativCuUltimaExaminareMaiRauOS(fisaMedicalaDto.isComparativCuUltimaExaminareMaiRauOS())
-                .comparativCuUltimaExaminareNuSeCunoasteOD(fisaMedicalaDto.isComparativCuUltimaExaminareNuSeCunoasteOD())
-                .comparativCuUltimaExaminareNuSeCunoasteOS(fisaMedicalaDto.isComparativCuUltimaExaminareNuSeCunoasteOS())
-                .injectieNumarOS(fisaMedicalaDto.getInjectieNumarOS())
-                .injectieDozaOS(fisaMedicalaDto.getInjectieDozaOS())
-                .injectieNumarOD(fisaMedicalaDto.getInjectieNumarOD())
-                .injectieDozaOD(fisaMedicalaDto.getInjectieDozaOD())
-                .laserOD(fisaMedicalaDto.getLaserOD())
-                .laserOS(fisaMedicalaDto.getLaserOS())
-                .diagnosticOD(fisaMedicalaDto.getDiagnosticOD())
-                .diagnosticOS(fisaMedicalaDto.getDiagnosticOS())
-                .recomandare(fisaMedicalaDto.getRecomandare())
-                .recomandareField(fisaMedicalaDto.getRecomandareField())
-                .tratament(fisaMedicalaDto.isTratament())
-                .tratamentField(fisaMedicalaDto.getTratamentField())
-                .peste1An(fisaMedicalaDto.isPeste1An())
-                .pesteLuni(fisaMedicalaDto.getPesteLuni())
-                .pesteSaptamani(fisaMedicalaDto.getPesteSaptamani())
-                .ambulator(fisaMedicalaDto.isAmbulator())
-                .ambulatorLaField(fisaMedicalaDto.getAmbulatorLaField())
-                .ambulatorInField(fisaMedicalaDto.getAmbulatorInField())
-                .data(fisaMedicalaDto.getData())
-                .MedicExaminator(fisaMedicalaDto.getMedicExaminator())
-                .build();
-
-       // System.out.println(fisaMedicala);
-
-        fisaMedicalaRepository.save(fisaMedicala);
+    public String saveFisaMedicala(FisaMedicala fisaMedicala) {
+        System.out.println(fisaMedicala);
+        FisaMedicala fisaMedicalaExistenta =fisaMedicalaRepository.findFisaMedicalaByProgramari(fisaMedicala.getProgramari());
+        if(fisaMedicalaExistenta!=null){
+            fisaMedicalaExistenta.setProgramari(fisaMedicala.getProgramari());
+            fisaMedicalaExistenta.setNrCrt(fisaMedicala.getNrCrt());
+            fisaMedicalaExistenta.setTip1DiabetZaharat(fisaMedicala.getTip1DiabetZaharat());
+            fisaMedicalaExistenta.setTip2DiabetZaharat(fisaMedicala.getTip2DiabetZaharat());
+            fisaMedicalaExistenta.setDataDiagnosticului(fisaMedicala.getDataDiagnosticului());
+            fisaMedicalaExistenta.setHbA1C(fisaMedicala.getHbA1C());
+            fisaMedicalaExistenta.setMaiMic6Luni(fisaMedicala.getMaiMic6Luni());
+            fisaMedicalaExistenta.setMaiMare6Luni(fisaMedicala.getMaiMare6Luni());
+            fisaMedicalaExistenta.setGlicemie(fisaMedicala.getGlicemie());
+            fisaMedicalaExistenta.setUree(fisaMedicala.getUree());
+            fisaMedicalaExistenta.setCreatinina(fisaMedicala.getCreatinina());
+            fisaMedicalaExistenta.setERFG(fisaMedicala.getERFG());
+            fisaMedicalaExistenta.setHta(fisaMedicala.getHta());
+            fisaMedicalaExistenta.setNeuropatie(fisaMedicala.getNeuropatie());
+            fisaMedicalaExistenta.setNefropatie(fisaMedicala.getNefropatie());
+            fisaMedicalaExistenta.setCi(fisaMedicala.getCi());
+            fisaMedicalaExistenta.setAvc(fisaMedicala.getAvc());
+            fisaMedicalaExistenta.setIma(fisaMedicala.getIma());
+            fisaMedicalaExistenta.setHipercolesterolemie(fisaMedicala.getHipercolesterolemie());
+            fisaMedicalaExistenta.setHipertrigliceridemie(fisaMedicala.getHipertrigliceridemie());
+            fisaMedicalaExistenta.setInsulina(fisaMedicala.getInsulina());
+            fisaMedicalaExistenta.setAdo(fisaMedicala.getAdo());
+            fisaMedicalaExistenta.setDieta(fisaMedicala.getDieta());
+            fisaMedicalaExistenta.setNimic(fisaMedicala.getNimic());
+            fisaMedicalaExistenta.setAcuitateVizualaOD(fisaMedicala.getAcuitateVizualaOD());
+            fisaMedicalaExistenta.setAcuitateVizualaOS(fisaMedicala.getAcuitateVizualaOS());
+            fisaMedicalaExistenta.setRubeozaIrianaOD(fisaMedicala.getRubeozaIrianaOD());
+            fisaMedicalaExistenta.setRubeozaIrianaOS(fisaMedicala.getRubeozaIrianaOS());
+            fisaMedicalaExistenta.setFaraRetinopatieDiabeticaOD(fisaMedicala.getFaraRetinopatieDiabeticaOD());
+            fisaMedicalaExistenta.setFaraRetinopatieDiabeticaOS(fisaMedicala.getFaraRetinopatieDiabeticaOS());
+            fisaMedicalaExistenta.setRetinopatieDiabeticaNeproliferativaUsoaraOD(fisaMedicala.getRetinopatieDiabeticaNeproliferativaUsoaraOD());
+            fisaMedicalaExistenta.setRetinopatieDiabeticaNeproliferativaUsoaraOS(fisaMedicala.getRetinopatieDiabeticaNeproliferativaUsoaraOS());
+            fisaMedicalaExistenta.setRetinopatieDiabeticaNeproliferativaModerataOD(fisaMedicala.getRetinopatieDiabeticaNeproliferativaModerataOD());
+            fisaMedicalaExistenta.setRetinopatieDiabeticaNeproliferativaModerataOS(fisaMedicala.getRetinopatieDiabeticaNeproliferativaModerataOS());
+            fisaMedicalaExistenta.setRetinopatieDiabeticaNeproliferativaSeveraOD(fisaMedicala.getRetinopatieDiabeticaNeproliferativaSeveraOD());
+            fisaMedicalaExistenta.setRetinopatieDiabeticaNeproliferativaSeveraOS(fisaMedicala.getRetinopatieDiabeticaNeproliferativaSeveraOS());
+            fisaMedicalaExistenta.setRetinopatieDiabeticaProliferativaOD(fisaMedicala.getRetinopatieDiabeticaProliferativaOD());
+            fisaMedicalaExistenta.setRetinopatieDiabeticaProliferativaOS(fisaMedicala.getRetinopatieDiabeticaProliferativaOS());
+            fisaMedicalaExistenta.setEdemMacularClinicSemnificativOD(fisaMedicala.getEdemMacularClinicSemnificativOD());
+            fisaMedicalaExistenta.setEdemMacularClinicSemnificativOS(fisaMedicala.getEdemMacularClinicSemnificativOS());
+            fisaMedicalaExistenta.setComparativCuUltimaExaminareLaFelOD(fisaMedicala.getComparativCuUltimaExaminareLaFelOD());
+            fisaMedicalaExistenta.setComparativCuUltimaExaminareLaFelOS(fisaMedicala.getComparativCuUltimaExaminareLaFelOS());
+            fisaMedicalaExistenta.setComparativCuUltimaExaminareMaiBineOD(fisaMedicala.getComparativCuUltimaExaminareMaiBineOD());
+            fisaMedicalaExistenta.setComparativCuUltimaExaminareMaiBineOS(fisaMedicala.getComparativCuUltimaExaminareMaiBineOS());
+            fisaMedicalaExistenta.setComparativCuUltimaExaminareMaiRauOD(fisaMedicala.getComparativCuUltimaExaminareMaiRauOD());
+            fisaMedicalaExistenta.setComparativCuUltimaExaminareMaiRauOS(fisaMedicala.getComparativCuUltimaExaminareMaiRauOS());
+            fisaMedicalaExistenta.setComparativCuUltimaExaminareNuSeCunoasteOD(fisaMedicala.getComparativCuUltimaExaminareNuSeCunoasteOD());
+            fisaMedicalaExistenta.setComparativCuUltimaExaminareNuSeCunoasteOS(fisaMedicala.getComparativCuUltimaExaminareNuSeCunoasteOS());
+            fisaMedicalaExistenta.setDetaliiFundDeOchi(fisaMedicala.getDetaliiFundDeOchi());
+            fisaMedicalaExistenta.setAlteModalitatiOculare(fisaMedicala.getAlteModalitatiOculare());
+            fisaMedicalaExistenta.setInjectieNumarOD(fisaMedicala.getInjectieNumarOD());
+            fisaMedicalaExistenta.setInjectieDozaOD(fisaMedicala.getInjectieDozaOD());
+            fisaMedicalaExistenta.setInjectieNumarOS(fisaMedicala.getInjectieNumarOS());
+            fisaMedicalaExistenta.setInjectieDozaOS(fisaMedicala.getInjectieDozaOS());
+            fisaMedicalaExistenta.setLaserOD(fisaMedicala.getLaserOD());
+            fisaMedicalaExistenta.setLaserOS(fisaMedicala.getLaserOS());
+            fisaMedicalaExistenta.setDiagnosticOD(fisaMedicala.getDiagnosticOD());
+            fisaMedicalaExistenta.setDiagnosticOS(fisaMedicala.getDiagnosticOS());
+            fisaMedicalaExistenta.setDoarMonitorizare(fisaMedicala.getDoarMonitorizare());
+            fisaMedicalaExistenta.setExaminareSuplimentara(fisaMedicala.getExaminareSuplimentara());
+            fisaMedicalaExistenta.setExaminareSuplimentaraField(fisaMedicala.getExaminareSuplimentaraField());
+            fisaMedicalaExistenta.setTratament(fisaMedicala.getTratament());
+            fisaMedicalaExistenta.setTratamentField(fisaMedicala.getTratamentField());
+            fisaMedicalaExistenta.setPeste1An(fisaMedicala.getPeste1An());
+            fisaMedicalaExistenta.setPesteLuni(fisaMedicala.getPesteLuni());
+            fisaMedicalaExistenta.setPesteSaptamani(fisaMedicala.getPesteSaptamani());
+            fisaMedicalaExistenta.setAmbulator(fisaMedicala.getAmbulator());
+            fisaMedicalaExistenta.setAmbulatorLaField(fisaMedicala.getAmbulatorLaField());
+            fisaMedicalaExistenta.setAmbulatorInField(fisaMedicala.getAmbulatorInField());
+            fisaMedicalaExistenta.setData(fisaMedicala.getData());
+            fisaMedicalaExistenta.setMedicExaminator(fisaMedicala.getMedicExaminator());
+            fisaMedicalaRepository.save(fisaMedicalaExistenta);
+        }else {
+            fisaMedicalaRepository.save(fisaMedicala);
+        }
         return "Salvare cu succes";
     }
 
-    public FiseMedicaleResponseDTO findAllByCnp(long cnp){
-        FiseMedicaleResponseDTO fisaResponse = new FiseMedicaleResponseDTO();
+    @Override
+    public FisaMedicalaResponseDTO findAllByCnp(long cnp){
+        FisaMedicalaResponseDTO fisaResponse = new FisaMedicalaResponseDTO();
         if(cnp==0){
             fisaResponse.setFiseMedicale((List<FisaMedicala>) fisaMedicalaRepository.findAll());
             fisaResponse.setMesaj("Succes1!");
@@ -246,5 +245,13 @@ public class FisaMedicalaServiceImpl implements FisaMedicalaService {
             fisaMedicalaResponseDto.setMesaj("Update realizat cu succes!");
             }
         return fisaMedicalaResponseDto;
+    public FisaMedicala findFisaMedicalaByProgramare(Programari programare) {
+        Programari programareExistenta = programariRepository.findProgramariByStartTime(programare.getStartTime());
+        FisaMedicala fisaMedicala = fisaMedicalaRepository.findFisaMedicalaByProgramari(programareExistenta);
+        if(fisaMedicala == null){
+            fisaMedicala = new FisaMedicala();
+            fisaMedicala.setProgramari(programareExistenta);
+        }
+        return fisaMedicala;
     }
 }

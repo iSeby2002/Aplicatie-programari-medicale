@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.dtos.RegisterDto;
 import com.example.demo.service.MedicService;
 import com.example.demo.service.PacientService;
 import org.springframework.boot.CommandLineRunner;
@@ -11,16 +12,11 @@ import org.springframework.context.annotation.Bean;
 public class AplicatieProgramariMedicaleApplication {
 
 	public static void main(String[] args) {
-
-
-
 		SpringApplication.run(AplicatieProgramariMedicaleApplication.class, args);
 	}
 
 	@Bean
 	CommandLineRunner init(MedicService medicService, PacientService pacientService) {
-
-
 		return args -> {
 //			//medici
 //			RegisterDto registerDtoAdmin= RegisterDto.builder()
@@ -59,7 +55,7 @@ public class AplicatieProgramariMedicaleApplication {
 //			medicService.register(registerDto1);
 //			medicService.register(registerDto2);
 //			medicService.register(registerDto3);
-//
+
 //
 //			//pacienti diabet
 //			PacientDto pacientDto1 = PacientDto.builder()

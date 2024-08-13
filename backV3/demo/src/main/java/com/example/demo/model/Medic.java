@@ -1,20 +1,14 @@
 package com.example.demo.model;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
 @Builder
+@Table(name = "medic")
 public class Medic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
