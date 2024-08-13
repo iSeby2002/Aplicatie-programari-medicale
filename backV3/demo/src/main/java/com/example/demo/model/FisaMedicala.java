@@ -102,4 +102,82 @@ public class FisaMedicala {
     //last box
     private LocalDate data;
     private String medicExaminator;
+
+    @Override
+    public String toString() {
+        return "FisaMedicala{" +
+                "id=" + id +
+                ", programari=" + programari +
+                ", nrCrt=" + nrCrt +
+                ", tip1DiabetZaharat=" + tip1DiabetZaharat +
+                ", tip2DiabetZaharat=" + tip2DiabetZaharat +
+                ", dataDiagnosticului=" + dataDiagnosticului +
+                ", hbA1C=" + hbA1C +
+                ", maiMic6Luni=" + maiMic6Luni +
+                ", maiMare6Luni=" + maiMare6Luni +
+                ", glicemie=" + glicemie +
+                ", uree=" + uree +
+                ", creatinina=" + creatinina +
+                ", eRFG=" + eRFG +
+                ", hta=" + hta +
+                ", neuropatie=" + neuropatie +
+                ", nefropatie=" + nefropatie +
+                ", ci=" + ci +
+                ", avc=" + avc +
+                ", ima=" + ima +
+                ", hipercolesterolemie=" + hipercolesterolemie +
+                ", hipertrigliceridemie=" + hipertrigliceridemie +
+                ", insulina=" + insulina +
+                ", ado=" + ado +
+                ", dieta=" + dieta +
+                ", nimic=" + nimic +
+                ", acuitateVizualaOD='" + acuitateVizualaOD + '\'' +
+                ", acuitateVizualaOS='" + acuitateVizualaOS + '\'' +
+                ", rubeozaIrianaOD=" + rubeozaIrianaOD +
+                ", rubeozaIrianaOS=" + rubeozaIrianaOS +
+                ", faraRetinopatieDiabeticaOD=" + faraRetinopatieDiabeticaOD +
+                ", faraRetinopatieDiabeticaOS=" + faraRetinopatieDiabeticaOS +
+                ", retinopatieDiabeticaNeproliferativaUsoaraOD=" + retinopatieDiabeticaNeproliferativaUsoaraOD +
+                ", retinopatieDiabeticaNeproliferativaUsoaraOS=" + retinopatieDiabeticaNeproliferativaUsoaraOS +
+                ", retinopatieDiabeticaNeproliferativaModerataOD=" + retinopatieDiabeticaNeproliferativaModerataOD +
+                ", retinopatieDiabeticaNeproliferativaModerataOS=" + retinopatieDiabeticaNeproliferativaModerataOS +
+                ", retinopatieDiabeticaNeproliferativaSeveraOD=" + retinopatieDiabeticaNeproliferativaSeveraOD +
+                ", retinopatieDiabeticaNeproliferativaSeveraOS=" + retinopatieDiabeticaNeproliferativaSeveraOS +
+                ", retinopatieDiabeticaProliferativaOD=" + retinopatieDiabeticaProliferativaOD +
+                ", retinopatieDiabeticaProliferativaOS=" + retinopatieDiabeticaProliferativaOS +
+                ", edemMacularClinicSemnificativOD=" + edemMacularClinicSemnificativOD +
+                ", edemMacularClinicSemnificativOS=" + edemMacularClinicSemnificativOS +
+                ", comparativCuUltimaExaminareLaFelOD=" + comparativCuUltimaExaminareLaFelOD +
+                ", comparativCuUltimaExaminareLaFelOS=" + comparativCuUltimaExaminareLaFelOS +
+                ", comparativCuUltimaExaminareMaiBineOD=" + comparativCuUltimaExaminareMaiBineOD +
+                ", comparativCuUltimaExaminareMaiBineOS=" + comparativCuUltimaExaminareMaiBineOS +
+                ", comparativCuUltimaExaminareMaiRauOD=" + comparativCuUltimaExaminareMaiRauOD +
+                ", comparativCuUltimaExaminareMaiRauOS=" + comparativCuUltimaExaminareMaiRauOS +
+                ", comparativCuUltimaExaminareNuSeCunoasteOD=" + comparativCuUltimaExaminareNuSeCunoasteOD +
+                ", comparativCuUltimaExaminareNuSeCunoasteOS=" + comparativCuUltimaExaminareNuSeCunoasteOS +
+                ", detaliiFundDeOchi='" + detaliiFundDeOchi + '\'' +
+                ", alteModalitatiOculare='" + alteModalitatiOculare + '\'' +
+                ", injectieNumarOD=" + injectieNumarOD +
+                ", injectieDozaOD='" + injectieDozaOD + '\'' +
+                ", injectieNumarOS=" + injectieNumarOS +
+                ", injectieDozaOS='" + injectieDozaOS + '\'' +
+                ", laserOD=" + laserOD +
+                ", laserOS=" + laserOS +
+                ", diagnosticOD='" + diagnosticOD + '\'' +
+                ", diagnosticOS='" + diagnosticOS + '\'' +
+                ", doarMonitorizare=" + doarMonitorizare +
+                ", examinareSuplimentara=" + examinareSuplimentara +
+                ", examinareSuplimentaraField='" + examinareSuplimentaraField + '\'' +
+                ", tratament=" + tratament +
+                ", tratamentField='" + tratamentField + '\'' +
+                ", peste1An=" + peste1An +
+                ", pesteLuni=" + pesteLuni +
+                ", pesteSaptamani=" + pesteSaptamani +
+                ", ambulator=" + ambulator +
+                ", ambulatorLaField='" + ambulatorLaField + '\'' +
+                ", ambulatorInField=" + ambulatorInField +
+                ", data=" + data +
+                ", medicExaminator='" + medicExaminator + '\'' +
+                '}';
+    }
 }

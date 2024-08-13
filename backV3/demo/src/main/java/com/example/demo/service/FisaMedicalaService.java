@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.dtos.FisaMedicalaDto;
 import com.example.demo.dtos.FisaMedicalaResponseDTO;
 import com.example.demo.model.FisaMedicala;
 import com.example.demo.model.Programari;

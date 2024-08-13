@@ -123,7 +123,6 @@ import CustomizedSnackbars from "../../utils/CustomizedSnackbars";
 import axios from "axios"
 
 
-
 function handleDetaliiFundDeOchi(event, setDetaliiFundDeOchiText) {
     const text = event.target.value;
     setDetaliiFundDeOchiText(text);
@@ -195,12 +194,12 @@ function RadioButtonsGroupUrmatorulControl({ urmatorulControl, setUrmatorulContr
                     const value = e.target.value;
                     setUrmatorulControl(value);
                     if (value === "an") {
-                        setPesteLuni("");
-                        setPesteSaptamani("");
+                        setPesteLuni(null);
+                        setPesteSaptamani(null);
                     }else if (value === "luni") {
-                        setPesteSaptamani("");
+                        setPesteSaptamani(null);
                     }else if (value === "saptamani") {
-                        setPesteLuni("");
+                        setPesteLuni(null);
                     }
                 }}
             >
@@ -571,9 +570,9 @@ const FisaMedicalaPage = () => {
     };
     const [tratamentField, setTratamentField] = useState(fisaMedicala.tratamentField ?? ""); // String
     const [urmatorulControl, setUrmatorulControl] = useState("an")
-    const [pesteLuni, setPesteLuni] = useState(fisaMedicala.peste1An ?? null); // Integer
-    const [pesteSaptamani, setPesteSaptamani] = useState(fisaMedicala.pesteLuni ?? null); // Integer
-    const [ambulator, setAmbulator] = useState(fisaMedicala.pesteSaptamani ?? false); // Boolean
+    const [pesteLuni, setPesteLuni] = useState(fisaMedicala.pesteLuni ?? null); // Integer
+    const [pesteSaptamani, setPesteSaptamani] = useState(fisaMedicala.pesteSaptamani ?? null); // Integer
+    const [ambulator, setAmbulator] = useState(fisaMedicala.ambulator ?? false); // Boolean
     const handleChangeAmbulator = (event) => {
         setAmbulator(event.target.checked);
         if (!event.target.checked) {
@@ -581,7 +580,7 @@ const FisaMedicalaPage = () => {
             setAmbulatorInField(null);
         }
     };
-    const [ambulatorLaField, setAmbulatorLaField] = useState(fisaMedicala.ambulator ?? ""); // String
+    const [ambulatorLaField, setAmbulatorLaField] = useState(fisaMedicala.ambulatorLaField ?? ""); // String
     const [ambulatorInField, setAmbulatorInField] = React.useState(fisaMedicala.ambulatorInField? dayjs(fisaMedicala.ambulatorInField) : null); // LocalDate
     const handleChangeAmbulatorInField= (newValue) => {
         setAmbulatorInField(newValue);
@@ -699,9 +698,8 @@ const FisaMedicalaPage = () => {
                 const stateData = { medic: medic, fisaMedicala: response.data };
                 console.log(stateData.fisaMedicala)
                 navigate("/OftalmologPage/CompletareScreening", { state: stateData });
-                
+
             });
-          
         });
 
         if (salvarePDF) {

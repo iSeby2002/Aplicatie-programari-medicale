@@ -6,7 +6,6 @@ import com.example.demo.model.Pacient;
 import com.example.demo.model.Programari;
 import com.example.demo.repository.FisaMedicalaRepository;
 import com.example.demo.repository.ProgramariRepository;
-import com.example.demo.service.FisaMedicalaService;
 import com.example.demo.service.PacientService;
 import com.example.demo.service.ProgramariService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,7 +144,6 @@ public class ProgramariServiceImpl implements ProgramariService{
         if(programare == null){
             return "Nu există programarea selectată!";
         }else {
-
             FisaMedicala fisaMedicala=fisaMedicalaRepository.findFisaMedicalaByProgramari(programare);
             if(fisaMedicala!=null) {
                 fisaMedicalaRepository.delete(fisaMedicala);
