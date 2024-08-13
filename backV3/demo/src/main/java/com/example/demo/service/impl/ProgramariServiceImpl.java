@@ -1,9 +1,12 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dtos.PacientDto;
+import com.example.demo.model.FisaMedicala;
 import com.example.demo.model.Pacient;
 import com.example.demo.model.Programari;
+import com.example.demo.repository.FisaMedicalaRepository;
 import com.example.demo.repository.ProgramariRepository;
+import com.example.demo.service.FisaMedicalaService;
 import com.example.demo.service.PacientService;
 import com.example.demo.service.ProgramariService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +23,14 @@ public class ProgramariServiceImpl implements ProgramariService{
 
     private final ProgramariRepository programariRepository;
     private final PacientService pacientService;
+    private final FisaMedicalaRepository fisaMedicalaRepository;
 
     @Autowired
-    public ProgramariServiceImpl(ProgramariRepository programariRepository, PacientService pacientService) {
+    public ProgramariServiceImpl(ProgramariRepository programariRepository, PacientService pacientService, FisaMedicalaRepository fisaMedicalaRepository) {
         this.programariRepository = programariRepository;
         this.pacientService = pacientService;
+        this.fisaMedicalaRepository = fisaMedicalaRepository;
+
     }
 
     @Override
@@ -100,6 +106,10 @@ public class ProgramariServiceImpl implements ProgramariService{
         } else if(programare.getPacient().getCnp() == programareUpdate.getPacient().getCnp()) {
             return "Este același pacient cu cel din programarea selectată!";
         } else {
+            FisaMedicala fisaMedicala=fisaMedicalaRepository.findFisaMedicalaByProgramari(programare);
+            if(fisaMedicala!=null) {
+                fisaMedicalaRepository.delete(fisaMedicala);
+            }
             Pacient pacientExistent = pacientService.findPacientByCnp(programareUpdate.getPacient().getCnp());
             if (pacientExistent == null) {
                 PacientDto pacientDto = PacientDto.builder()
@@ -135,6 +145,11 @@ public class ProgramariServiceImpl implements ProgramariService{
         if(programare == null){
             return "Nu există programarea selectată!";
         }else {
+
+            FisaMedicala fisaMedicala=fisaMedicalaRepository.findFisaMedicalaByProgramari(programare);
+            if(fisaMedicala!=null) {
+                fisaMedicalaRepository.delete(fisaMedicala);
+            }
             programariRepository.delete(programare);
             return "Anulare programare realizată cu succes!";
         }

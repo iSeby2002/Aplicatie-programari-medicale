@@ -120,6 +120,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import CustomizedSnackbars from "../../utils/CustomizedSnackbars";
+import axios from "axios"
+
 
 
 function handleDetaliiFundDeOchi(event, setDetaliiFundDeOchiText) {
@@ -681,14 +683,26 @@ const FisaMedicalaPage = () => {
 
         console.log(fisaMedicalaDTO);
 
-        // axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/saveFisaMedicala`, fisaMedicalaDTO, {
-        //     headers: {
-        //         "content-type": "application/json"
-        //     }
-        // }).then((response: any) => {
-        //     navigate("/OftalmologPage", { state: location.state });
-        //     console.log(response.data)
-        // });
+        axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/saveFisaMedicala`, fisaMedicalaDTO, {
+            headers: {
+                "content-type": "application/json"
+            }
+        }).then((response: any) => {
+            setOpen(true);
+            setSeverity("success");
+            setMessage(response.data);
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/getFisaMedicalaByProgramare`, fisaMedicala.programari,{
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then((response: any) => {
+                const stateData = { medic: medic, fisaMedicala: response.data };
+                console.log(stateData.fisaMedicala)
+                navigate("/OftalmologPage/CompletareScreening", { state: stateData });
+                
+            });
+          
+        });
 
         if (salvarePDF) {
             const pdf = new jsPDF('p', 'mm', 'a4');

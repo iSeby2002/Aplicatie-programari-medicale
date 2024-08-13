@@ -32,8 +32,8 @@ public class FisaMedicalaController {
     }
 
     @PostMapping("/saveFisaMedicala")
-    public ResponseEntity<String> saveFisaMedicala(@RequestBody FisaMedicalaDto fisaMedicalaDto){
-        String msg = fisaMedicalaService.saveFisaMedicala(fisaMedicalaDto);
+    public ResponseEntity<String> saveFisaMedicala(@RequestBody FisaMedicala fisaMedicala){
+        String msg = fisaMedicalaService.saveFisaMedicala(fisaMedicala);
         return new ResponseEntity<>(msg,HttpStatus.OK);
     }
 

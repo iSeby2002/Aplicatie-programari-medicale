@@ -19,43 +19,43 @@ public class AplicatieProgramariMedicaleApplication {
 	CommandLineRunner init(MedicService medicService, PacientService pacientService) {
 		return args -> {
 //			//medici
-//			RegisterDto registerDtoAdmin= RegisterDto.builder()
-//					.nume("Admin")
-//					.prenume("Admin")
-//					.phoneNumber("0745706903")
-//					.role("admin")
-//					.email("admin@yahoo.com")
-//					.password("admin")
-//					.build();
-//			RegisterDto registerDto1= RegisterDto.builder()
-//					.nume("Diana")
-//					.prenume("Anghelus")
-//					.phoneNumber("0745706903")
-//					.role("oftalmolog")
-//					.email("anghelus_diana@yahoo.com")
-//					.password("1234")
-//					.build();
-//			RegisterDto registerDto2= RegisterDto.builder()
-//					.nume("Oana")
-//					.prenume("Ilies")
-//					.phoneNumber("0745706902")
-//					.role("oftalmolog")
-//					.email("oana_ilies@yahoo.com")
-//					.password("1234")
-//					.build();
-//			RegisterDto registerDto3= RegisterDto.builder()
-//					.nume("Damian")
-//					.prenume("Sebastian")
-//					.phoneNumber("0770994687")
-//					.role("diabetolog")
-//					.email("damiansebastian2002@gmail.com")
-//					.password("1234")
-//					.build();
-//			medicService.register(registerDtoAdmin);
-//			medicService.register(registerDto1);
-//			medicService.register(registerDto2);
-//			medicService.register(registerDto3);
-//
+			RegisterDto registerDtoAdmin= RegisterDto.builder()
+					.nume("Admin")
+					.prenume("Admin")
+					.phoneNumber("0745706903")
+					.role("admin")
+					.email("admin@yahoo.com")
+					.password("admin")
+					.build();
+			RegisterDto registerDto1= RegisterDto.builder()
+					.nume("Diana")
+					.prenume("Anghelus")
+					.phoneNumber("0745706903")
+					.role("oftalmolog")
+					.email("anghelus_diana@yahoo.com")
+					.password("1234")
+					.build();
+			RegisterDto registerDto2= RegisterDto.builder()
+					.nume("Oana")
+					.prenume("Ilies")
+					.phoneNumber("0745706902")
+					.role("oftalmolog")
+					.email("oana_ilies@yahoo.com")
+					.password("1234")
+					.build();
+			RegisterDto registerDto3= RegisterDto.builder()
+					.nume("Damian")
+					.prenume("Sebastian")
+					.phoneNumber("0770994687")
+					.role("diabetolog")
+					.email("damiansebastian2002@gmail.com")
+					.password("1234")
+					.build();
+			medicService.register(registerDtoAdmin);
+			medicService.register(registerDto1);
+			medicService.register(registerDto2);
+			medicService.register(registerDto3);
+
 //
 //			//pacienti diabet
 //			PacientDto pacientDto1 = PacientDto.builder()
