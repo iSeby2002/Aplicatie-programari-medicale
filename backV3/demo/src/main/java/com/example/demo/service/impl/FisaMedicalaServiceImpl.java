@@ -24,21 +24,13 @@ public class FisaMedicalaServiceImpl implements FisaMedicalaService {
 
     @Override
     public List<Programari> findProgramariCurente(LocalDateTime startTime) {
-        LocalDateTime timeCurent=startTime;
-        /*Iterable<Programari> allProgramari= programariRepository.findAll();
-        List<Programari> programariCurente= StreamSupport.stream(allProgramari.spliterator(),false)
-                .filter(programari->programari.getStartTime().toLocalDate().equals(dataCurenta)).collect(Collectors.toList());
-        return programariCurente;*/
+        LocalDateTime timeCurent = startTime;
         LocalDateTime startOfDay = timeCurent.toLocalDate().atStartOfDay();
-
-        //Poate trebe si end,vedem
-
         return programariRepository.findAllByDate(startOfDay);
     }
 
     @Override
     public String saveFisaMedicala(FisaMedicala fisaMedicala) {
-        System.out.println(fisaMedicala);
         FisaMedicala fisaMedicalaExistenta =fisaMedicalaRepository.findFisaMedicalaByProgramari(fisaMedicala.getProgramari());
         if(fisaMedicalaExistenta!=null){
             fisaMedicalaExistenta.setProgramari(fisaMedicala.getProgramari());

@@ -29,7 +29,6 @@ public class ProgramariServiceImpl implements ProgramariService{
         this.programariRepository = programariRepository;
         this.pacientService = pacientService;
         this.fisaMedicalaRepository = fisaMedicalaRepository;
-
     }
 
     @Override

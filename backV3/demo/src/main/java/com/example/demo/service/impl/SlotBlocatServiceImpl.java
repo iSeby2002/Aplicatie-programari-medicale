@@ -1,6 +1,5 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.Programari;
 import com.example.demo.model.SlotBlocat;
 import com.example.demo.repository.SlotBlocatRepository;
 import com.example.demo.service.SlotBlocatService;
