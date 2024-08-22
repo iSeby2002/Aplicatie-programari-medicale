@@ -5,22 +5,45 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
 import dayjs from "dayjs";
-import { Button, CssBaseline, Typography } from "@mui/material";
+import {Button, CssBaseline, IconButton, Typography} from "@mui/material";
 import Box from "@mui/material/Box";
 import {
     buttonSagetiSx, buttonSx,
     centerBoxSx, CNPSx,
     numeSiPrenumeSx, typographyCNPSx,
-    typographyNumeSiPrenumeSx,
+    typographyNumeSiPrenumeSx, typographyRapoarteSx,
     typographyWeekSx
 } from "./CalendarPage.styles";
 import axios from "axios";
 import CustomizedSnackbars from "../../utils/CustomizedSnackbars";
 import {useNavigate, useLocation} from "react-router-dom";
+import {DataGrid, GridColDef} from "@mui/x-data-grid";
+import SearchIcon from '@mui/icons-material/Search';
+import ReplayIcon from '@mui/icons-material/Replay';
 
 
 const daysOfWeek = ["Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă", "Duminică"];
 const timeSlots = ["10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45"];
+
+
+function DataTable({columns, rows, onSelectFisa }: { columns: GridColDef[], rows: any[], onSelectFisa: (fisa: any) => void }) {
+    return (
+        <DataGrid
+            rows={rows}
+            columns={columns}
+            pageSize={rows.length}
+            disableColumnMenu={true}
+            hideFooter
+            checkboxSelection
+            disableMultipleRowSelection={true}
+            onRowSelectionModelChange={(newSelection: any[]) => {
+                const selectedID = newSelection[0];
+                const selectedFisa = rows.find((row) => row.id === selectedID);
+                onSelectFisa(selectedFisa);
+            }}
+        />
+    );
+}
 
 const CalendarPage = () => {
     const navigate = useNavigate();
@@ -231,40 +254,29 @@ const CalendarPage = () => {
             setSeverity("error");
             setMessage("Selectați un slot cu o programare existentă înainte!");
         }else {
-            // const { day, time } = selectedSlot;
-            // const dayIndex = daysOfWeek.indexOf(day);
-            // const selectedDayDate = getCurrentWeekDates()[dayIndex];
-            //
-            // // Construiește data și ora în formatul "YYYY-MM-DDTHH:MM"
-            // const startTime = `${selectedDayDate.format('YYYY-MM-DD')}T${time}`;
-            //
-            // const programareDTO = {
-            //     pacient: {
-            //         numePrenume: numeSiPrenume,
-            //         cnp: cnp,
-            //     },
-            //     startTime: startTime  // Data și ora slotului selectat în formatul necesar
-            // };
-            //
-            // axios.post(`${process.env.REACT_APP_SERVER_LINK}/programari/deleteProgramare`, programareDTO,{
-            //     headers: {
-            //         "content-type": "application/json"
-            //     }
-            // }).then((response: any) => {
-            //     setOpen(true);
-            //     setSeverity("success");
-            //     setMessage(response.data);
-            //
-            //     getProgramariByWeek(weekStartDate.format('YYYY-MM-DD'));
-            //
-            //     setNumeSiPrenume("");
-            //     setCnp("");
-            //     setSelectedSlot(null);
-            // }).catch((error) => {
-            //     setOpen(true);
-            //     setSeverity("error");
-            //     setMessage(error.response.data);
-            // });
+            const { day, time } = selectedSlot;
+            const dayIndex = daysOfWeek.indexOf(day);
+            const selectedDayDate = getCurrentWeekDates()[dayIndex];
+
+            // Construiește data și ora în formatul "YYYY-MM-DDTHH:MM"
+            const startTime = `${selectedDayDate.format('YYYY-MM-DD')}T${time}`;
+
+            const programareDTO = {
+                pacient: {
+                    numePrenume: numeSiPrenume,
+                    cnp: cnp,
+                },
+                startTime: startTime  // Data și ora slotului selectat în formatul necesar
+            };
+
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/getFisaMedicalaByProgramare`, programareDTO,{
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then((response: any) => {
+                const stateData = { medic: location.state, fisaMedicala: response.data };
+                navigate("/DiabetologPage/VizualizareScreening", { state: stateData });
+            });
         }
     };
 
@@ -360,8 +372,6 @@ const CalendarPage = () => {
             setSeverity("error");
             setMessage("Selectați un slot cu o programare existentă înainte!");
         }else {
-            // /OftalmologPage/CompletareScreening
-
             const { day, time } = selectedSlot;
             const dayIndex = daysOfWeek.indexOf(day);
             const selectedDayDate = getCurrentWeekDates()[dayIndex];
@@ -545,6 +555,106 @@ const CalendarPage = () => {
         localStorage.setItem('auth', 'false');
     };
 
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'numePrenume', headerName: 'Nume și prenume', width: 250 },
+        { field: 'cnp', headerName: 'CNP', width: 250 },
+        { field: 'startTime', headerName: 'Data programării', width: 350 },
+    ];
+
+    const [fiseMedicale, setFiseMedicale] = useState([]);
+    const [selectedFisaMedicala, setSelectedFisaMedicala] = useState(null);
+    const [cnpField, setCnpField] = useState("");
+
+    useEffect(() => {
+        handleReset();
+    }, []);
+
+    const handleSelectFisaMedicala = (fisa) => {
+        if (fisa) {
+            setSelectedFisaMedicala(fisa);
+        } else {
+            setSelectedFisaMedicala(null);
+        }
+    };
+
+    const handleCautare = () => {
+        if(cnpField == null || cnpField === ""){
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Introduceți un CNP existent!");
+        }else{
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/getRaportFiseByCNP`, cnpField,{
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then((response) => {
+                const fise = response.data.fiseMedicale.map((fisa, index) => ({
+                    id: fisa.id,
+                    numePrenume: fisa.programari.pacient.numePrenume,
+                    cnp: fisa.programari.pacient.cnp,
+                    startTime: fisa.programari.startTime ? dayjs(fisa.programari.startTime).format('DD/MM/YYYY') : null,
+                }));
+                setFiseMedicale(fise);
+            }).catch((error: any) => {
+                setOpen(true);
+                setSeverity("error");
+                setMessage(error.response.data.mesaj);
+                setFiseMedicale([]);
+            });
+        }
+    };
+
+    const handleReset = () => {
+        axios.get(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/getRaportFise`, {
+            headers: {
+                "content-type": "application/json"
+            }
+        }).then((response) => {
+            const fise = response.data.fiseMedicale.map((fisa, index) => ({
+                id: fisa.id,
+                numePrenume: fisa.programari.pacient.numePrenume,
+                cnp: fisa.programari.pacient.cnp,
+                startTime: fisa.programari.startTime ? dayjs(fisa.programari.startTime).format('DD/MM/YYYY - HH:mm') : null,
+            }));
+            setFiseMedicale(fise);
+            setCnpField("");
+        });
+    };
+
+    const handleVizualizareRaport = () => {
+        if( !selectedFisaMedicala ) {
+            setOpen(true);
+            setSeverity("error");
+            setMessage("Selectați un raport!");
+        }else{
+            const formattedStartTime = selectedFisaMedicala.startTime
+                ? dayjs(selectedFisaMedicala.startTime, 'DD/MM/YYYY - HH:mm').format('YYYY-MM-DDTHH:mm')
+                : null;
+
+            const programareDTO = {
+                pacient: {
+                    numePrenume: selectedFisaMedicala.numePrenume,
+                    cnp: selectedFisaMedicala.cnp,
+                },
+                startTime: formattedStartTime
+            };
+
+            axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/getFisaMedicalaByProgramare`, programareDTO,{
+                headers: {
+                    "content-type": "application/json"
+                }
+            }).then((response: any) => {
+                const stateData = { medic: location.state, fisaMedicala: response.data };
+                if(location.state.role === "diabetolog"){
+                    navigate("/DiabetologPage/VizualizareScreening", { state: stateData });
+                }else if(location.state.role === "oftalmolog"){
+                    navigate("/OftalmologPage/CompletareScreening", { state: stateData });
+                }
+            });
+        }
+    };
+
     return (
         <div className="diabetologPage" style={{ height: '100vh', overflowY: 'auto' }}>
             <CssBaseline />
@@ -640,7 +750,7 @@ const CalendarPage = () => {
                             setGresit({...gresit, numeSiPrenume: !validateNumeSiPrenume(value)});
                         }}
                         error={gresit.numeSiPrenume}
-                        helperText={gresit.numeSiPrenume ? "Nume si prenume incorect." : ""}
+                        helperText={gresit.numeSiPrenume ? "Nume și prenume incorecte." : ""}
                         sx={numeSiPrenumeSx}
                     />
                     <Typography sx={typographyCNPSx}>
@@ -695,6 +805,46 @@ const CalendarPage = () => {
                         </Button>
                     </Box>
                 </div>
+                <Box style={{width: '90%', padding: "10px 10px"}}>
+                    <Typography sx={typographyRapoarteSx}>
+                        Rapoarte Fișe Medicale
+                    </Typography>
+                    <Box sx={{width: "100%", display: "flex", flexDirection: "row", mb: "20px", padding: "10px 10px"}}>
+                        <Box sx={{display: "flex", flexDirection: "row", justifyContent: "flex-start", width: "50%"}}>
+                            <Typography sx={typographyCNPSx}>
+                                Căutare după CNP:
+                            </Typography>
+                            <TextField
+                                id="cautareCNPField"
+                                name="cautareCNPField"
+                                value={cnpField}
+                                variant="standard"
+                                required
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setCnpField(value);
+                                }}
+                                sx={CNPSx}
+                            />
+                            <IconButton aria-label="search" onClick={handleCautare}>
+                                <SearchIcon />
+                            </IconButton>
+                        </Box>
+                        <Box sx={{display: "flex", flexDirection: "row", justifyContent: "flex-end", width: "50%"}}>
+                            <IconButton aria-label="replay" onClick={handleReset}>
+                                <ReplayIcon />
+                            </IconButton>
+                        </Box>
+                    </Box>
+                    <Box sx={{height: "400px", padding: "10px 10px"}}>
+                        <DataTable columns={columns} rows={fiseMedicale} onSelectFisa={handleSelectFisaMedicala}/>
+                    </Box>
+                    <Box sx={{width: "100%", padding: "10px 10px"}}>
+                        <Button sx={{...buttonSx, width: "22.5%"}} onClick={handleVizualizareRaport}>
+                            {"Vizualizează\nRaport"}
+                        </Button>
+                    </Box>
+                </Box>
                 {/* Buton deconectare*/}
                 <Box sx={{display: "flex", justifyContent: "center", width: "100%", padding: "10px 10px", gap: "20px"}}>
                     <Button sx={buttonSx} onClick={handleDeconectare}>

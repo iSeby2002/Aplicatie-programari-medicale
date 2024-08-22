@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-
 import com.example.demo.dtos.FisaMedicalaResponseDTO;
 import com.example.demo.model.FisaMedicala;
 import com.example.demo.model.Programari;
@@ -37,15 +36,20 @@ public class FisaMedicalaController {
         return new ResponseEntity<>(msg,HttpStatus.OK);
     }
 
-    @PostMapping("/getRaportFise")
-    public ResponseEntity<FisaMedicalaResponseDTO> getRaportFise(@RequestBody long cnp){
-        //FisaMedicalaResponseDTO fisaMedicalaResponseDTO = fisaMedicalaService.findAllByCnp(cnp);
-//        if(fisaMedicalaResponseDTO.getMesaj().equals("Nu există fișă medicală pentru acest CNP!")) {
-//            return new ResponseEntity<>(fisaMedicalaResponseDTO, HttpStatus.BAD_REQUEST);
-//        }else {
-//            return new ResponseEntity<>(fisaMedicalaResponseDTO, HttpStatus.OK);
-//        }
-        return null;
+    @GetMapping("/getRaportFise")
+    public ResponseEntity<FisaMedicalaResponseDTO> getRaportFise(){
+        FisaMedicalaResponseDTO fisaMedicalaResponseDTO = fisaMedicalaService.findAll();
+        return new ResponseEntity<>(fisaMedicalaResponseDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/getRaportFiseByCNP")
+    public ResponseEntity<FisaMedicalaResponseDTO> getRaportFise(@RequestBody Long cnp){
+        FisaMedicalaResponseDTO fisaMedicalaResponseDTO = fisaMedicalaService.findAllByCnp(cnp);
+        if(fisaMedicalaResponseDTO.getMesaj().equals("Nu există fișă medicală pentru acest CNP!")) {
+            return new ResponseEntity<>(fisaMedicalaResponseDTO, HttpStatus.BAD_REQUEST);
+        }else {
+            return new ResponseEntity<>(fisaMedicalaResponseDTO, HttpStatus.OK);
+        }
     }
 
     @PostMapping("/getFisaMedicalaByProgramare")
@@ -53,15 +57,4 @@ public class FisaMedicalaController {
         FisaMedicala fisaMedicala = fisaMedicalaService.findFisaMedicalaByProgramare(programare);
         return new ResponseEntity<>(fisaMedicala, HttpStatus.OK);
     }
-
-//    @PutMapping("/updateFisaMedicala")
-//    public ResponseEntity<FisaMedicalaResponseDto> updateFisaMedicala(@RequestBody FisaMedicala fisaMedicalaUpdate) {
-//        FisaMedicalaResponseDto responseDto = fisaMedicalaService.update(fisaMedicalaUpdate);
-//
-//        if (responseDto.getMesaj().equals("Nu există fisa selectat!")) {
-//            return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
-//        } else {
-//            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-//        }
-//    }
 }

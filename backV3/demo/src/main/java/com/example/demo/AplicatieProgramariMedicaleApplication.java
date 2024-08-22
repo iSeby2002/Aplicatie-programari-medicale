@@ -2,7 +2,6 @@ package com.example.demo;
 
 import com.example.demo.dtos.RegisterDto;
 import com.example.demo.service.MedicService;
-import com.example.demo.service.PacientService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,9 +15,9 @@ public class AplicatieProgramariMedicaleApplication {
 	}
 
 	@Bean
-	CommandLineRunner init(MedicService medicService, PacientService pacientService) {
+	CommandLineRunner init(MedicService medicService) {
 		return args -> {
-//			//medici
+			//medici
 //			RegisterDto registerDtoAdmin= RegisterDto.builder()
 //					.nume("Admin")
 //					.prenume("Admin")
@@ -55,28 +54,6 @@ public class AplicatieProgramariMedicaleApplication {
 //			medicService.register(registerDto1);
 //			medicService.register(registerDto2);
 //			medicService.register(registerDto3);
-
-//
-//			//pacienti diabet
-//			PacientDto pacientDto1 = PacientDto.builder()
-//					.numePrenume("Ion Popescu")
-//					.cnp(1234567890123L)
-//					.diabetZaharat("tip 2")
-//					.diabetZaharatField("alabala")
-//					.dataDiagnosticului(LocalDate.of(2023, 7, 20))
-//					.build();
-//			PacientDto pacientDto2 = PacientDto.builder()
-//					.numePrenume("Delia Costea")
-//					.cnp(2134567890123L)
-//					.diabetZaharat("tip 1")
-//					.diabetZaharatField("alabala")
-//					.dataDiagnosticului(LocalDate.of(2023, 6, 22))
-//					.build();
-//			Pacient savedPacientDto1 = pacientService.registerPacient(pacientDto1);
-//			Pacient savedPacientDto2 = pacientService.registerPacient(pacientDto2);
-//
-//			slotProgramariService.generareSloturiSaptamanale();
 		};
 	}
-
 }

@@ -25,38 +25,8 @@ public class PacientServiceImpl implements PacientService {
     }
 
     @Override
-    public void deletePacient(Long id) {
-        if (pacientRepository.existsById(id)) {
-            Pacient pacient = pacientRepository.findPacientById(id);
-            if (pacient != null) {
-                pacientRepository.delete(pacient);
-            } else {
-                throw new RuntimeException("Pacientul cu nrCrt " + id + " nu a fost găsit");
-            }
-        } else {
-            throw new RuntimeException("Pacientul cu nrCrt " + id + " nu a fost găsit");
-        }
-    }
-
-    @Override
-    public Pacient updatePacient(Long nrCrt, PacientDto pacientDto) {
-        if (pacientRepository.existsById(nrCrt)) {
-            Pacient pacient = pacientRepository.findPacientById(nrCrt);
-            if (pacient != null) {
-                pacient.setNumePrenume(pacientDto.getNumePrenume());
-                pacient.setCnp(pacientDto.getCnp());
-                return pacientRepository.save(pacient);
-            } else {
-                throw new RuntimeException("Pacientul cu nrCrt " + nrCrt + " nu a fost găsit");
-            }
-        } else {
-            throw new RuntimeException("Pacientul cu nrCrt " + nrCrt + " nu a fost găsit");
-        }
-    }
-
     public Pacient findPacientByCnp(Long cnp){
         Pacient pacientCautat = pacientRepository.findPacientByCnp(cnp);
-        //System.out.println( pacientCautat.toString());
         if(pacientCautat!=null){
             return pacientCautat;
         }
