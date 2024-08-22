@@ -15,5 +15,7 @@ public interface FisaMedicalaService {
     FiseMedicaleResponseDTO findAllByCnp(long cnp);
     FisaMedicalaResponseDto update(FisaMedicala fisaMedicala);
     String saveFisaMedicala(FisaMedicala fisaMedicala);
+    FisaMedicalaResponseDTO findAll();
+    FisaMedicalaResponseDTO findAllByCnp(Long cnp);
     FisaMedicala findFisaMedicalaByProgramare(Programari programare);
 }

@@ -25,21 +25,13 @@ public class FisaMedicalaServiceImpl implements FisaMedicalaService {
 
     @Override
     public List<Programari> findProgramariCurente(LocalDateTime startTime) {
-        LocalDateTime timeCurent=startTime;
-        /*Iterable<Programari> allProgramari= programariRepository.findAll();
-        List<Programari> programariCurente= StreamSupport.stream(allProgramari.spliterator(),false)
-                .filter(programari->programari.getStartTime().toLocalDate().equals(dataCurenta)).collect(Collectors.toList());
-        return programariCurente;*/
+        LocalDateTime timeCurent = startTime;
         LocalDateTime startOfDay = timeCurent.toLocalDate().atStartOfDay();
-
-        //Poate trebe si end,vedem
-
         return programariRepository.findAllByDate(startOfDay);
     }
 
     @Override
     public String saveFisaMedicala(FisaMedicala fisaMedicala) {
-        System.out.println(fisaMedicala);
         FisaMedicala fisaMedicalaExistenta =fisaMedicalaRepository.findFisaMedicalaByProgramari(fisaMedicala.getProgramari());
         if(fisaMedicalaExistenta!=null){
             fisaMedicalaExistenta.setProgramari(fisaMedicala.getProgramari());
@@ -121,30 +113,25 @@ public class FisaMedicalaServiceImpl implements FisaMedicalaService {
     }
 
     @Override
-    public FisaMedicalaResponseDTO findAllByCnp(long cnp){
+    public FisaMedicalaResponseDTO findAll() {
         FisaMedicalaResponseDTO fisaResponse = new FisaMedicalaResponseDTO();
-        if(cnp==0){
-            fisaResponse.setFiseMedicale((List<FisaMedicala>) fisaMedicalaRepository.findAll());
-            fisaResponse.setMesaj("Succes1!");
-        }
-        else
-        {
-            List<FisaMedicala> fiseCautate = fisaMedicalaRepository.findByProgramari_Pacient_Cnp(cnp);
-            System.out.println(fiseCautate);
-            if(!fiseCautate.isEmpty()){
-                fisaResponse.setFiseMedicale(fiseCautate);
-                fisaResponse.setMesaj("Succes2!");
-            }
-            else
-            {
-                fisaResponse.setFiseMedicale(null);
-                fisaResponse.setMesaj("Nu există fișă medicală pentru acest CNP!");
-            }
-        }
-
-
+        fisaResponse.setFiseMedicale((List<FisaMedicala>) fisaMedicalaRepository.findAll());
+        fisaResponse.setMesaj("Succes!");
         return fisaResponse;
+    }
 
+    @Override
+    public FisaMedicalaResponseDTO findAllByCnp(Long cnp){
+        FisaMedicalaResponseDTO fisaResponse = new FisaMedicalaResponseDTO();
+        List<FisaMedicala> fiseCautate = fisaMedicalaRepository.findByProgramari_Pacient_Cnp(cnp);
+        if(!fiseCautate.isEmpty()){
+            fisaResponse.setFiseMedicale(fiseCautate);
+            fisaResponse.setMesaj("Succes!");
+        } else {
+            fisaResponse.setFiseMedicale(null);
+            fisaResponse.setMesaj("Nu există fișă medicală pentru acest CNP!");
+        }
+        return fisaResponse;
     }
 
     @Override

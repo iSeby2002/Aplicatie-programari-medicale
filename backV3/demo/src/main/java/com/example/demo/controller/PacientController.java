@@ -25,26 +25,4 @@ public class PacientController {
         Pacient pacient=pacientService.registerPacient(pacientDto);
         return new ResponseEntity<>(pacient, HttpStatus.CREATED);
     }
-
-    @DeleteMapping("/{nrCrt}")
-    public ResponseEntity<Void> delete(@PathVariable Long nrCrt){
-        try{
-            pacientService.deletePacient(nrCrt);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-        }catch (Exception e){
-           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PutMapping("/{nrCrt}")
-    public ResponseEntity<Pacient> update(@PathVariable Long nrCrt, @RequestBody PacientDto pacientDto){
-        try{
-            Pacient updatedPacient=pacientService.updatePacient(nrCrt,pacientDto);
-            return new ResponseEntity<>(updatedPacient,HttpStatus.OK);
-
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
 }
