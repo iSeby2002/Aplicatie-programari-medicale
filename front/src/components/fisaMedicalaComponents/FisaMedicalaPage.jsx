@@ -1,13 +1,20 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Button,
     Checkbox,
     CssBaseline,
     FormControl,
-    FormControlLabel, Radio,
+    FormControlLabel,
+    Radio,
     RadioGroup,
     TextField,
-    Typography
+    Typography,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Slide
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import {
@@ -120,7 +127,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import CustomizedSnackbars from "../../utils/CustomizedSnackbars";
-import axios from "axios"
+import axios from "axios";
 
 
 function handleDetaliiFundDeOchi(event, setDetaliiFundDeOchiText) {
@@ -263,6 +270,10 @@ function RadioButtonsGroupUrmatorulControl({ urmatorulControl, setUrmatorulContr
         </FormControl>
     );
 }
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const FisaMedicalaPage = () => {
     const navigate = useNavigate();
@@ -741,15 +752,42 @@ const FisaMedicalaPage = () => {
         }
     };
     const handleInapoi = () => {
+        // if(medic.role === "diabetolog"){
+        //     navigate("/DiabetologPage", { state: medic });
+        // }else if(medic.role === "oftalmolog"){
+        //     navigate("/OftalmologPage", { state: medic });
+        // }else{
+        //     navigate("/");
+        //     localStorage.setItem('auth', 'false');
+        // }
+        setOpenDialog(true);
+    };
+
+    const [openDialog, setOpenDialog] = useState(false);
+    const [discardChanges, setDiscardChanges] = useState(false);
+
+    const confirmInapoi = () => {
+        setDiscardChanges(true);
+        setOpenDialog(false);
+    };
+
+    const cancelInapoi = () => {
+        setOpenDialog(false);
+    };
+
+    useEffect(() => {
         if(medic.role === "diabetolog"){
             navigate("/DiabetologPage", { state: medic });
-        }else if(medic.role === "oftalmolog"){
-            navigate("/OftalmologPage", { state: medic });
-        }else{
+        } else if(medic.role === "oftalmolog"){
+            if (discardChanges) {
+                navigate("/OftalmologPage", {state: medic});
+            }
+        } else {
             navigate("/");
             localStorage.setItem('auth', 'false');
         }
-    };
+    }, [discardChanges, navigate, medic]);
+
 
     return (
         <div className="oftalmologPage" style={{ height: '100vh', overflowY: 'auto' }}>
@@ -1513,7 +1551,7 @@ const FisaMedicalaPage = () => {
                             <TextField
                                 id="injectieDozaODField"
                                 name="injectieDozaODField"
-                                label="Doză"
+                                label="Data ultimei doze"
                                 value={injectieDozaOD}
                                 variant="standard"
                                 onChange={(e) => {
@@ -1527,7 +1565,7 @@ const FisaMedicalaPage = () => {
                             <TextField
                                 id="injectieNumarOSField"
                                 name="injectieNumarOSField"
-                                label="                      Număr"
+                                label="Număr"
                                 value={injectieNumarOS}
                                 variant="standard"
                                 type="number"
@@ -1540,7 +1578,7 @@ const FisaMedicalaPage = () => {
                             <TextField
                                 id="injectieDozaOSField"
                                 name="injectieDozaOSField"
-                                label="Doză"
+                                label="Data ultimei doze"
                                 value={injectieDozaOS}
                                 variant="standard"
                                 onChange={(e) => {
@@ -1835,12 +1873,35 @@ const FisaMedicalaPage = () => {
                             display: "flex",
                             justifyContent: 'center',
                             alignItems: 'center',
-                            height: "110px",
+                            height: "150px",
                             width: "20%"
                         }}>
-                            <Button sx={buttonSx} onClick={handleInapoi}>
-                                Înapoi
-                            </Button>
+                            <Dialog
+                                open={openDialog}
+                                TransitionComponent={Transition}
+                                keepMounted
+                                onClose={cancelInapoi}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                                sx={{ '& .MuiDialog-paper': { width: '35%', maxWidth: 'none' } }}
+                            >
+                                <DialogTitle id="alert-dialog-title" sx={{color: "black", fontSize: "18px", fontWeight: "600"}}>
+                                    {"Confirmare revenire"}
+                                </DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText id="alert-dialog-description" sx={{color: "black", fontSize: "18px", fontWeight: "300"}}>
+                                        Ești sigur că vrei să te întorci fără să salvezi modificările?
+                                    </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={cancelInapoi} sx={buttonSx}>
+                                        Anulare
+                                    </Button>
+                                    <Button onClick={confirmInapoi} sx={buttonSx} autoFocus>
+                                        Continuă fără salvare
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
                         </Box>
                     </Box>
                 </div>
