@@ -752,15 +752,14 @@ const FisaMedicalaPage = () => {
         }
     };
     const handleInapoi = () => {
-        // if(medic.role === "diabetolog"){
-        //     navigate("/DiabetologPage", { state: medic });
-        // }else if(medic.role === "oftalmolog"){
-        //     navigate("/OftalmologPage", { state: medic });
-        // }else{
-        //     navigate("/");
-        //     localStorage.setItem('auth', 'false');
-        // }
-        setOpenDialog(true);
+        if(medic.role === "diabetolog") {
+            navigate("/DiabetologPage", {state: medic});
+        }else if(medic.role === "oftalmolog"){
+            setOpenDialog(true);
+        }else{
+            navigate("/");
+            localStorage.setItem('auth', 'false');
+        }
     };
 
     const [openDialog, setOpenDialog] = useState(false);
@@ -776,15 +775,10 @@ const FisaMedicalaPage = () => {
     };
 
     useEffect(() => {
-        if(medic.role === "diabetolog"){
-            navigate("/DiabetologPage", { state: medic });
-        } else if(medic.role === "oftalmolog"){
+        if(medic.role === "oftalmolog"){
             if (discardChanges) {
                 navigate("/OftalmologPage", {state: medic});
             }
-        } else {
-            navigate("/");
-            localStorage.setItem('auth', 'false');
         }
     }, [discardChanges, navigate, medic]);
 
@@ -1876,36 +1870,39 @@ const FisaMedicalaPage = () => {
                             height: "150px",
                             width: "20%"
                         }}>
-                            <Dialog
-                                open={openDialog}
-                                TransitionComponent={Transition}
-                                keepMounted
-                                onClose={cancelInapoi}
-                                aria-labelledby="alert-dialog-title"
-                                aria-describedby="alert-dialog-description"
-                                sx={{ '& .MuiDialog-paper': { width: '35%', maxWidth: 'none' } }}
-                            >
-                                <DialogTitle id="alert-dialog-title" sx={{color: "black", fontSize: "18px", fontWeight: "600"}}>
-                                    {"Confirmare revenire"}
-                                </DialogTitle>
-                                <DialogContent>
-                                    <DialogContentText id="alert-dialog-description" sx={{color: "black", fontSize: "18px", fontWeight: "300"}}>
-                                        Ești sigur că vrei să te întorci fără să salvezi modificările?
-                                    </DialogContentText>
-                                </DialogContent>
-                                <DialogActions>
-                                    <Button onClick={cancelInapoi} sx={buttonSx}>
-                                        Anulare
-                                    </Button>
-                                    <Button onClick={confirmInapoi} sx={buttonSx} autoFocus>
-                                        Continuă fără salvare
-                                    </Button>
-                                </DialogActions>
-                            </Dialog>
+                            <Button sx={buttonSx} onClick={handleInapoi}>
+                                Înapoi
+                            </Button>
                         </Box>
                     </Box>
                 </div>
             </Box>
+            <Dialog
+                open={openDialog}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={cancelInapoi}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                sx={{ '& .MuiDialog-paper': { width: '35%', maxWidth: 'none' } }}
+            >
+                <DialogTitle id="alert-dialog-title" sx={{color: "black", fontSize: "18px", fontWeight: "600"}}>
+                    {"Confirmare revenire"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description" sx={{color: "black", fontSize: "18px", fontWeight: "300"}}>
+                        Ești sigur că vrei să te întorci fără să salvezi modificările?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={cancelInapoi} sx={buttonSx}>
+                        Anulare
+                    </Button>
+                    <Button onClick={confirmInapoi} sx={buttonSx} autoFocus>
+                        Continuă fără salvare
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <CustomizedSnackbars
                 open={open}
                 severity={severity}

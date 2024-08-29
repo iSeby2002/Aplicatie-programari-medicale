@@ -54,7 +54,7 @@ const EditarePage = () => {
     const [nume, setNume] = React.useState(location.state.medic.nume);
     const [email, setEmail] = React.useState(location.state.medic.email);
     const [telefon, setTelefon] = React.useState(location.state.medic.phoneNumber);
-    const [tipMedic, setTipMedic] = React.useState("diabetolog");
+    const [tipMedic, setTipMedic] = React.useState(location.state.medic.role);
     const [gresit, setGresit] = React.useState({ prenume: false, nume: false, email: false, telefon: false});
 
     const validatePrenume = (value: string) => /^[a-zA-Z\s-]+$/.test(value);
