@@ -1,13 +1,17 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dtos.FisaMedicalaDTO;
 import com.example.demo.dtos.FisaMedicalaResponseDTO;
 import com.example.demo.model.FisaMedicala;
+import com.example.demo.model.PozeFisaMedicala;
 import com.example.demo.model.Programari;
 import com.example.demo.repository.FisaMedicalaRepository;
+import com.example.demo.repository.PozeFisaMedicalaRepository;
 import com.example.demo.repository.ProgramariRepository;
 import com.example.demo.service.FisaMedicalaService;
 import org.springframework.stereotype.Service;
 
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,10 +20,12 @@ public class FisaMedicalaServiceImpl implements FisaMedicalaService {
 
     private final ProgramariRepository programariRepository;
     private final FisaMedicalaRepository fisaMedicalaRepository;
+    private final PozeFisaMedicalaRepository pozeFisaMedicalaRepository;
 
-    public FisaMedicalaServiceImpl(ProgramariRepository programariRepository, FisaMedicalaRepository fisaMedicalaRepository) {
+    public FisaMedicalaServiceImpl(ProgramariRepository programariRepository, FisaMedicalaRepository fisaMedicalaRepository, PozeFisaMedicalaRepository pozeFisaMedicalaRepository) {
         this.programariRepository = programariRepository;
         this.fisaMedicalaRepository = fisaMedicalaRepository;
+        this.pozeFisaMedicalaRepository = pozeFisaMedicalaRepository;
     }
 
     @Override
@@ -30,7 +36,8 @@ public class FisaMedicalaServiceImpl implements FisaMedicalaService {
     }
 
     @Override
-    public String saveFisaMedicala(FisaMedicala fisaMedicala) {
+    public FisaMedicalaDTO saveFisaMedicala(FisaMedicala fisaMedicala) {
+        FisaMedicalaDTO fisaMedicalaDTO = new FisaMedicalaDTO();
         FisaMedicala fisaMedicalaExistenta =fisaMedicalaRepository.findFisaMedicalaByProgramari(fisaMedicala.getProgramari());
         if(fisaMedicalaExistenta!=null){
             fisaMedicalaExistenta.setProgramari(fisaMedicala.getProgramari());
@@ -105,10 +112,43 @@ public class FisaMedicalaServiceImpl implements FisaMedicalaService {
             fisaMedicalaExistenta.setData(fisaMedicala.getData());
             fisaMedicalaExistenta.setMedicExaminator(fisaMedicala.getMedicExaminator());
             fisaMedicalaRepository.save(fisaMedicalaExistenta);
+            fisaMedicalaDTO.setFisaMedicala(fisaMedicalaExistenta);
         }else {
             fisaMedicalaRepository.save(fisaMedicala);
+            fisaMedicalaDTO.setFisaMedicala(fisaMedicala);
         }
-        return "Salvare cu succes";
+        fisaMedicalaDTO.setMesaj("Salvare cu succes");
+        return fisaMedicalaDTO;
+    }
+
+    @Override
+    public String savePozaODInFisaMedicala(Long idFisa, Blob blobOD){
+        PozeFisaMedicala pozeFisaMedicala = pozeFisaMedicalaRepository.findPozeFisaMedicalaByIdFisaMedicala(idFisa);
+        if(pozeFisaMedicala == null){
+            pozeFisaMedicala = new PozeFisaMedicala();
+            pozeFisaMedicala.setIdFisaMedicala(idFisa);
+            pozeFisaMedicala.setPozaOD(blobOD);
+            pozeFisaMedicalaRepository.save(pozeFisaMedicala);
+        }else{
+            pozeFisaMedicala.setPozaOD(blobOD);
+            pozeFisaMedicalaRepository.save(pozeFisaMedicala);
+        }
+        return "Salvare pozaOD cu succes";
+    }
+
+    @Override
+    public String savePozaOSInFisaMedicala(Long idFisa, Blob blobOS){
+        PozeFisaMedicala pozeFisaMedicala = pozeFisaMedicalaRepository.findPozeFisaMedicalaByIdFisaMedicala(idFisa);
+        if(pozeFisaMedicala == null){
+            pozeFisaMedicala = new PozeFisaMedicala();
+            pozeFisaMedicala.setIdFisaMedicala(idFisa);
+            pozeFisaMedicala.setPozaOS(blobOS);
+            pozeFisaMedicalaRepository.save(pozeFisaMedicala);
+        }else{
+            pozeFisaMedicala.setPozaOS(blobOS);
+            pozeFisaMedicalaRepository.save(pozeFisaMedicala);
+        }
+        return "Salvare pozaOD cu succes";
     }
 
     @Override
@@ -143,4 +183,11 @@ public class FisaMedicalaServiceImpl implements FisaMedicalaService {
         }
         return fisaMedicala;
     }
+
+    @Override
+    public PozeFisaMedicala findPozeFisaMedicalaByIdFisaMedicala(Long id) {
+        return pozeFisaMedicalaRepository.findPozeFisaMedicalaByIdFisaMedicala(id);
+    }
+
+
 }

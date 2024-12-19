@@ -128,7 +128,8 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import CustomizedSnackbars from "../../utils/CustomizedSnackbars";
 import axios from "axios";
-
+import FileUploadOD from "../../utils/FileUploadOD";
+import FileUploadOS from "../../utils/FileUploadOS";
 
 function handleDetaliiFundDeOchi(event, setDetaliiFundDeOchiText) {
     const text = event.target.value;
@@ -618,7 +619,7 @@ const FisaMedicalaPage = () => {
             tip2DiabetZaharat: tip2DiabetZaharat,
             dataDiagnosticului: dataDiagnosticului,
             // Box 2
-            HbA1C: hbA1C,
+            hbA1C: hbA1C,
             maiMic6Luni: maiMic6Luni,
             maiMare6Luni: maiMare6Luni,
             glicemie: glicemie,
@@ -691,16 +692,61 @@ const FisaMedicalaPage = () => {
             medicExaminator: medicExaminatorField
         };
 
-        console.log(fisaMedicalaDTO);
-
         axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/saveFisaMedicala`, fisaMedicalaDTO, {
             headers: {
                 "content-type": "application/json"
             }
-        }).then((response: any) => {
-            setOpen(true);
-            setSeverity("success");
-            setMessage(response.data);
+        }).then((res: any) => {
+            if(selectedFileOD != null){
+                const formData = new FormData();
+                formData.append('idFisa', res.data.fisaMedicala.id);
+                formData.append('pozaOD', selectedFileOD);
+                axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/savePozaODInFisaMedicala`, formData, {
+                    headers: {
+                        "content-type": "multipart/form-data"
+                    }
+                }).then((response: any) => {
+                    if(response.data === "Eroare"){
+                        setOpen(true);
+                        setSeverity("error");
+                        setMessage("Eroare la salvarea pozei OD");
+                    }
+                    if(selectedFileOS != null){
+                        const formData = new FormData();
+                        formData.append('idFisa', res.data.fisaMedicala.id);
+                        formData.append('pozaOS', selectedFileOS);
+                        axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/savePozaOSInFisaMedicala`, formData, {
+                            headers: {
+                                "content-type": "multipart/form-data"
+                            }
+                        }).then((response: any) => {
+                            if(response.data === "Eroare"){
+                                setOpen(true);
+                                setSeverity("error");
+                                setMessage("Eroare la salvarea pozei OS");
+                            }
+                        });
+                    }
+                });
+            }else{
+                if(selectedFileOS != null){
+                    const formData = new FormData();
+                    formData.append('idFisa', res.data.fisaMedicala.id);
+                    formData.append('pozaOS', selectedFileOS);
+                    axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/savePozaOSInFisaMedicala`, formData, {
+                        headers: {
+                            "content-type": "multipart/form-data"
+                        }
+                    }).then((response: any) => {
+                        if(response.data === "Eroare"){
+                            setOpen(true);
+                            setSeverity("error");
+                            setMessage("Eroare la salvarea pozei OS");
+                        }
+                    });
+                }
+            }
+
             axios.post(`${process.env.REACT_APP_SERVER_LINK}/medici/fisaMedicala/getFisaMedicalaByProgramare`, fisaMedicala.programari,{
                 headers: {
                     "content-type": "application/json"
@@ -709,8 +755,11 @@ const FisaMedicalaPage = () => {
                 const stateData = { medic: medic, fisaMedicala: response.data };
                 console.log(stateData.fisaMedicala)
                 navigate("/OftalmologPage/CompletareScreening", { state: stateData });
-
             });
+
+            setOpen(true);
+            setSeverity("success");
+            setMessage(res.data.mesaj);
         });
 
         if (salvarePDF) {
@@ -782,6 +831,14 @@ const FisaMedicalaPage = () => {
         }
     }, [discardChanges, navigate, medic]);
 
+    const [selectedFileOD, setSelectedFileOD] = useState(null);
+    const handleFileSelectOD = (fileOD) => {
+        setSelectedFileOD(fileOD);
+    };
+    const [selectedFileOS, setSelectedFileOS] = useState(null);
+    const handleFileSelectOS = (fileOS) => {
+        setSelectedFileOS(fileOS);
+    };
 
     return (
         <div className="oftalmologPage" style={{ height: '100vh', overflowY: 'auto' }}>
@@ -1876,6 +1933,10 @@ const FisaMedicalaPage = () => {
                         </Box>
                     </Box>
                 </div>
+                <Box sx={{...boxSx, mb: "30px"}}>
+                    <FileUploadOD onFileSelectOD={handleFileSelectOD} idFisaMedicala={fisaMedicala.id ?? null}/>
+                    <FileUploadOS onFileSelectOS={handleFileSelectOS} idFisaMedicala={fisaMedicala.id ?? null}/>
+                </Box>
             </Box>
             <Dialog
                 open={openDialog}

@@ -3,8 +3,10 @@ package com.example.demo.service.impl;
 import com.example.demo.dtos.PacientDto;
 import com.example.demo.model.FisaMedicala;
 import com.example.demo.model.Pacient;
+import com.example.demo.model.PozeFisaMedicala;
 import com.example.demo.model.Programari;
 import com.example.demo.repository.FisaMedicalaRepository;
+import com.example.demo.repository.PozeFisaMedicalaRepository;
 import com.example.demo.repository.ProgramariRepository;
 import com.example.demo.service.PacientService;
 import com.example.demo.service.ProgramariService;
@@ -23,12 +25,14 @@ public class ProgramariServiceImpl implements ProgramariService{
     private final ProgramariRepository programariRepository;
     private final PacientService pacientService;
     private final FisaMedicalaRepository fisaMedicalaRepository;
+    private final PozeFisaMedicalaRepository pozeFisaMedicalaRepository;
 
     @Autowired
-    public ProgramariServiceImpl(ProgramariRepository programariRepository, PacientService pacientService, FisaMedicalaRepository fisaMedicalaRepository) {
+    public ProgramariServiceImpl(ProgramariRepository programariRepository, PacientService pacientService, FisaMedicalaRepository fisaMedicalaRepository, PozeFisaMedicalaRepository pozeFisaMedicalaRepository) {
         this.programariRepository = programariRepository;
         this.pacientService = pacientService;
         this.fisaMedicalaRepository = fisaMedicalaRepository;
+        this.pozeFisaMedicalaRepository = pozeFisaMedicalaRepository;
     }
 
     @Override
@@ -145,6 +149,10 @@ public class ProgramariServiceImpl implements ProgramariService{
         }else {
             FisaMedicala fisaMedicala=fisaMedicalaRepository.findFisaMedicalaByProgramari(programare);
             if(fisaMedicala!=null) {
+                PozeFisaMedicala pozeFisaMedicala = pozeFisaMedicalaRepository.findPozeFisaMedicalaByIdFisaMedicala(fisaMedicala.getId());
+                if(pozeFisaMedicala!=null) {
+                    pozeFisaMedicalaRepository.delete(pozeFisaMedicala);
+                }
                 fisaMedicalaRepository.delete(fisaMedicala);
             }
             programariRepository.delete(programare);
