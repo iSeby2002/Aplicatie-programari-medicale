@@ -1,14 +1,20 @@
 package com.example.demo.controller;
 
+import com.example.demo.dtos.FisaMedicalaDTO;
 import com.example.demo.dtos.FisaMedicalaResponseDTO;
 import com.example.demo.model.FisaMedicala;
+import com.example.demo.model.PozeFisaMedicala;
 import com.example.demo.model.Programari;
 import com.example.demo.service.FisaMedicalaService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,9 +37,69 @@ public class FisaMedicalaController {
     }
 
     @PostMapping("/saveFisaMedicala")
-    public ResponseEntity<String> saveFisaMedicala(@RequestBody FisaMedicala fisaMedicala){
-        String msg = fisaMedicalaService.saveFisaMedicala(fisaMedicala);
-        return new ResponseEntity<>(msg,HttpStatus.OK);
+    public ResponseEntity<FisaMedicalaDTO> saveFisaMedicala(@RequestBody FisaMedicala fisaMedicala){
+        FisaMedicalaDTO fisaMedicalaDTO = fisaMedicalaService.saveFisaMedicala(fisaMedicala);
+        return new ResponseEntity<>(fisaMedicalaDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/savePozaODInFisaMedicala")
+    public ResponseEntity<String> savePozaODInFisaMedicala(@RequestPart("idFisa") String idFisa,
+                                                           @RequestPart("pozaOD") MultipartFile pozaOD) throws IOException, SQLException {
+        if(!pozaOD.isEmpty()){
+            byte[] bytesOD = pozaOD.getBytes();
+            Blob blobOD = new javax.sql.rowset.serial.SerialBlob(bytesOD);
+
+            String msg = fisaMedicalaService.savePozaODInFisaMedicala(Long.valueOf(idFisa), blobOD);
+            return new ResponseEntity<>(msg,HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("Eroare",HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/downloadPozaOD")
+    public ResponseEntity<byte[]> downloadPozaOD(@PathVariable Long id) throws SQLException {
+        PozeFisaMedicala entity = fisaMedicalaService.findPozeFisaMedicalaByIdFisaMedicala(id);
+        if(entity == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }else{
+            if(entity.getPozaOD() == null) {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }else {
+                byte[] imageBytes = null;
+                imageBytes = entity.getPozaOD().getBytes(1, (int) entity.getPozaOD().length());
+                return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
+            }
+        }
+    }
+
+    @PostMapping("/savePozaOSInFisaMedicala")
+    public ResponseEntity<String> savePozaOSInFisaMedicala(@RequestPart("idFisa") String idFisa,
+                                                           @RequestPart("pozaOS") MultipartFile pozaOS) throws IOException, SQLException {
+        if(!pozaOS.isEmpty()){
+            byte[] bytesOS = pozaOS.getBytes();
+            Blob blobOS = new javax.sql.rowset.serial.SerialBlob(bytesOS);
+
+            String msg = fisaMedicalaService.savePozaOSInFisaMedicala(Long.valueOf(idFisa), blobOS);
+            return new ResponseEntity<>(msg,HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("Eroare",HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/downloadPozaOS")
+    public ResponseEntity<byte[]> downloadPozaOS(@PathVariable Long id) throws SQLException {
+        PozeFisaMedicala entity = fisaMedicalaService.findPozeFisaMedicalaByIdFisaMedicala(id);
+        if(entity == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }else{
+            if(entity.getPozaOS() == null) {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }else {
+                byte[] imageBytes = null;
+                imageBytes = entity.getPozaOS().getBytes(1, (int) entity.getPozaOS().length());
+                return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
+            }
+        }
     }
 
     @GetMapping("/getRaportFise")
